@@ -41,6 +41,9 @@ public class Movement : MonoBehaviour {
         {
             if (Input.GetMouseButtonUp(0))
             {
+                // TO DO: MAKE IT SO CAMERA ROTATES
+                //if (Input.mousePosition);
+
                 RaycastHit hitInfo;
                 if (Physics.Raycast(Camera.main.ScreenPointToRay(Input.mousePosition), out hitInfo, 100))
                 {
