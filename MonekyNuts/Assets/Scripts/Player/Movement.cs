@@ -8,43 +8,61 @@ public class Movement : MonoBehaviour {
     StateManager manager;
 
     // Reference to rigidbody
-    Rigidbody rigidbody;
+    NavMeshAgent navigation;
 
     // Position to travel to
+    [SerializeField]
     Vector3 destination;
+
+    // Reference to coroutine
+    Coroutine movementCoroutine;
 
     void Awake()
     {
         // Set up references
         manager = GameObject.FindGameObjectWithTag("Manager").GetComponent<StateManager>();
-        rigidbody = GetComponent<Rigidbody>();
+        navigation = GetComponent<NavMeshAgent>();
         destination = transform.position;
     }
 
     void Start()
     {
-        StartCoroutine(checkKeys());
+        manager.changeState += onStateChange;
     }
 
-    IEnumerator checkKeys()
+    void onStateChange()
     {
-        float forwardVelocity, horizontalVelocity;
-
-        while (manager.currentState == StateManager.states.realtime)
+        if (manager.CurrentState == StateManager.states.realtime) movementCoroutine = StartCoroutine(checkMovement());
+        else
         {
-            if (Input.GetKey(KeyCode.W))
-                forwardVelocity = 5;
-            else if (Input.GetKey(KeyCode.S))
-                forwardVelocity = -5;
-            else forwardVelocity = 0;
+            Debug.Log("stopping coroutine");
+            if (movementCoroutine != null) StopCoroutine(movementCoroutine);
+            Debug.Log("coroutine (should be) stopped");
+        }
+    }
 
-            if (Input.GetKey(KeyCode.D))
-                horizontalVelocity = 5;
-            else if (Input.GetKey(KeyCode.A))
-                horizontalVelocity = -5;
-            else horizontalVelocity = 0;
+    IEnumerator checkMovement()
+    {
+        while (true)
+        {
+            if (Input.GetMouseButtonUp(0))
+            {
+                Debug.Log("Mouse button/touch detected");
+                RaycastHit hitInfo;
+                if (Physics.Raycast(Camera.main.ScreenPointToRay(Input.mousePosition), out hitInfo, 100))
+                {
+                    Debug.Log("Physics raycast hit something!");
+                    Debug.Log("hit: " + hitInfo.transform.gameObject.name);
+                    if (hitInfo.transform.tag == "Terrain")
+                    {
+                        Debug.Log("changing destination...");
+                        destination = hitInfo.point;
+                    }
+                }
+            }
 
-            rigidbody.velocity = new Vector3(horizontalVelocity, rigidbody.velocity.y, forwardVelocity);
+            if (transform.position != destination)
+                navigation.SetDestination(destination);
 
             yield return null;
         }
