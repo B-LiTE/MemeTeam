@@ -2,9 +2,9 @@
 using System.Collections;
 
 [RequireComponent(typeof(Rigidbody))]
-public class Movement : MonoBehaviour {
+public class PlayerMovement : MonoBehaviour {
 
-    // Reference to rigidbody
+    // Reference to navigation agent
     NavMeshAgent navigation;
 
     // Position to travel to
