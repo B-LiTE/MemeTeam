@@ -41,21 +41,20 @@ public class PlayerMovement : MonoBehaviour {
         {
             if (Input.GetMouseButtonUp(0))
             {
-                // TO DO: MAKE IT SO CAMERA ROTATES
-                //if (Input.mousePosition);
-
                 RaycastHit hitInfo;
-                if (Physics.Raycast(Camera.main.ScreenPointToRay(Input.mousePosition), out hitInfo, 100))
+                if (Physics.Raycast(References.realtimeCamera.ScreenPointToRay(Input.mousePosition), out hitInfo, 100))
                 {
                     if (hitInfo.transform.tag == "Terrain")
                     {
                         destination = hitInfo.point;
+                        navigation.SetDestination(destination);
+                        References.realtimeCamera.GetComponent<PlayerCameraRotation>().startMovingCamera(transform.position, destination);
                     }
                 }
             }
 
-            if (transform.position != destination)
-                navigation.SetDestination(destination);
+            //if (transform.position != destination)
+                //navigation.SetDestination(destination);
 
             yield return null;
         }
