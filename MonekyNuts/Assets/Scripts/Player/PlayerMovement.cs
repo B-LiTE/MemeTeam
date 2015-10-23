@@ -4,6 +4,8 @@ using System.Collections;
 [RequireComponent(typeof(Rigidbody))]
 public class PlayerMovement : MonoBehaviour {
 
+    PlayerCameraRotation realtimeCamera;
+
     // Reference to navigation agent
     NavMeshAgent navigation;
 
@@ -19,6 +21,7 @@ public class PlayerMovement : MonoBehaviour {
         // Set up references
         navigation = GetComponent<NavMeshAgent>();
         destination = transform.position;
+        realtimeCamera = References.realtimeCamera.GetComponent<PlayerCameraRotation>();
     }
 
     void Start()
@@ -39,7 +42,7 @@ public class PlayerMovement : MonoBehaviour {
     {
         while (true)
         {
-            if (Input.GetMouseButtonUp(0))
+            if (!realtimeCamera.rotating && Input.GetMouseButtonUp(0))
             {
                 RaycastHit hitInfo;
                 if (Physics.Raycast(References.realtimeCamera.ScreenPointToRay(Input.mousePosition), out hitInfo, 100))
@@ -48,13 +51,9 @@ public class PlayerMovement : MonoBehaviour {
                     {
                         destination = hitInfo.point;
                         navigation.SetDestination(destination);
-                        References.realtimeCamera.GetComponent<PlayerCameraRotation>().startMovingCamera(transform.position, destination);
                     }
                 }
             }
-
-            //if (transform.position != destination)
-                //navigation.SetDestination(destination);
 
             yield return null;
         }
