@@ -2,7 +2,8 @@
 using System.Collections;
 
 public class PlayerCameraRotation : MonoBehaviour {
-
+    
+    [SerializeField]
     public bool rotating;
     Vector2 lastPoint;
     Camera camera;
@@ -26,25 +27,22 @@ public class PlayerCameraRotation : MonoBehaviour {
     void onStateChange()
     {
         if (References.stateManager.CurrentState == StateManager.states.realtime) rotationCoroutine = StartCoroutine(checkRotation());
-        else
-        {
-            if (rotationCoroutine != null) StopCoroutine(rotationCoroutine);
-        }
+        else if (rotationCoroutine != null) StopCoroutine(rotationCoroutine);
     }
 
     IEnumerator checkRotation()
     {
-        Vector2 currentRotation;
+        Vector2 currentMousePosition;
         while (true)
         {
-            currentRotation = camera.ScreenToViewportPoint(Input.mousePosition);
+            currentMousePosition = camera.ScreenToViewportPoint(Input.mousePosition);
 
             if (Input.GetMouseButtonDown(0))
             {
-                if (currentRotation.x <= 0.1f || currentRotation.x >= 0.9f )
+                if (currentMousePosition.x <= 0.1f || currentMousePosition.x >= 0.9f)
                 {
                     rotating = true;
-                    lastPoint = currentRotation;
+                    lastPoint = currentMousePosition;
                 }
             }
             else if (Input.GetMouseButtonUp(0))
@@ -55,9 +53,9 @@ public class PlayerCameraRotation : MonoBehaviour {
 
             if (rotating)
             {
-                float difference = currentRotation.x - lastPoint.x;
+                float difference = -(currentMousePosition.x - lastPoint.x);
                 transform.RotateAround(References.player.transform.position, Vector3.up, difference * magnitudeOfRotation);
-                lastPoint = currentRotation;
+                lastPoint = currentMousePosition;
             }
 
             yield return null;
