@@ -39,7 +39,7 @@ public class LevitationBehavior : MonoBehaviour {
 		{
 			movingUp = true;
 		}
-		if (transform.position.y > startPoint.y) {
+		if (transform.position.y >= startPoint.y) {
 			if (movingUp) {
 				slowing = true;
 			} else
