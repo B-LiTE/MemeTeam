@@ -1,25 +1,37 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-[RequireComponent(typeof(Rigidbody))]
-public class PlayerMovement : MonoBehaviour {
+public class PlayerAttacks : MonoBehaviour {
 
     PlayerCameraRotation realtimeCamera;
+    /*
+     
+     STILL WORKING ON
+    
+    conditions to start attacking
+    - attackable object
+    - within range
 
-    // Reference to navigation agent
-    NavMeshAgent navigation;
-
-    // DEBUG - Position to travel to
+    conditions to stop attacking
+    - enemy dies
+    - clicks on another target
+    - starts moving
+     
+     */
+    // Object being attacked
     [SerializeField]
     Vector3 destination;
 
+    // DEBUG - range to attack from
+    [SerializeField]
+    int attackRange;
+
     // Reference to coroutine
-    Coroutine movementCoroutine;
+    Coroutine attackCoroutine;
 
     void Awake()
     {
         // Set up references
-        navigation = GetComponent<NavMeshAgent>();
         destination = transform.position;
         realtimeCamera = References.realtimeCamera.GetComponent<PlayerCameraRotation>();
     }
@@ -31,10 +43,10 @@ public class PlayerMovement : MonoBehaviour {
 
     void onStateChange()
     {
-        if (References.stateManager.CurrentState == StateManager.states.realtime) movementCoroutine = StartCoroutine(checkMovement());
+        if (References.stateManager.CurrentState == StateManager.states.realtime) attackCoroutine = StartCoroutine(checkMovement());
         else
         {
-            if (movementCoroutine != null) StopCoroutine(movementCoroutine);
+            if (attackCoroutine != null) StopCoroutine(attackCoroutine);
         }
     }
 
@@ -47,14 +59,12 @@ public class PlayerMovement : MonoBehaviour {
             {
                 // ...and we hit an object within range...
                 RaycastHit hitInfo;
-                if (Physics.Raycast(References.realtimeCamera.ScreenPointToRay(Input.mousePosition), out hitInfo, 100))
+                if (Physics.Raycast(References.realtimeCamera.ScreenPointToRay(Input.mousePosition), out hitInfo, attackRange))
                 {
-                    // ...and we are allowed to travel to the object...
-                    if (canTravelTo(hitInfo.transform.tag))
+                    // ...and we are allowed to attack the object...
+                    if (canAttack(hitInfo.transform.tag))
                     {
-                        // Set the destination to be the clicked point
-                        destination = hitInfo.point;
-                        navigation.SetDestination(destination);
+                        // Start attacking?
                     }
                 }
             }
@@ -64,17 +74,15 @@ public class PlayerMovement : MonoBehaviour {
     }
 
     /// <summary>
-    /// Checks if the clicked on object can be travelled to
+    /// Checks if the clicked on object can be attacked
     /// </summary>
     /// <param name="tag">the tag of the clicked object</param>
-    /// <returns>Returns true if player can travel to it, false if not</returns>
-    bool canTravelTo(string tag)
+    /// <returns>Returns true if player can attack it, false if not</returns>
+    bool canAttack(string tag)
     {
         switch (tag)
         {
-            case "Terrain":
             case "Enemy":
-            case "Collectible":
                 return true;
 
             default:
