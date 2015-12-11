@@ -16,7 +16,7 @@ public class PickUpItem : MonoBehaviour {
 	{
 		if (Player.CompareTag ("Player")) 
 		{
-			Destroy(gameObject);
+			Destroy(transform.gameObject);
 
 			//plus add to inventory and stuff
 		}
