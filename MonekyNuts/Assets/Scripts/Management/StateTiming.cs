@@ -3,6 +3,7 @@ using System.Collections;
 
 public class StateTiming : MonoBehaviour {
 
+    // DEBUG - number of seconds of strategy and realtime parts
     [SerializeField]
     int secondsOfStrategy, secondsOfRealtime;
 
@@ -13,7 +14,7 @@ public class StateTiming : MonoBehaviour {
 
     IEnumerator gameplayStateChanging()
     {
-        int minutes = 60;
+        int secondsInAMinute = 60;
         References.stateManager.CurrentState = StateManager.states.strategy;
         while (true)
         {

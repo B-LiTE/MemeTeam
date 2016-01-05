@@ -24,6 +24,7 @@ public class StateManager : MonoBehaviour {
         CurrentState = states.menu;
     }
 
+    // DEBUG - to change between states
     void Update()
     {
         if (Input.GetKeyUp(KeyCode.Alpha1))
