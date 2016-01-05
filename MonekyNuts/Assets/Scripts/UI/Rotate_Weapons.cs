@@ -14,6 +14,7 @@ public class Rotate_Weapons : MonoBehaviour {
 	}
     void RotateWeapons()
 	{
-        transform.Rotate(new Vector3(0,0,-30));
+       transform.Rotate(new Vector3(0,0,-45));
+
 	}
 }

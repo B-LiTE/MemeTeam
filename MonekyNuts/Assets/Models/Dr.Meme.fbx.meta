@@ -1,19 +1,31 @@
 fileFormatVersion: 2
-guid: 5634d9472856545348c075967e0f12a2
+guid: 6dc8133d6f12dd742a975777d73a44e5
+timeCreated: 1452018812
+licenseType: Pro
 ModelImporter:
   serializedVersion: 18
   fileIDToRecycleName:
-    100000: path
+    100000: Camera
     100002: //RootNode
-    400000: path
+    100004: Lamp
+    100006: PM3D_ZSphere_3
+    100008: PM3D_ZSphere_3_MeshPart0
+    100010: PM3D_ZSphere_3_MeshPart1
+    400000: Camera
     400002: //RootNode
-    2300000: path
-    3300000: path
-    4300000: path
-    11100000: //RootNode
+    400004: Lamp
+    400006: PM3D_ZSphere_3
+    400008: PM3D_ZSphere_3_MeshPart0
+    400010: PM3D_ZSphere_3_MeshPart1
+    2300000: PM3D_ZSphere_3_MeshPart0
+    2300002: PM3D_ZSphere_3_MeshPart1
+    3300000: PM3D_ZSphere_3_MeshPart0
+    3300002: PM3D_ZSphere_3_MeshPart1
+    4300000: PM3D_ZSphere_3_MeshPart0
+    4300002: PM3D_ZSphere_3_MeshPart1
   materials:
     importMaterials: 1
-    materialName: 3
+    materialName: 0
     materialSearch: 1
   animations:
     legacyGenerateAnimations: 4
@@ -48,11 +60,11 @@ ModelImporter:
     secondaryUVAreaDistortion: 15.000001
     secondaryUVHardAngle: 88
     secondaryUVPackMargin: 4
-    useFileScale: 0
+    useFileScale: 1
   tangentSpace:
     normalSmoothAngle: 60
     splitTangentsAcrossUV: 1
-    normalImportMode: 1
+    normalImportMode: 0
     tangentImportMode: 1
   importAnimation: 1
   copyAvatar: 0
@@ -69,7 +81,7 @@ ModelImporter:
     rootMotionBoneName: 
     hasTranslationDoF: 0
   lastHumanDescriptionAvatarSource: {instanceID: 0}
-  animationType: 1
+  animationType: 0
   humanoidOversampling: 1
   additionalBone: 0
   userData: 
