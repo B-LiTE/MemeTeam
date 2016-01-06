@@ -3,19 +3,17 @@ using System.Collections;
 
 public class PickUpItem : MonoBehaviour {
 
-	// Use this for initialization
-	void Start () {
-	
-	}
-	
-	// Update is called once per frame
-	void Update () {
-	
-	}
+    public string collectableType;
+
+   
 	void OnTriggerEnter(Collider Player)
 	{
 		if (Player.CompareTag ("Player")) 
 		{
+            if (collectableType == "gold")
+            {
+                FindObjectOfType<GameStats>().GetComponent<GameStats>().ChangeGoldCount(1);
+            }
 			Destroy(transform.gameObject);
 
 			//plus add to inventory and stuff

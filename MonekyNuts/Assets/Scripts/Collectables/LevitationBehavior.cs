@@ -53,7 +53,8 @@ public class LevitationBehavior : MonoBehaviour {
 			}
 			else slowing = true;
 		}
-		if (slowing && levitationSpeedCurrent > levitationSpeed * 0.2) {
+		if (slowing && levitationSpeedCurrent > levitationSpeed * 0.1) 
+        {
 			levitationSpeedCurrent -= speedChangeRate;
 		} 
 		else if (levitationSpeedCurrent < levitationSpeed) 
