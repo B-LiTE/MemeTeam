@@ -1,7 +1,10 @@
 ﻿using UnityEngine;
 using System.Collections;
 
+[RequireComponent(typeof(EnemyManagement))]
 public class EnemyTargetSeeking : MonoBehaviour {
+
+    EnemyManagement enemyReferences;
 
     [SerializeField]
     bool isScanning;
@@ -10,6 +13,11 @@ public class EnemyTargetSeeking : MonoBehaviour {
     float fieldOfVision;
 
     Coroutine scanningCoroutine;
+
+    void Awake()
+    {
+        enemyReferences = GetComponent<EnemyManagement>();
+    }
 
     public void startScanning()
     {
@@ -26,7 +34,7 @@ public class EnemyTargetSeeking : MonoBehaviour {
         while (true)
         {
             // If it is scanning...
-            if (isScanning)
+            if (enemyReferences.currentState == EnemyManagement.states.scanning)
             {
                 // ...and it found an attackable entity...
                 // If it's within range, start attacking
