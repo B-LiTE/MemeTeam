@@ -1,48 +1,62 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-[RequireComponent(typeof(EnemyManagement))]
+[RequireComponent(typeof(EnemyBehavior), typeof(SphereCollider))]
 public class EnemyTargetSeeking : MonoBehaviour {
 
-    EnemyManagement enemyReferences;
+    EnemyBehavior enemyBehavior;
+    SphereCollider lineOfSight;
 
     [SerializeField]
-    bool isScanning;
-
-    [SerializeField]
-    float fieldOfVision;
+    float fieldOfViewAngle;
 
     Coroutine scanningCoroutine;
 
     void Awake()
     {
-        enemyReferences = GetComponent<EnemyManagement>();
+        enemyBehavior = GetComponent<EnemyBehavior>();
+        lineOfSight = GetComponent<SphereCollider>();
     }
 
-    public void startScanning()
+    void OnTriggerStay(Collider other)
     {
-        scanningCoroutine = StartCoroutine(test());
-    }
-
-    public void stopScanning()
-    {
-        StopCoroutine(scanningCoroutine);
-    }
-
-    IEnumerator test()
-    {
-        while (true)
+        if (inSight(other.gameObject))
         {
-            // If it is scanning...
-            if (enemyReferences.currentState == EnemyManagement.states.scanning)
+            RaycastHit hitInfo = raycastTo(other.gameObject);
+
+            if (other.tag == "Player")
             {
-                // ...and it found an attackable entity...
-                // If it's within range, start attacking
-                // If it's outside of range, set the destination to move towards it
+                if (hitInfo.transform.gameObject.tag == "Player") enemyBehavior.changeIntent(other.gameObject);
             }
-            // If it isn't scanning...
-            // ...and it isn't moving or rotating...
-            // Set a random destination
+            else if (other.tag == "Castle")
+            {
+                if (hitInfo.transform.gameObject.tag == "Castle") enemyBehavior.intent = EnemyBehavior.intentions.attackCastle;//enemyBehavior.changeIntent(other.gameObject);
+            }
+            else if (other.tag == "Troop")
+            {
+                if (hitInfo.transform.gameObject.tag == "Troop") enemyBehavior.intent = EnemyBehavior.intentions.attackTroop;//enemyBehavior.changeIntent(other.gameObject);
+            }
         }
+    }
+
+    void OnTriggerExit(Collider other)
+    {
+        if (other.gameObject.tag == "Player" && enemyBehavior.intent == EnemyBehavior.intentions.attackPlayer) enemyBehavior.intent = EnemyBehavior.intentions.wander;
+        else if (other.gameObject.tag == "Castle" && enemyBehavior.intent == EnemyBehavior.intentions.attackCastle) enemyBehavior.intent = EnemyBehavior.intentions.wander;
+        else if (other.gameObject.tag == "Enemy" && enemyBehavior.intent == EnemyBehavior.intentions.attackTroop) enemyBehavior.intent = EnemyBehavior.intentions.wander;
+    }
+
+    RaycastHit raycastTo(GameObject target)
+    {
+        RaycastHit hitInfo;
+        Physics.Raycast(transform.position, (target.transform.position - transform.position).normalized, out hitInfo, lineOfSight.radius);
+        return hitInfo;
+    }
+    bool inSight(GameObject target)
+    {
+        Vector3 directionToObject = target.transform.position - transform.position;
+        float angle = Vector3.Angle(directionToObject, transform.forward);
+
+        return angle < fieldOfViewAngle * 0.5f;
     }
 }
