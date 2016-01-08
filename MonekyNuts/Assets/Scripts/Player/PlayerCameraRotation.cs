@@ -11,7 +11,7 @@ public class PlayerCameraRotation : MonoBehaviour {
     Vector2 lastPoint;
 
     // Reference to realtime camera
-    Camera camera;
+    Camera realtimeCamera;
 
     // Amount to rotate by
     [SerializeField]
@@ -22,7 +22,7 @@ public class PlayerCameraRotation : MonoBehaviour {
 
     void Awake()
     {
-        camera = GetComponent<Camera>();
+        realtimeCamera = GetComponent<Camera>();
     }
 
     void Start()
@@ -43,7 +43,7 @@ public class PlayerCameraRotation : MonoBehaviour {
         while (true)
         {
             // Set the current mouse position
-            currentMousePosition = camera.ScreenToViewportPoint(Input.mousePosition);
+            currentMousePosition = realtimeCamera.ScreenToViewportPoint(Input.mousePosition);
 
             // If the mouse button was clicked...
             if (Input.GetMouseButtonDown(0))
