@@ -30,6 +30,20 @@ public class EnemyBehavior : MonoBehaviour {
     public Vector3 getDestination() { return destination; }
     public actions getAction() { return action; }
     public intentions getIntent() { return intent; }
+    public intentions getIntentGiven(GameObject item)
+    {
+        switch (item.tag)
+        {
+            case "Player":
+                return intentions.attackPlayer;
+            case "Castle":
+                return intentions.attackCastle;
+            case "Troop":
+                return intentions.attackTroop;
+            default:
+                return intentions.wander;
+        }
+    }
 
 
 
@@ -47,6 +61,7 @@ public class EnemyBehavior : MonoBehaviour {
     /// <param name="newAction">Action to change to</param>
     public void changeAction(actions newAction)
     {
+        // Change action
         action = newAction;
         callChangeOfActions();
     }
@@ -65,11 +80,44 @@ public class EnemyBehavior : MonoBehaviour {
         destination = transform.position;
         int currentIntent = (int)intent;
 
-        if (targetIsPlayer() && currentIntent >= (int)intentions.attackPlayer) intent = intentions.attackPlayer;
-        else if (targetIsCastle() && currentIntent >= (int)intentions.attackCastle) intent = intentions.attackCastle;
-        else if (targetIsTroop() && currentIntent >= (int)intentions.attackTroop) intent = intentions.attackTroop;
-
-        callChangeOfIntentions();
+        // If the target is the player...
+        if (targetIsPlayer())
+        {
+            // ...and we aren't on the "attack player" intent... 
+            if (currentIntent != (int)intentions.attackPlayer)
+            {
+                // Change the intent
+                intent = intentions.attackPlayer;
+                callChangeOfIntentions();
+            }
+        }
+        // If the target is the castle...
+        else if (targetIsCastle())
+        {
+            // ...and we aren't on the "attack castle" intent...
+            if (currentIntent != (int)intentions.attackCastle)
+            {
+                // Change the intent
+                intent = intentions.attackCastle;
+                callChangeOfIntentions();
+            }
+        }
+        // If the target is a troop...
+        else if (targetIsTroop())
+        {
+            // ...and we aren't on the "attack troop" intent...
+            if (currentIntent != (int)intentions.attackTroop)
+            {
+                // Change the intent
+                intent = intentions.attackTroop;
+                callChangeOfIntentions();
+            }
+        }
+        // If the target isn't the player, castle, or a troop, change to the "wandering" intent
+        else
+        {
+            changeIntent(target.transform.position);
+        }
     }
     
     /// <summary>

@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 
 [RequireComponent(typeof(EnemyBehavior))]
 public class EnemyTargetSeeking : MonoBehaviour {
@@ -22,43 +23,64 @@ public class EnemyTargetSeeking : MonoBehaviour {
         scanningCoroutine = StartCoroutine(seekTarget());
     }
 
+
+
+
+
+
+
+
+
+
+
+    /// <summary>
+    /// Continually scans for targets, changing intent when needed
+    /// </summary>
+    /// <returns></returns>
     IEnumerator seekTarget()
     {
         while (true)
         {
-            RaycastHit[] sensedObjects = Physics.SphereCastAll(transform.position, 25, new Vector3(0.1f, 0, 0.1f));
-            bool changedIntent = false;
+            // Get all important objects in the sensing radius
+            RaycastHit[] sensedObjects = Physics.SphereCastAll(transform.position, 25, new Vector3(0.1f, 0, 0.1f))
+                .Where(x => x.transform.tag == "Player" || x.transform.tag == "Castle" || x.transform.tag == "Troop").ToArray();
+
+            int state = (int)EnemyBehavior.intentions.wander;
             foreach (RaycastHit item in sensedObjects)
             {
-                if (item.transform.tag == "Player" || item.transform.tag == "Castle" || item.transform.tag == "Troop")
+                // If the enemy can see the item...
+                if (canSee(item.transform.gameObject))
                 {
-                    if (canSee(item.transform.gameObject))
+                    // ...and the item is a higher priority than the current item...
+                    if ((int)enemyBehavior.getIntentGiven(item.transform.gameObject) < state)
                     {
-                        if (item.transform.tag == "Player")
-                        {
-                            enemyBehavior.changeIntent(item.transform.gameObject);
-                            changedIntent = true;
-                            break;
-                        }
-                        else if (item.transform.tag == "Castle")
-                        {
-                            enemyBehavior.changeIntent(item.transform.gameObject);
-                            changedIntent = true;
-                        }
-                        else if (enemyBehavior.getIntent() != EnemyBehavior.intentions.attackCastle)
-                        {
-                            enemyBehavior.changeIntent(item.transform.gameObject);
-                            changedIntent = true;
-                        }
+                        // Change the intent
+                        enemyBehavior.changeIntent(item.transform.gameObject);
+                        state = (int)enemyBehavior.getIntentGiven(item.transform.gameObject);
+
+                        // If the item is the player, break out of the loop since the player is the highest priority
+                        if (item.transform.tag == "Player") break;
                     }
                 }
             }
 
-            if (!changedIntent) enemyBehavior.changeIntent(transform.position + new Vector3(Random.Range(0, 15), 0, Random.Range(0, 15)));
+            // If we haven't changed intentions, start wandering
+            if (state == (int)EnemyBehavior.intentions.wander) enemyBehavior.changeIntent(transform.position);
 
             yield return null;
         }
     }
+
+
+
+
+
+
+
+
+
+
+
 
     /// <summary>
     /// Casts a ray towards the target and returns whatever object it hits
