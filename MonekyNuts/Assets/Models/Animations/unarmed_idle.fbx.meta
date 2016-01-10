@@ -98,7 +98,105 @@ ModelImporter:
     animationScaleError: .5
     animationWrapMode: 0
     extraExposedTransformPaths: []
-    clipAnimations: []
+    clipAnimations:
+    - serializedVersion: 16
+      name: mixamo.com
+      takeName: mixamo.com
+      firstFrame: 0
+      lastFrame: 114
+      wrapMode: 0
+      orientationOffsetY: 0
+      level: 0
+      cycleOffset: 0
+      loop: 0
+      loopTime: 1
+      loopBlend: 1
+      loopBlendOrientation: 0
+      loopBlendPositionY: 0
+      loopBlendPositionXZ: 0
+      keepOriginalOrientation: 0
+      keepOriginalPositionY: 1
+      keepOriginalPositionXZ: 0
+      heightFromFeet: 0
+      mirror: 0
+      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
+      curves: []
+      events: []
+      transformMask:
+      - path: 
+        weight: 1
+      - path: Pelvis
+        weight: 1
+      - path: Pelvis/Spine
+        weight: 1
+      - path: Pelvis/Spine/Spine1
+        weight: 1
+      - path: Pelvis/Spine/Spine1/Clavical.L
+        weight: 1
+      - path: Pelvis/Spine/Spine1/Clavical.L/Upperarm.L
+        weight: 1
+      - path: Pelvis/Spine/Spine1/Clavical.L/Upperarm.L/Forearm.L
+        weight: 1
+      - path: Pelvis/Spine/Spine1/Clavical.L/Upperarm.L/Forearm.L/Hand.L
+        weight: 1
+      - path: Pelvis/Spine/Spine1/Clavical.L/Upperarm.L/Forearm.L/Hand.L/Fingers.L
+        weight: 1
+      - path: Pelvis/Spine/Spine1/Clavical.L/Upperarm.L/Forearm.L/Hand.L/Fingers.L/Fingers1.L
+        weight: 1
+      - path: Pelvis/Spine/Spine1/Clavical.L/Upperarm.L/Forearm.L/Hand.L/Fingers.L/Fingers1.L/Fingers1.L_end
+        weight: 1
+      - path: Pelvis/Spine/Spine1/Clavical.L/Upperarm.L/Forearm.L/Hand.L/Thumb.L
+        weight: 1
+      - path: Pelvis/Spine/Spine1/Clavical.L/Upperarm.L/Forearm.L/Hand.L/Thumb.L/Thumb1.L
+        weight: 1
+      - path: Pelvis/Spine/Spine1/Clavical.L/Upperarm.L/Forearm.L/Hand.L/Thumb.L/Thumb1.L/Thumb2.L
+        weight: 1
+      - path: Pelvis/Spine/Spine1/Clavical.L/Upperarm.L/Forearm.L/Hand.L/Thumb.L/Thumb1.L/Thumb2.L/Thumb2.L_end
+        weight: 1
+      - path: Pelvis/Spine/Spine1/Clavical.R
+        weight: 1
+      - path: Pelvis/Spine/Spine1/Clavical.R/Upperarm.R
+        weight: 1
+      - path: Pelvis/Spine/Spine1/Clavical.R/Upperarm.R/Forearm.R
+        weight: 1
+      - path: Pelvis/Spine/Spine1/Clavical.R/Upperarm.R/Forearm.R/Hand.R
+        weight: 1
+      - path: Pelvis/Spine/Spine1/Clavical.R/Upperarm.R/Forearm.R/Hand.R/Fingers.R
+        weight: 1
+      - path: Pelvis/Spine/Spine1/Clavical.R/Upperarm.R/Forearm.R/Hand.R/Fingers.R/Fingers1.R
+        weight: 1
+      - path: Pelvis/Spine/Spine1/Clavical.R/Upperarm.R/Forearm.R/Hand.R/Fingers.R/Fingers1.R/Fingers1.R_end
+        weight: 1
+      - path: Pelvis/Spine/Spine1/Clavical.R/Upperarm.R/Forearm.R/Hand.R/Thumb.R
+        weight: 1
+      - path: Pelvis/Spine/Spine1/Clavical.R/Upperarm.R/Forearm.R/Hand.R/Thumb.R/Thumb1.R
+        weight: 1
+      - path: Pelvis/Spine/Spine1/Clavical.R/Upperarm.R/Forearm.R/Hand.R/Thumb.R/Thumb1.R/Thumb2.R
+        weight: 1
+      - path: Pelvis/Spine/Spine1/Clavical.R/Upperarm.R/Forearm.R/Hand.R/Thumb.R/Thumb1.R/Thumb2.R/Thumb2.R_end
+        weight: 1
+      - path: Pelvis/Spine/Spine1/Head
+        weight: 1
+      - path: Pelvis/Spine/Spine1/Head/Head_end
+        weight: 1
+      - path: Pelvis/Thigh.L
+        weight: 1
+      - path: Pelvis/Thigh.L/Calf.L
+        weight: 1
+      - path: Pelvis/Thigh.L/Calf.L/Foot.L
+        weight: 1
+      - path: Pelvis/Thigh.L/Calf.L/Foot.L/Foot.L_end
+        weight: 1
+      - path: Pelvis/Thigh.R
+        weight: 1
+      - path: Pelvis/Thigh.R/Calf.R
+        weight: 1
+      - path: Pelvis/Thigh.R/Calf.R/Foot.R
+        weight: 1
+      - path: Pelvis/Thigh.R/Calf.R/Foot.R/Foot.R_end
+        weight: 1
+      maskType: 0
+      maskSource: {instanceID: 0}
     isReadable: 1
   meshes:
     lODScreenPercentages: []
