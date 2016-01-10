@@ -24,13 +24,11 @@ public class EnemyMovement : MonoBehaviour {
         enemyBehavior = GetComponent<EnemyBehavior>();
         navigation = GetComponent<NavMeshAgent>();
         enemyTargetSeeking = GetComponent<EnemyTargetSeeking>();
-    }
 
-    void Start()
-    {
         References.stateManager.changeState += onStateChange;
         enemyBehavior.changeOfActions += onChangeAction;
         enemyBehavior.changeOfIntentions += onChangeIntent;
+        enemyTargetSeeking.onTargetVisible += onTargetVisible;
     }
 
 
@@ -63,31 +61,19 @@ public class EnemyMovement : MonoBehaviour {
         if (enemyBehavior.getIntent() != EnemyBehavior.intentions.wander)
         {
             // Stop wandering, if we were
-            if (wanderCoroutine != null)
-            {
-                StopCoroutine(wanderCoroutine);
-                wanderCoroutine = null;
-            }
+            stopWanderCoroutine();
 
-            // ...and we aren't already checking if we're in range...
-            if (checkInRangeOfTargetCoroutine == null)
-            {
-                // Start checking if we're in range
-                checkInRangeOfTargetCoroutine = StartCoroutine(checkInRangeOfTarget());
-            }
-        }
-        // Otherwise, stop checking if we are in range
-        else if (checkInRangeOfTargetCoroutine != null)
-        {
-            StopCoroutine(checkInRangeOfTargetCoroutine);
-            checkInRangeOfTargetCoroutine = null;
+            // Start checking if we're in range
+            startCheckInRangeOfTargetCoroutine();
         }
         // If we're just wandering...
         else
         {
-            // ...and we aren't already wandering, start wandering
-            if (wanderCoroutine == null) wanderCoroutine = StartCoroutine(wander());
-            enemyBehavior.changeAction(EnemyBehavior.actions.moveToTarget);
+            // Stop checking if we're in range
+            stopCheckInRangeOfTargetCoroutine();
+
+            // Start wandering
+            startWanderCoroutine();
         }
     }
 
@@ -103,8 +89,10 @@ public class EnemyMovement : MonoBehaviour {
         // If the action is to move...
         if (enemyBehavior.getAction() == EnemyBehavior.actions.moveToTarget)
         {
-            rotateCoroutine = null;
-            // ...and the intent isn't to wander...
+            // Stop rotating if we are already
+            stopRotateCoroutine();
+
+            // If we have a target to follow...
             if (enemyBehavior.getIntent() != EnemyBehavior.intentions.wander)
             {
                 // ...and we aren't close enough to the target...
@@ -120,10 +108,29 @@ public class EnemyMovement : MonoBehaviour {
         // If the action is to rotate...
         else if (enemyBehavior.getAction() == EnemyBehavior.actions.rotate)
         {
-            // Start rotating if we aren't already
-            if (rotateCoroutine == null) rotateCoroutine = StartCoroutine(rotate());
+            // Stop moving if we were
+            stopMoving();
+
+            // Stop rotating, if we were, and begin rotating
+            runRotateCoroutine();
         }
     }
+
+
+
+
+
+
+
+    /// <summary>
+    /// Runs when "onTargetVisible" event in "EnemyTargetSeeking" activates.
+    /// </summary>
+    void onTargetVisible()
+    {
+        // If we can see our target, start checking if we're in range
+        runCheckInRangeOfTargetCoroutine();
+    }
+
 
 
 
@@ -138,20 +145,42 @@ public class EnemyMovement : MonoBehaviour {
     {
         while (true)
         {
-            // If we aren't close enough, change our action to move towards it
-            if (!closeEnoughToTarget()) enemyBehavior.changeAction(EnemyBehavior.actions.moveToTarget);
-            // Otherwise, if the action is currently set to move...
-            else if (enemyBehavior.getAction() == EnemyBehavior.actions.moveToTarget)
+            // If the enemy can see the target...
+            if (enemyTargetSeeking.targetVisible)
             {
-                // Reset our path and stop moving
-                navigation.ResetPath();
-                navigation.velocity = Vector3.zero;
+                // ...and we aren't close enough, change our action to move towards it
+                if (!closeEnoughToTarget()) enemyBehavior.changeAction(EnemyBehavior.actions.moveToTarget);
+                // Otherwise, since we ARE close enough...
+                else
+                {
+                    // Stop moving
+                    stopMoving();
 
-                // Change our action to attack
-                enemyBehavior.changeAction(EnemyBehavior.actions.attack);
+                    // Change our action to attack
+                    enemyBehavior.changeAction(EnemyBehavior.actions.attack);
+                }
+            }
+            // If the enemy can't see the target...
+            else
+            {
+                // Stop moving
+                stopMoving();
+
+                for (int i = 0; i < 3; i++)
+                {
+                    // Rotate to try and find it
+                    enemyBehavior.changeAction(EnemyBehavior.actions.rotate);
+                    yield return rotateCoroutine;
+
+                    // Idle for a short time
+                    yield return new WaitForSeconds(Random.Range(0.5f, 2f));
+                }
+
+                // If we rotated three times and still couldn't find it, give up and start wandering
+                enemyBehavior.changeIntent(transform.gameObject);
             }
 
-            yield return null;
+            yield return new WaitForSeconds(0.03f);
         }
     }
 
@@ -162,7 +191,7 @@ public class EnemyMovement : MonoBehaviour {
 
 
     /// <summary>
-    /// Makes the enemy wander by picking a point within vision, travelling to it, rotating, and repeating
+    /// Makes the enemy wander by picking a point within vision, traveling to it, rotating, and repeating
     /// </summary>
     /// <returns></returns>
     IEnumerator wander()
@@ -177,7 +206,7 @@ public class EnemyMovement : MonoBehaviour {
                 while (navigation.pathPending) yield return null;
                 if (i++ > 50) break;
             } while (navigation.pathStatus != NavMeshPathStatus.PathComplete);
-            Debug.Log("took " + i + " + long");
+            //Debug.Log("took " + i + " + long");
             Debug.DrawLine(transform.position, wanderingDestination, Color.black, 5f);
 
             // Start traveling to it
@@ -207,16 +236,13 @@ public class EnemyMovement : MonoBehaviour {
 
 
     /// <summary>
-    /// Rotates in a random direction a random number of degrees
+    /// Rotates once in a random direction a random number of degrees, stopping if looking for a target and finding it
     /// </summary>
     /// <returns></returns>
-    IEnumerator rotate(float degrees = 0)
+    IEnumerator rotate()
     {
         float startingRotation = transform.rotation.eulerAngles.y;
-
-        float endingRotation;
-        if (degrees == 0) endingRotation = startingRotation + Random.Range(-360f, 360f);
-        else endingRotation = degrees;
+        float endingRotation = startingRotation + Random.Range(-360f, 360f);
 
         float time = 0;
         while (time <= 1)
@@ -240,11 +266,61 @@ public class EnemyMovement : MonoBehaviour {
 
 
 
+    void stopMoving()
+    {
+        navigation.ResetPath();
+        navigation.velocity = Vector3.zero;
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+    // The "startCoroutine" methods start the coroutine if it ISN'T already started.
+    // The "stopCoroutine" methods stop the coroutine if it IS already started.
+    // The "runCoroutine" will call the "stopCoroutine" and then the "startCoroutine".
+
+    void stopRotateCoroutine() { if (rotateCoroutine != null) { StopCoroutine(rotateCoroutine); rotateCoroutine = null; } }
+    void startRotateCoroutine() { if (rotateCoroutine == null) rotateCoroutine = StartCoroutine(rotate()); }
+    void runRotateCoroutine() { stopRotateCoroutine(); startRotateCoroutine(); }
+
+
+    void stopWanderCoroutine() { if (wanderCoroutine != null) { StopCoroutine(wanderCoroutine); wanderCoroutine = null; } }
+    void startWanderCoroutine() { if (wanderCoroutine == null) wanderCoroutine = StartCoroutine(wander()); }
+    void runWanderCoroutine() { stopWanderCoroutine(); startWanderCoroutine(); }
+
+
+    void stopCheckInRangeOfTargetCoroutine() { if (checkInRangeOfTargetCoroutine != null) { StopCoroutine(checkInRangeOfTargetCoroutine); checkInRangeOfTargetCoroutine = null; } }
+    void startCheckInRangeOfTargetCoroutine() { if (checkInRangeOfTargetCoroutine == null) checkInRangeOfTargetCoroutine = StartCoroutine(checkInRangeOfTarget()); }
+    void runCheckInRangeOfTargetCoroutine() { stopCheckInRangeOfTargetCoroutine(); startCheckInRangeOfTargetCoroutine(); }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
     void setDestination(Vector3 destination)
     {
         navigation.SetDestination(destination);
-        Debug.Log("path status: " + navigation.pathStatus);
     }
+
+
 
     /// <summary>
     /// Checks if the enemy is close enough to its target
@@ -257,6 +333,8 @@ public class EnemyMovement : MonoBehaviour {
 
         return distanceToTarget <= movementCutoff;
     }
+
+
 
     /// <summary>
     /// Checks if the enemy is close enough to its destination

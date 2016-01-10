@@ -33,8 +33,16 @@ public class PlayerCameraRotation : MonoBehaviour {
 
     void onStateChange()
     {
-        if (References.stateManager.CurrentState == StateManager.states.realtime) rotationCoroutine = StartCoroutine(checkRotation());
-        else if (rotationCoroutine != null) StopCoroutine(rotationCoroutine);
+        if (References.stateManager.CurrentState == StateManager.states.realtime)
+        {
+            realtimeCamera.enabled = true;
+            rotationCoroutine = StartCoroutine(checkRotation());
+        }
+        else
+        {
+            if (rotationCoroutine != null) StopCoroutine(rotationCoroutine);
+            realtimeCamera.enabled = false;
+        }
     }
 
     IEnumerator checkRotation()

@@ -3,19 +3,39 @@ using System.Collections;
 
 public class EnemyBehavior : MonoBehaviour {
 
+    // INTENTIONS: Intentions are smart. They guide the enemy's behavior through many steps to get to the end goal.
+    // Intention methods should use "changeAction" to guide behavior as needed.
     public enum intentions { attackPlayer, attackCastle, attackTroop, wander };
     [SerializeField]
     intentions intent;
 
+    // ACTIONS: Actions are dumb. They do only one thing and don't care about why (the intention).
+    // Actions SHOULD NOT use either "changeAction" or "changeIntention".
     public enum actions { moveToTarget, attack, rotate };
     [SerializeField]
     actions action;
+
+
+
+
+
 
     public delegate void voidDelegate();
     public event voidDelegate changeOfIntentions, changeOfActions;
 
     [SerializeField]
     GameObject target;
+
+
+
+
+
+
+    void Start()
+    {
+        changeIntent(transform.gameObject);
+        changeAction(actions.moveToTarget);
+    }
 
 
 

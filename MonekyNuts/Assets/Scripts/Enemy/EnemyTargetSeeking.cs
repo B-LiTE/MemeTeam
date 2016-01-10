@@ -1,7 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
 
 [RequireComponent(typeof(EnemyBehavior))]
 public class EnemyTargetSeeking : MonoBehaviour {
@@ -9,9 +8,18 @@ public class EnemyTargetSeeking : MonoBehaviour {
     EnemyBehavior enemyBehavior;
 
     [SerializeField]
+    public bool targetVisible;
+
+    [SerializeField]
+    LayerMask visibleLayers, targetLayers;
+
+    [SerializeField]
     float fieldOfViewAngle, sensingRadius;
 
-    Coroutine scanningCoroutine;
+    Coroutine seekTargetCoroutine, canSeeTargetCoroutine;
+
+    public delegate void voidDelegate();
+    public event voidDelegate onTargetVisible;
 
     void Awake()
     {
@@ -20,7 +28,8 @@ public class EnemyTargetSeeking : MonoBehaviour {
 
     void Start()
     {
-        scanningCoroutine = StartCoroutine(seekTarget());
+        seekTargetCoroutine = StartCoroutine(seekTarget());
+        canSeeTargetCoroutine = StartCoroutine(canSeeTarget());
     }
 
 
@@ -42,32 +51,76 @@ public class EnemyTargetSeeking : MonoBehaviour {
         while (true)
         {
             // Get all important objects in the sensing radius
-            RaycastHit[] sensedObjects = Physics.SphereCastAll(transform.position, 25, new Vector3(0.1f, 0, 0.1f))
-                .Where(x => x.transform.tag == "Player" || x.transform.tag == "Castle" || x.transform.tag == "Troop").ToArray();
+            Collider[] sensedObjects = Physics.OverlapSphere(transform.position, sensingRadius, targetLayers);
 
-            int state = (int)EnemyBehavior.intentions.wander;
-            foreach (RaycastHit item in sensedObjects)
+            int intentChoice = (int)EnemyBehavior.intentions.wander;
+            foreach (Collider item in sensedObjects)
             {
+                GameObject currentItem = item.transform.gameObject;
+
                 // If the enemy can see the item...
-                if (canSee(item.transform.gameObject))
+                if (canSee(currentItem))
                 {
-                    // ...and the item is a higher priority than the current item...
-                    if ((int)enemyBehavior.getIntentGiven(item.transform.gameObject) < state)
+                    // ...and our target is the same as the item...
+                    if (enemyBehavior.getTarget() == currentItem)
+                    {
+                        // Set our choice and continue
+                        intentChoice = (int)enemyBehavior.getIntent();
+                        continue;
+                    }
+
+                    // If the item is the same or higher priority than the current item...
+                    if ((int)enemyBehavior.getIntentGiven(currentItem) <= intentChoice)
                     {
                         // Change the intent
-                        enemyBehavior.changeIntent(item.transform.gameObject);
-                        state = (int)enemyBehavior.getIntentGiven(item.transform.gameObject);
+                        enemyBehavior.changeIntent(currentItem);
+                        intentChoice = (int)enemyBehavior.getIntentGiven(currentItem);
 
                         // If the item is the player, break out of the loop since the player is the highest priority
-                        if (item.transform.tag == "Player") break;
+                        if (enemyBehavior.targetIsPlayer()) break;
+                    }
+                }
+                // If the enemy can't see the item...
+                else
+                {
+                    // ...but our target is the item...
+                    if (enemyBehavior.getTarget() == currentItem)
+                    {
+                        // The target is around here somewhere (because they're still in the sensing radius)
+                        intentChoice = (int)enemyBehavior.getIntent();
                     }
                 }
             }
 
             // If we haven't changed intentions, start wandering
-            if (state == (int)EnemyBehavior.intentions.wander) enemyBehavior.changeIntent(this.gameObject);
+            if (intentChoice == (int)EnemyBehavior.intentions.wander) enemyBehavior.changeIntent(this.gameObject);
 
-            yield return null;
+            yield return new WaitForSeconds(0.03f);
+        }
+    }
+
+
+
+
+
+
+
+
+    IEnumerator canSeeTarget()
+    {
+        while (true)
+        {
+            if (canSee(enemyBehavior.getTarget()))
+            {
+                if (!targetVisible)
+                {
+                    targetVisible = true;
+                    if (onTargetVisible != null) onTargetVisible();
+                }
+            }
+            else targetVisible = false;
+
+            yield return new WaitForSeconds(0.05f);
         }
     }
 
@@ -83,8 +136,11 @@ public class EnemyTargetSeeking : MonoBehaviour {
     {
         Vector3 chosenPoint = transform.position;
 
-        chosenPoint.z = transform.position.z + Random.Range(3f, sensingRadius);
-        chosenPoint.x = transform.position.x + Random.Range(-chosenPoint.z, chosenPoint.z);
+        float deltaZ = Random.Range(4f, sensingRadius);
+        float deltaX = Random.Range(-deltaZ, deltaZ);
+
+        chosenPoint.z = (transform.forward.z * deltaZ);
+        chosenPoint.x = (transform.right.x * deltaX);
 
         return chosenPoint;
     }
@@ -108,8 +164,8 @@ public class EnemyTargetSeeking : MonoBehaviour {
     RaycastHit raycastTo(GameObject target)
     {
         RaycastHit hitInfo;
-        //Debug.DrawRay(transform.position, (target.transform.position - transform.position).normalized, Color.white, 1);
-        Physics.Raycast(transform.position, (target.transform.position - transform.position).normalized, out hitInfo, sensingRadius);
+        Vector3 direction = new Vector3(target.transform.position.x - transform.position.x, 0, target.transform.position.z - transform.position.z);
+        Physics.Raycast(transform.position, direction, out hitInfo, sensingRadius, visibleLayers);
         return hitInfo;
     }
 
