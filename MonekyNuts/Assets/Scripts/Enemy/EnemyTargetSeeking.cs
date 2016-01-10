@@ -65,10 +65,28 @@ public class EnemyTargetSeeking : MonoBehaviour {
             }
 
             // If we haven't changed intentions, start wandering
-            if (state == (int)EnemyBehavior.intentions.wander) enemyBehavior.changeIntent(transform.position);
+            if (state == (int)EnemyBehavior.intentions.wander) enemyBehavior.changeIntent(this.gameObject);
 
             yield return null;
         }
+    }
+
+
+
+
+
+
+
+
+
+    public Vector3 pickRandomPointInSight()
+    {
+        Vector3 chosenPoint = transform.position;
+
+        chosenPoint.z = transform.position.z + Random.Range(3f, sensingRadius);
+        chosenPoint.x = transform.position.x + Random.Range(-chosenPoint.z, chosenPoint.z);
+
+        return chosenPoint;
     }
 
 
@@ -94,7 +112,7 @@ public class EnemyTargetSeeking : MonoBehaviour {
         Physics.Raycast(transform.position, (target.transform.position - transform.position).normalized, out hitInfo, sensingRadius);
         return hitInfo;
     }
-    
+
     /// <summary>
     /// Checks whether an object is within the enemy's sight lines
     /// </summary>
@@ -103,6 +121,19 @@ public class EnemyTargetSeeking : MonoBehaviour {
     bool inSightLines(GameObject target)
     {
         Vector3 directionToObject = target.transform.position - transform.position;
+        float angle = Vector3.Angle(directionToObject, transform.forward);
+
+        return angle < fieldOfViewAngle * 0.5f;
+    }
+
+    /// <summary>
+    /// Checks whether a point is within the enemy's sight lines
+    /// </summary>
+    /// <param name="target">Point to test</param>
+    /// <returns>Returns true if the point is in sight lines, false if not</returns>
+    bool inSightLines(Vector3 target)
+    {
+        Vector3 directionToObject = target - transform.position;
         float angle = Vector3.Angle(directionToObject, transform.forward);
 
         return angle < fieldOfViewAngle * 0.5f;

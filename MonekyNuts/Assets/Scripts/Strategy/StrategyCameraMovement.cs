@@ -3,11 +3,11 @@ using System.Collections;
 
 public class StrategyCameraMovement : MonoBehaviour {
 
-    Camera camera;
+    Camera strategyCamera;
 
     void Awake()
     {
-        camera = GetComponent<Camera>();
+        strategyCamera = GetComponent<Camera>();
     }
 
     void Start()
@@ -21,12 +21,12 @@ public class StrategyCameraMovement : MonoBehaviour {
         if (References.stateManager.CurrentState == StateManager.states.strategy)
         {
             // Bring the strategy camera in front of the realtime camera
-            camera.depth = 1;
+            strategyCamera.depth = 1;
         }
         else
         {
             // Push the strategy camera behind the realtime camera
-            camera.depth = -1;
+            strategyCamera.depth = -1;
         }
     }
 

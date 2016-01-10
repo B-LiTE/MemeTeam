@@ -7,7 +7,7 @@ public class EnemyBehavior : MonoBehaviour {
     [SerializeField]
     intentions intent;
 
-    public enum actions { moveToTarget, attack, rotate, idle };
+    public enum actions { moveToTarget, attack, rotate };
     [SerializeField]
     actions action;
 
@@ -16,8 +16,6 @@ public class EnemyBehavior : MonoBehaviour {
 
     [SerializeField]
     GameObject target;
-    [SerializeField]
-    Vector3 destination;
 
 
 
@@ -27,7 +25,6 @@ public class EnemyBehavior : MonoBehaviour {
     public bool targetIsCastle() { return target != null && target.tag == "Castle"; }
     public bool targetIsTroop() { return target != null && target.tag == "Troop"; }
     public GameObject getTarget() { return target; }
-    public Vector3 getDestination() { return destination; }
     public actions getAction() { return action; }
     public intentions getIntent() { return intent; }
     public intentions getIntentGiven(GameObject item)
@@ -77,7 +74,6 @@ public class EnemyBehavior : MonoBehaviour {
     public void changeIntent(GameObject target)
     {
         this.target = target;
-        destination = transform.position;
         int currentIntent = (int)intent;
 
         // If the target is the player...
@@ -116,20 +112,9 @@ public class EnemyBehavior : MonoBehaviour {
         // If the target isn't the player, castle, or a troop, change to the "wandering" intent
         else
         {
-            changeIntent(target.transform.position);
+            target = this.gameObject;
+            intent = intentions.wander;
+            callChangeOfIntentions();
         }
-    }
-    
-    /// <summary>
-    /// Changes the intention of the enemy based on the input recieved
-    /// </summary>
-    /// <param name="destination">The target destination</param>
-    public void changeIntent(Vector3 destination)
-    {
-        this.destination = destination;
-        target = this.gameObject;
-        intent = intentions.wander;
-
-        callChangeOfIntentions();
     }
 }
