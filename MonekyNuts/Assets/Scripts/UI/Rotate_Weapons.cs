@@ -37,12 +37,12 @@ public class Rotate_Weapons : MonoBehaviour {
             isRotating = true;
             amountRotated = 0;
         }
-
+        /*
         if (inventory.activeSlot < 7)
         {
             inventory.activeSlot++;
         }
-        else inventory.activeSlot = 0;
+        else inventory.activeSlot = 0;*/
 
     }
 }

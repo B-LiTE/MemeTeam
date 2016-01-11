@@ -4,47 +4,29 @@ using System.Collections.Generic;
 
 public class Inventory : MonoBehaviour {
 
+    public const int INVENTORY_SIZE = 20; // for now
     [SerializeField]
-    public List<Item> inventory = new List<Item>();
-    public int inventorySize = 8; // for now
+    public Item[] inventory = new Item[INVENTORY_SIZE]; //the actual inventory which will store the data of the players items
 
-    public int activeSlot; //this is the index for the spot in the list.
-    public GameObject activeItem; //the item in the active slot that the player uses upon attacking enemies
+    public GameObject[] slotsDisplay = new GameObject[INVENTORY_SIZE];//the game object with an image component to display the item
+    public GameObject[] slotStackCounters = new GameObject[INVENTORY_SIZE]; //PARALLEL ARRAY stores data of how many items are in each stack;
+    public int[] stackInSlots = new int[INVENTORY_SIZE];
+
+    public GameObject[] wheelSlots = new GameObject[11]; //wheel is purely a display that reads from the rest of the inventory
+    public GameObject[] wheelSlotStackCounters = new GameObject[11]; //the stack counter things for each wheel item
+
+    public int activeSlotIndex; //this is the index for the spot in the list.
+    public Item activeItem; //the item in the active slot that the player uses upon attacking enemies
 
     void Awake()
     {
-       for (int i = 0; i < inventorySize; i+=8)
-       {
-            inventory.Add(new Item(0)); //item ID 0 will be empty gameObjects;
-            inventory.Add(new Item(1));
-            inventory.Add(new Item(2));
-            inventory.Add(new Item(0));
-            inventory.Add(new Item(0));
-            inventory.Add(new Item(0));
-            inventory.Add(new Item(0));
-            inventory.Add(new Item(0));
-        }
+       
     }
     void Update()
     {
         //Debug.Log(inventory[activeSlot].itemName);
     }
 
-    public void AddItem(Item item)
-    {
-        bool breakOut = false;
-        for (int i = 0; i < inventory.Count && !breakOut; i++)
-        {
-            if (inventory[i].itemID == 0) //if the slot is empty
-            {
-                inventory[i] = item;
-                breakOut = true;
-            }
-        }
-    }
-    public void RemoveItem(int index)
-    {
-        inventory[index] = new Item(0);
-    }
+  
     
 }
