@@ -14,12 +14,11 @@ public class Animations : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
 
-        if (Input.GetMouseButton(0))
+        if (Input.GetMouseButtonUp(0))
         {
             anim.SetBool("Run", true);
-            Debug.Log("Pressed left click.");
         }
-        else
+        else if (References.player.GetComponent<NavMeshAgent>().remainingDistance <= 1f)//(Vector3.Distance(References.player.GetComponent<NavMeshAgent>().destination, References.player.transform.position) <= References.player.GetComponent<NavMeshAgent>().stoppingDistance)
         {
             anim.SetBool("Run", false);
         }

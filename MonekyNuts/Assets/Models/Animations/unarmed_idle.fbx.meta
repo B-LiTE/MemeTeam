@@ -103,11 +103,11 @@ ModelImporter:
       name: mixamo.com
       takeName: mixamo.com
       firstFrame: 0
-      lastFrame: 114
+      lastFrame: 35
       wrapMode: 0
       orientationOffsetY: 0
       level: 0
-      cycleOffset: 0
+      cycleOffset: 10
       loop: 0
       loopTime: 1
       loopBlend: 1
