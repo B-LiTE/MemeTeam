@@ -27,7 +27,7 @@ public class Inventory : MonoBehaviour {
 	{
 		inventory = new Item[INVENTORY_SIZE];
 		for(int i= 0; i < INVENTORY_SIZE;i++)
-		{ Debug.Log("Running loop");
+		{ 
 			inventory[i] = GetComponent<Item_Database>().allItems[0];
 		}
 		
@@ -122,11 +122,11 @@ public class Inventory : MonoBehaviour {
 			if(inventory[slotIndex].itemType != "Empty")
 			{
 				wheelSlots[slotIndex].GetComponent<Image>().sprite = GetComponent<Item_Database>().inventorySprites[inventory[slotIndex].itemId];
-
+                wheelSlots[slotIndex].SetActive(true);
 			}
 			else
 			{
-				wheelSlots[slotIndex].GetComponent<Image>().sprite = null;
+				wheelSlots[slotIndex].SetActive(false);
 			}
 		}
 	}
