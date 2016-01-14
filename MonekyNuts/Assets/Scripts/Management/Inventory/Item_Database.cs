@@ -15,7 +15,7 @@ public class Item_Database : MonoBehaviour {
         allItems.Add(new Item(0,"Empty","Empty",0));
         allItems.Add(new Item(1,"Iron Sword","Weapon",1));
 		allItems.Add(new Item(2,"Wheel","Weapon",3));
-        allItems.Add(new Item(3, "Tree", "Magic", 2));
+        allItems.Add(new Item(3, "Tree", "Magic", 6));
 
 	}
 	

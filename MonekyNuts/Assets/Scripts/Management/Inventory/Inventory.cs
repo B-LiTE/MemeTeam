@@ -23,6 +23,7 @@ public class Inventory : MonoBehaviour {
 	bool isItemMoving = false;
 	public GameObject itemOnCursor;
 	public int oldSlotIndex; //where the object was before being picked up. Where it can return to if the window is closed while on cursor
+    public StateManager currentState;
 	void Awake()
 	{
 		inventory = new Item[INVENTORY_SIZE];
