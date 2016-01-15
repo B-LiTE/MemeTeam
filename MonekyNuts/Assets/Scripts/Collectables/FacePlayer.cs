@@ -13,5 +13,6 @@ public class FacePlayer : MonoBehaviour {
        
         transform.LookAt(lookAt);
         
+        
 	}
 }

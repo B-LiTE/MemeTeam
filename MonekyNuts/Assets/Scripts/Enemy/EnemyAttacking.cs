@@ -9,6 +9,7 @@ public class EnemyAttacking : MonoBehaviour {
 
     void Awake()
     {
+        
         enemyBehavior = GetComponent<EnemyBehavior>();
 
         enemyBehavior.changeOfActions += onChangeAction;
