@@ -3,24 +3,64 @@ using System.Collections;
 
 public class PickUpItem : MonoBehaviour {
 
-    public string collectableType;
 	public int itemId;
+	public bool canBePickedUp = false;
+	public bool isPlayerOver = false;
+	float moveSpeed = 2f;
 
-   
-	void OnTriggerEnter(Collider Player)
+	void Start()
 	{
-		if (Player.CompareTag ("Player")) 
-		{
-			/*
-            if (collectableType == "gold")
-            {
-                FindObjectOfType<GameStats>().GetComponent<GameStats>().ChangeGoldCount(1);
-            }*/
-			FindObjectOfType<Inventory>().PickUpDropItem(gameObject);
-
-			//plus add to inventory and stuff
-		}
+		StartCoroutine(CreationTime());
 	}
 
-	
+	void OnTriggerEnter(Collider player)
+	{
+		if(player.gameObject.CompareTag("Player"))
+		{
+			isPlayerOver = true;
+			StartCoroutine(PickUpSoon());
+
+		}
+
+	}
+	void OnTriggerExit(Collider player)
+	{
+		if(player.gameObject.CompareTag("Player"))
+		{
+			isPlayerOver = false;
+
+		}
+		
+	}
+	IEnumerator CreationTime()
+	{
+
+		yield return new WaitForSeconds(.6f);
+		canBePickedUp = true;
+	}
+	IEnumerator PickUpSoon()
+	{
+		while(!canBePickedUp || !isPlayerOver)
+		{
+			yield return null;
+		}
+		FindObjectOfType<Inventory>().SendMessage("PickUpDropItem",gameObject);
+	}
+	IEnumerator BeCollected()
+	{ 
+		GameObject player = FindObjectOfType<PlayerMovement>().gameObject;
+
+		while(Vector3.Distance(transform.position,player.transform.position) > .3f)
+		{
+
+			transform.position = Vector3.MoveTowards(transform.position, player.transform.position, moveSpeed * Time.deltaTime);
+			yield return null;
+		}
+		Destroy (gameObject);
+	}
+	public void StartBeCollected()
+	{
+		StartCoroutine(BeCollected());
+	}
+
 }
