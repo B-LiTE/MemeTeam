@@ -24,6 +24,16 @@ public class Inventory : MonoBehaviour {
 	public GameObject itemOnCursor;
 	public int oldSlotIndex; //where the object was before being picked up. Where it can return to if the window is closed while on cursor
     public StateManager currentState;
+
+
+	void Update()
+	{
+		if (Input.GetKeyDown (KeyCode.A))
+			AddItem (3);
+		
+		if (Input.GetKeyDown (KeyCode.S))
+			AddItem (2);
+	}
 	void Awake()
 	{
 		inventory = new Item[INVENTORY_SIZE];
@@ -35,68 +45,114 @@ public class Inventory : MonoBehaviour {
 	}
 	public bool AddItem(int dropItemId) 
 	{
-		
-		int dropMaxStack = GetComponent<Item_Database>().allItems[dropItemId].itemMaxStack;
-		bool foundPlace = false; //the item can go into the inventory
-		int wherePlaced = 0; //the index where the item is ACTUALLY added
-		
-		if(dropMaxStack > 0) //if the item  is stackable
-		{
+
+			int dropMaxStack = GetComponent<Item_Database> ().allItems [dropItemId].itemMaxStack;
+			bool foundPlace = false; //the item can go into the inventory
+			int wherePlaced = 0; //the index where the item is ACTUALLY added
 			bool breakOut = false;
 			bool foundFirstEmptySlot = false;
+		
+		if (dropMaxStack > 0 && currentState.CurrentState == StateManager.states.realtime) { //if the item is stackable
+			breakOut = false;
+			foundFirstEmptySlot = false;
 			int emptySlot = -1; //if it doesn't find an existing stack to add to, then it will add to the first found empty instead.
-			for(int i = 1;i < INVENTORY_SIZE && !breakOut;i++) //1 - 50 is the actual inventory
-			{
-				if(inventory[i].itemId == dropItemId && stackInSlots[i] < dropMaxStack) //if theres an existing stack of the item with room
-				{
-					stackInSlots[i]++; //just add to the existing count
+			for (int i = 1; i < 9 && !breakOut; i++) { //1 - 8 is hotbar
+				if (inventory [i].itemId == dropItemId && stackInSlots [i] < dropMaxStack) { //if theres an existing stack of the item with room
+					stackInSlots [i]++; //just add to the existing count
 					foundPlace = true;
 					wherePlaced = i;
 					
 					breakOut = true; //escape the loop
 				}
-				if(!foundFirstEmptySlot)
-				{
-					if(inventory[i].itemType == "Empty")
-					{
+				if (!foundFirstEmptySlot) {
+					if (inventory [i].itemType == "Empty") {
 						emptySlot = i;
 						foundFirstEmptySlot = true;
 					}
 				}
 			}
-			if(!foundPlace && emptySlot != -1) //if there wasnt an existing stack add it to the first empty
-			{
-				inventory[emptySlot] =  GetComponent<Item_Database>().allItems[dropItemId];
-				stackInSlots[emptySlot]++; 
+			if (!foundPlace && emptySlot != -1) { //if there wasnt an existing stack add it to the first empty
+				inventory [emptySlot] = GetComponent<Item_Database> ().allItems [dropItemId];
+				stackInSlots [emptySlot]++; 
 				foundPlace = true;
 				wherePlaced = emptySlot;
 			}
-		}
-		else //if its not stackable
+			if (!foundPlace) { //if the hotbar is filled;
+				breakOut = false;
+				foundFirstEmptySlot = false;
+				emptySlot = -1; //if it doesn't find an existing stack to add to, then it will add to the first found empty instead.
+				for (int i = 9; i < 21 && !breakOut; i++) { //1 - 50 is the actual inventory
+					if (inventory [i].itemId == dropItemId && stackInSlots [i] < dropMaxStack) { //if theres an existing stack of the item with room
+						stackInSlots [i]++; //just add to the existing count
+						foundPlace = true;
+						wherePlaced = i;
+							
+						breakOut = true; //escape the loop
+					}
+					if (!foundFirstEmptySlot) {
+						if (inventory [i].itemType == "Empty") {
+							emptySlot = i;
+							foundFirstEmptySlot = true;
+						}
+					}
+				}
+				if (!foundPlace && emptySlot != -1) { //if there wasnt an existing stack add it to the first empty
+					inventory [emptySlot] = GetComponent<Item_Database> ().allItems [dropItemId];
+					stackInSlots [emptySlot]++; 
+					foundPlace = true;
+					wherePlaced = emptySlot;
+				}
+			}
+		} 
+		else if (dropMaxStack > 0 && currentState.CurrentState == StateManager.states.strategy) 
 		{
-			bool breakOut = false;
-			for(int i = 1;i < INVENTORY_SIZE && !breakOut;i++) //1 - 50 is the actual inventory
-			{
-				if(inventory[i].itemId == -1) //if the slot is empty
-				{
-					inventory[i] =  GetComponent<Item_Database>().allItems[dropItemId];
-					stackInSlots[i]++; //just add to the existing count
+			breakOut = false;
+			foundFirstEmptySlot = false;
+			int emptySlot = -1; //if it doesn't find an existing stack to add to, then it will add to the first found empty instead.
+			for (int i = 1; i < 21 && !breakOut; i++) { //1 - 21 is whole inventory
+				if (inventory [i].itemId == dropItemId && stackInSlots [i] < dropMaxStack) { //if theres an existing stack of the item with room
+					stackInSlots [i]++; //just add to the existing count
 					foundPlace = true;
 					wherePlaced = i;
 					
 					breakOut = true; //escape the loop
 				}
+				if (!foundFirstEmptySlot) {
+					if (inventory [i].itemType == "Empty") {
+						emptySlot = i;
+						foundFirstEmptySlot = true;
+					}
+				}
+			}
+			if (!foundPlace && emptySlot != -1) { //if there wasnt an existing stack add it to the first empty
+				inventory [emptySlot] = GetComponent<Item_Database> ().allItems [dropItemId];
+				stackInSlots [emptySlot]++; 
+				foundPlace = true;
+				wherePlaced = emptySlot;
 			}
 		}
+			else { //if its not stackable
+				breakOut = false;
+				for (int i = 1; i < INVENTORY_SIZE && !breakOut; i++) { //1 - 50 is the actual inventory
+					if (inventory [i].itemId == -1) { //if the slot is empty
+						inventory [i] = GetComponent<Item_Database> ().allItems [dropItemId];
+						stackInSlots [i]++; //just add to the existing count
+						foundPlace = true;
+						wherePlaced = i;
+					
+						breakOut = true; //escape the loop
+					}
+				}
+			}
 		
-		if(foundPlace)//if one IS found!
-		{
-			UpdateInventorySprite(wherePlaced);
-			UpdateInventoryStackCounter(wherePlaced);
+			if (foundPlace) {//if one IS found!
+				UpdateInventorySprite (wherePlaced);
+				UpdateInventoryStackCounter (wherePlaced);
 			
-		}
+			}
 		
-		return foundPlace; //returns if it successfully added the item or not
+			return foundPlace; //returns if it successfully added the item or not
+		
 		
 	}
 	public void PickUpDropItem(GameObject item)

@@ -8,41 +8,86 @@ public class Rotate_Weapons : MonoBehaviour {
     float amountRotated;
     float stoppedRotation;
     public float rotationRate = 40;
+	 
+	int activeSlot;
 
     public Inventory inventory;
 
-	void Update () 
-    {
-        if (isRotating)
-        {
-            
-            if (amountRotated < stoppedRotation)
-            {
-                transform.Rotate(new Vector3(0, 0, -(rotationRate * Time.deltaTime)));
-                amountRotated += rotationRate * Time.deltaTime;
-            }
-            else
-            {
-                isRotating = false;
-                transform.Rotate(new Vector3(0, 0, -(stoppedRotation - amountRotated)));
-            }
-        }
-	
+	void Start()
+	{
+		activeSlot = 1;
 	}
-    void RotateWeapons()
+    void RotateWeaponsLeft()
     {
         if (!isRotating)
         {
+			//ThrowActiveItem();
             stoppedRotation = 45;
             isRotating = true;
             amountRotated = 0;
+			StartCoroutine(RotateLeft());
+			ThrowActiveItem();
         }
-        /*
-        if (inventory.activeSlot < 7)
-        {
-            inventory.activeSlot++;
-        }
-        else inventory.activeSlot = 0;*/
-
     }
+	IEnumerator RotateLeft()
+	{
+		if (activeSlot > 1)
+			activeSlot -= 1;
+		else
+			activeSlot = 8;
+		Debug.Log ("Active slot is " + activeSlot);
+		while(isRotating)
+		{
+			
+			if (amountRotated < stoppedRotation)
+			{
+				transform.Rotate(new Vector3(0, 0, -(rotationRate * Time.deltaTime)));
+				amountRotated += rotationRate * Time.deltaTime;
+			}
+			else
+			{
+				isRotating = false;
+				transform.Rotate(new Vector3(0, 0, -(stoppedRotation - amountRotated)));
+			}
+			yield return null;
+		}
+	}
+	void RotateWeaponsRight()
+	{
+		if (!isRotating)
+		{
+			stoppedRotation = -45;
+			isRotating = true;
+			amountRotated = 0;
+			StartCoroutine(RotateRight());
+			ThrowActiveItem();
+		}
+	}
+	IEnumerator RotateRight()
+	{
+		if (activeSlot < 8)
+			activeSlot += 1;
+		else
+			activeSlot = 1;
+		Debug.Log ("Active slot is " + activeSlot);
+		while(isRotating)
+		{
+			
+			if (amountRotated > stoppedRotation)
+			{
+				transform.Rotate(new Vector3(0, 0, (rotationRate * Time.deltaTime)));
+				amountRotated -= rotationRate * Time.deltaTime;
+			}
+			else
+			{
+				isRotating = false;
+				transform.Rotate(new Vector3(0, 0, -(stoppedRotation - amountRotated)));
+			}
+			yield return null;
+		}
+	}
+	public void ThrowActiveItem()
+	{
+		FindObjectOfType<PlayerStats> ().ChangeActiveWeapon (activeSlot);
+	}
 }
