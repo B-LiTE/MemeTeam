@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
+[RequireComponent(typeof(EnemyBehavior))]
 public class EnemyAttacking : MonoBehaviour {
 
     EnemyBehavior enemyBehavior;
@@ -20,12 +21,16 @@ public class EnemyAttacking : MonoBehaviour {
         if (enemyBehavior.getAction() == EnemyBehavior.actions.attack)
         {
             // Start attacking
-            attackCoroutine = StartCoroutine(attack());
+            if (attackCoroutine == null) attackCoroutine = StartCoroutine(attack());
         }
         else
         {
             // If we are attacking, stop attacking
-            if (attackCoroutine != null) StopCoroutine(attackCoroutine);
+            if (attackCoroutine != null)
+            {
+                StopCoroutine(attackCoroutine);
+                attackCoroutine = null;
+            }
         }
     }
 
@@ -34,9 +39,9 @@ public class EnemyAttacking : MonoBehaviour {
         KillableInstance enemy = enemyBehavior.getTarget().GetComponent<KillableInstance>();
         while (true)
         {
-            enemy.Damage(-1);
+            enemy.Damage(-3);
 
-            yield return new WaitForSeconds(2);
+            yield return new WaitForSeconds(1.5f);
         }
     }
 }

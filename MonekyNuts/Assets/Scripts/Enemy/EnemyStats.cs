@@ -1,11 +1,10 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class PlayerStats : KillableInstance {
-    
+public class EnemyStats : KillableInstance {
+
     protected override void Die()
     {
-        Debug.LogError("he dead");
+        Destroy(gameObject);
     }
-
 }

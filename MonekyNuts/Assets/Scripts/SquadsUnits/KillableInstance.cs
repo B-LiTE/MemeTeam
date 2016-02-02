@@ -15,14 +15,25 @@ public abstract class KillableInstance : MonoBehaviour{
 
     public GameObject HealthBar;
 
+
+
+
+
+
     void Awake()
     {
         damageMultiplier = 100 / (100 + armor);
     }
+
     void Update()
     {
         ChangeHealth(healthRegenRate * Time.deltaTime);
     }
+
+
+    
+
+
     public void ChangeHealth(float amount)
     {
         
@@ -35,11 +46,26 @@ public abstract class KillableInstance : MonoBehaviour{
             Die();
         }
     }
-    public void Damage(float amount) //need to pass in negativer number for this to work
+
+
+    public void Damage(float amount) //need to pass in negative number for this to work
     {
         ChangeHealth(amount * damageMultiplier);  
     }
-    public abstract void Die();
+
+
+
+
+
+
+
+    protected abstract void Die();
+
+
+
+
+
+
     public void UpdateHealthBar()
     {
         HealthBar.GetComponent<RectTransform>().localScale = new Vector3(currHealth / totHealth, 
