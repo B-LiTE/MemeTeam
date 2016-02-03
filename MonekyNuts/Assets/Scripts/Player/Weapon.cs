@@ -3,6 +3,8 @@ using System.Collections;
 
 public class Weapon : MonoBehaviour {
 
+	//NEVER MIND THIS IS THE WRONG METHOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOD
+
 	//seperate management script will put values into this script. 
     //This just holds the data for the weapon that is currently equipped to the player/enemy this is attatched to
 
