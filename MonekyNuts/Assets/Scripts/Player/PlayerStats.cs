@@ -2,10 +2,6 @@
 using System.Collections;
 
 public class PlayerStats : KillableInstance {
-<<<<<<< HEAD
-    
-    protected override void Die()
-=======
 
 	public Item activeItem;
 
@@ -55,7 +51,6 @@ public class PlayerStats : KillableInstance {
 		activeDamage = addedDamage + baseDamage;
 	}
     public override void Die()
->>>>>>> origin/master
     {
         Debug.LogError("he dead");
     }
