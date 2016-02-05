@@ -132,7 +132,7 @@ public class EnemyBehavior : MonoBehaviour {
         // If the target isn't the player, castle, or a troop, change to the "wandering" intent
         else
         {
-            target = this.gameObject;
+            this.target = this.gameObject;
             intent = intentions.wander;
             callChangeOfIntentions();
         }

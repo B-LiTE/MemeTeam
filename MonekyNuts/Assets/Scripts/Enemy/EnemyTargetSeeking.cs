@@ -176,10 +176,7 @@ public class EnemyTargetSeeking : MonoBehaviour {
     /// <returns>Returns true if the object is in sight lines, false if not</returns>
     bool inSightLines(GameObject target)
     {
-        Vector3 directionToObject = target.transform.position - transform.position;
-        float angle = Vector3.Angle(directionToObject, transform.forward);
-
-        return angle < fieldOfViewAngle * 0.5f;
+        return inSightLines(target.transform.position);
     }
 
     /// <summary>
@@ -189,7 +186,7 @@ public class EnemyTargetSeeking : MonoBehaviour {
     /// <returns>Returns true if the point is in sight lines, false if not</returns>
     bool inSightLines(Vector3 target)
     {
-        Vector3 directionToObject = target - transform.position;
+        Vector3 directionToObject = new Vector3(target.x - transform.position.x, 0, target.z - transform.position.z);
         float angle = Vector3.Angle(directionToObject, transform.forward);
 
         return angle < fieldOfViewAngle * 0.5f;
