@@ -12,7 +12,7 @@ public class Castle : KillableInstance {
 	void Update () {
 
         if (Input.GetKeyDown(KeyCode.K)) Damage(-10);
-        UpdateHealthBar();
+        
 	}
     public override void Die()
     {

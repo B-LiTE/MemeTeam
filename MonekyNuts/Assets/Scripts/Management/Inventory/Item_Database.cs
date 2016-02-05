@@ -16,6 +16,7 @@ public class Item_Database : MonoBehaviour {
         allItems.Add(new Weapon_Item(1,"Iron Sword","Weapon",1,666));
 		allItems.Add(new Item(2,"Wheel","Magic",3));
         allItems.Add(new Item(3, "Tree", "Magic", 6));
+		allItems.Add(new Potion_Item(4, "Potion", "Potion", 5, 50));
 
 	}
 	

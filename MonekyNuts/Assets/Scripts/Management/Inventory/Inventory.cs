@@ -20,7 +20,7 @@ public class Inventory : MonoBehaviour {
     public Item activeItem; //the item in the active slot that the player uses upon attacking enemies
 
 	bool isItemChangeComplete = true;
-	bool isItemMoving = false;
+	public bool isItemMoving = false;
 	public GameObject itemOnCursor;
 	public int oldSlotIndex; //where the object was before being picked up. Where it can return to if the window is closed while on cursor
     public StateManager currentState;
@@ -41,7 +41,8 @@ public class Inventory : MonoBehaviour {
 		{ 
 			inventory[i] = GetComponent<Item_Database>().allItems[0];
 		}
-		
+
+		activeSlotIndex = 1;
 	}
 	public bool AddItem(int dropItemId) 
 	{
@@ -148,6 +149,11 @@ public class Inventory : MonoBehaviour {
 			if (foundPlace) {//if one IS found!
 				UpdateInventorySprite (wherePlaced);
 				UpdateInventoryStackCounter (wherePlaced);
+
+			if(wherePlaced == activeSlotIndex)
+			{
+				FindObjectOfType<PlayerStats>().GetComponent<PlayerStats>().ChangeActiveWeapon(activeSlotIndex);
+			}
 			
 			}
 		
@@ -217,6 +223,7 @@ public class Inventory : MonoBehaviour {
 			}
 			
 			RemoveItemStack(slotIndex);
+
 		}
 		else //if the already is an object on the cursor
 		{
@@ -258,6 +265,10 @@ public class Inventory : MonoBehaviour {
 			}
 		}
 		isItemChangeComplete = true;
+		if(slotIndex == activeSlotIndex)
+		{
+			FindObjectOfType<PlayerStats>().GetComponent<PlayerStats>().ChangeActiveWeapon(activeSlotIndex);
+		}
 	}
 	void RemoveItemStack(int slotIndex)
 	{
@@ -265,6 +276,15 @@ public class Inventory : MonoBehaviour {
 		stackInSlots[slotIndex] = 0; //set count to zero
 		UpdateInventorySprite(slotIndex);
 		UpdateInventoryStackCounter(slotIndex);
+	}
+	public void RemoveSingleItem(int slotIndex) //removes a single item from a stack
+	{
+		stackInSlots [slotIndex]--;
+		UpdateInventoryStackCounter(slotIndex);
+		if (stackInSlots [slotIndex] < 1) 
+		{
+			RemoveItemStack(slotIndex);
+		}
 	}
 	void PlaceItem(int itemID, int slotIndex, int stackCount)
 	{

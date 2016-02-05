@@ -10,9 +10,14 @@ public class PlayerStats : KillableInstance {
 	public float activeDamage; //add the other two for this one to actually use
 
 	public Inventory inventory;
+
+	public RectTransform healthBar;
 	
-	public void Update(){
-		Debug.Log ("" + activeDamage);
+	public void Update()
+	{
+		if (Input.GetKeyDown (KeyCode.Backspace)) {
+			Damage (10);
+		}
 	}
 	public void Start ()
 	{
@@ -21,9 +26,13 @@ public class PlayerStats : KillableInstance {
 		activeItem = inventory.inventory [1];
 		AddItemStats(activeItem);
 		UpdateStats ();
+		//
+		totHealth = 100;
+		currHealth = totHealth;
 	}
 	public void ChangeActiveWeapon(int slotIndex) //pass in the location of where active item has been chenged;
 	{
+		inventory.activeSlotIndex = slotIndex;
 		RemoveItemStats (activeItem);
 		activeItem = inventory.inventory [slotIndex];
 		AddItemStats (activeItem);
@@ -50,9 +59,54 @@ public class PlayerStats : KillableInstance {
 	{
 		activeDamage = addedDamage + baseDamage;
 	}
+	public override void ChangeHealth (float amount)
+	{
+		base.ChangeHealth (amount);
+		UpdateHealthBar ();
+	}
+	public override void Damage(float amount)
+	{
+		base.Damage (amount);
+		UsePotion();
+		UpdateHealthBar ();
+	}
+	public void UsePotion()
+	{
+		if (currHealth <= (.1f * totHealth)) 
+		{
+			for(int i = 1;i < 9; i++) //checks the wheel
+			{
+				if(inventory.inventory[i].itemType == "Potion")
+				{
+					Potion_Item potion = inventory.inventory[i] as Potion_Item;
+					ChangeHealth(potion.healAmount);
+					inventory.RemoveSingleItem(i);
+					break;
+				}
+			}
+		}
+	}
+	public void UpdateHealthBar()
+	{
+		if (currHealth / totHealth > 0) {
+			healthBar.localScale = new Vector3 (currHealth / totHealth, 
+		                                    healthBar.localScale.y, 
+		                                    healthBar.localScale.z);
+		} 
+		else 
+		{
+			healthBar.localScale = new Vector3 (0, 
+			                                    healthBar.localScale.y, 
+			                                    healthBar.localScale.z);
+		}
+	}
     public override void Die()
     {
-
+		//stuff
     }
+
+	
+
+		 
 
 }

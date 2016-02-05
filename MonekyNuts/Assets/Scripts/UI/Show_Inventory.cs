@@ -10,8 +10,12 @@ public class Show_Inventory : MonoBehaviour {
 	public GameObject Inventory_Storage;
 	public GameObject Inventory_Wheel;
 
+	public Inventory inventory;
+
 	void ChangeDisplay()
 	{
+		if(!inventory.isItemMoving)
+		{
 		if(isInventoryVisible) ButtonText.GetComponent<Text>().text = "Show Inventory";
 		else  ButtonText.GetComponent<Text>().text = "Hide Inventory";
 
@@ -19,5 +23,6 @@ public class Show_Inventory : MonoBehaviour {
 		Inventory_Wheel.SetActive(!isInventoryVisible);
 
 		isInventoryVisible = !isInventoryVisible;
+		}
 	}
 }
