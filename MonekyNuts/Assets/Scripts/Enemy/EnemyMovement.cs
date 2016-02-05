@@ -31,6 +31,13 @@ public class EnemyMovement : MonoBehaviour {
         enemyTargetSeeking.onTargetVisible += onTargetVisible;
     }
 
+    void Start()
+    {
+        // Pretend as if we've changed intentions so that we check whether it changed on startup
+        //onChangeIntent();
+        //onChangeAction();
+    }
+
 
 
 
@@ -317,7 +324,7 @@ public class EnemyMovement : MonoBehaviour {
 
     void setDestination(Vector3 destination)
     {
-        navigation.SetDestination(destination);
+        navigation.SetDestination(zeroedYVector(destination));
     }
 
 
@@ -329,7 +336,7 @@ public class EnemyMovement : MonoBehaviour {
     bool closeEnoughToTarget()
     {
         // Get the distance to our target
-        float distanceToTarget = Vector3.Distance(transform.position, enemyBehavior.getTarget().transform.position);
+        float distanceToTarget = Vector3.Distance(zeroedYVector(transform.position), zeroedYVector(enemyBehavior.getTarget().GetComponent<Collider>().bounds.ClosestPoint(transform.position)));
 
         return distanceToTarget <= movementCutoff;
     }
@@ -343,8 +350,26 @@ public class EnemyMovement : MonoBehaviour {
     bool closeEnoughToDestination()
     {
         // Get the distance to our target
-        float distanceToDestination = Vector3.Distance(transform.position, wanderingDestination);
+        float distanceToDestination = Vector3.Distance(zeroedYVector(transform.position), zeroedYVector(wanderingDestination));
 
         return distanceToDestination <= movementCutoff;
+    }
+
+
+
+
+
+
+
+
+
+    /// <summary>
+    /// Returns a copy of a vector with the Y field zeroed out
+    /// </summary>
+    /// <param name="vector">The vector to zero</param>
+    /// <returns></returns>
+    Vector3 zeroedYVector(Vector3 vector)
+    {
+        return new Vector3(vector.x, 0, vector.z);
     }
 }
