@@ -14,7 +14,8 @@ public class Castle : KillableInstance {
         if (Input.GetKeyDown(KeyCode.K)) Damage(-10);
         
 	}
-    public override void Die()
+
+    protected override void Die()
     {
         Destroy(gameObject);
     }

@@ -19,6 +19,7 @@ public class PlayerStats : KillableInstance {
 			Damage (10);
 		}
 	}
+
 	public void Start ()
 	{
 		inventory = Object.FindObjectOfType<Inventory>().GetComponent<Inventory>();
@@ -30,6 +31,7 @@ public class PlayerStats : KillableInstance {
 		totHealth = 100;
 		currHealth = totHealth;
 	}
+
 	public void ChangeActiveWeapon(int slotIndex) //pass in the location of where active item has been chenged;
 	{
 		inventory.activeSlotIndex = slotIndex;
@@ -39,6 +41,7 @@ public class PlayerStats : KillableInstance {
 
 		UpdateStats ();
 	}
+
 	public void RemoveItemStats(Item item)
 	{
 		if(item.itemType == "Weapon")
@@ -47,6 +50,7 @@ public class PlayerStats : KillableInstance {
 			addedDamage -= trueItem.damage;
 		}
 	}
+
 	public void AddItemStats(Item item)
 	{
 		if(item.itemType == "Weapon")
@@ -55,10 +59,12 @@ public class PlayerStats : KillableInstance {
 			addedDamage += trueItem.damage;
 		}
 	}
+
 	public void UpdateStats()
 	{
 		activeDamage = addedDamage + baseDamage;
 	}
+<<<<<<< HEAD
 	public override void ChangeHealth (float amount)
 	{
 		base.ChangeHealth (amount);
@@ -103,6 +109,12 @@ public class PlayerStats : KillableInstance {
     public override void Die()
     {
 		//stuff
+=======
+
+    protected override void Die()
+    {
+        Debug.LogError("he dead");
+>>>>>>> origin/master
     }
 
 	

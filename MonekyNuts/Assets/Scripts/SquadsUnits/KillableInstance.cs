@@ -13,15 +13,35 @@ public abstract class KillableInstance : MonoBehaviour{
     public bool isAlive = true;
     private float damageMultiplier;
 
+<<<<<<< HEAD
+=======
+    public GameObject HealthBar;
+
+
+
+
+
+
+>>>>>>> origin/master
     void Awake()
     {
         damageMultiplier = 100 / (100 + armor);
     }
+
     void Update()
     {
         ChangeHealth(healthRegenRate * Time.deltaTime);
     }
+<<<<<<< HEAD
     public virtual void ChangeHealth(float amount)
+=======
+
+
+    
+
+
+    public void ChangeHealth(float amount)
+>>>>>>> origin/master
     {
         
         currHealth += amount;
@@ -33,7 +53,31 @@ public abstract class KillableInstance : MonoBehaviour{
             Die();
         }
     }
+<<<<<<< HEAD
     public virtual void Damage(float amount) //need to pass in negativer number for this to work
+=======
+
+
+    public void Damage(float amount) //need to pass in negative number for this to work
+    {
+        ChangeHealth(amount * damageMultiplier);  
+    }
+
+
+
+
+
+
+
+    protected abstract void Die();
+
+
+
+
+
+
+    public void UpdateHealthBar()
+>>>>>>> origin/master
     {
         ChangeHealth(-amount * damageMultiplier);  
     }
