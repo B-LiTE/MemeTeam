@@ -139,8 +139,8 @@ public class EnemyTargetSeeking : MonoBehaviour {
         float deltaZ = Random.Range(4f, sensingRadius);
         float deltaX = Random.Range(-deltaZ, deltaZ);
 
-        chosenPoint.z = (transform.forward.z * deltaZ);
-        chosenPoint.x = (transform.right.x * deltaX);
+        chosenPoint.z += ((transform.forward.z / Mathf.Abs(transform.forward.z)) * deltaZ);//= (transform.forward.z * deltaZ);
+        chosenPoint.x += ((transform.forward.x / Mathf.Abs(transform.forward.x)) * deltaX);//= (transform.right.x * deltaX);
 
         return chosenPoint;
     }
