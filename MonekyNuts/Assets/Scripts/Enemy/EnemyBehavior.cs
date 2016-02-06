@@ -41,21 +41,21 @@ public class EnemyBehavior : MonoBehaviour {
 
 
     // Target checking and getters
-    public bool targetIsPlayer() { return target != null && target.tag == "Player"; }
-    public bool targetIsCastle() { return target != null && target.tag == "Castle"; }
-    public bool targetIsTroop() { return target != null && target.tag == "Troop"; }
+    public bool targetIsPlayer() { return target != null && LayerMask.LayerToName(target.layer) == "Player"; }
+    public bool targetIsCastle() { return target != null && LayerMask.LayerToName(target.layer) == "Castle"; }
+    public bool targetIsTroop() { return target != null && LayerMask.LayerToName(target.layer) == "Troop"; }
     public GameObject getTarget() { return target; }
     public actions getAction() { return action; }
     public intentions getIntent() { return intent; }
     public intentions getIntentGiven(GameObject item)
     {
-        switch (item.tag)
+        switch (LayerMask.LayerToName(target.layer))
         {
             case "Player":
                 return intentions.attackPlayer;
             case "Castle":
                 return intentions.attackCastle;
-            case "Troop":
+            case "Troops":
                 return intentions.attackTroop;
             default:
                 return intentions.wander;

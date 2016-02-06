@@ -64,7 +64,7 @@ public class PlayerStats : KillableInstance {
 	{
 		activeDamage = addedDamage + baseDamage;
 	}
-<<<<<<< HEAD
+
 	public override void ChangeHealth (float amount)
 	{
 		base.ChangeHealth (amount);
@@ -106,15 +106,10 @@ public class PlayerStats : KillableInstance {
 			                                    healthBar.localScale.z);
 		}
 	}
-    public override void Die()
-    {
-		//stuff
-=======
 
     protected override void Die()
     {
         Debug.LogError("he dead");
->>>>>>> origin/master
     }
 
 	

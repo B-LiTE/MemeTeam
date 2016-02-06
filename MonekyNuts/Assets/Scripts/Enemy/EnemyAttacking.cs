@@ -20,7 +20,7 @@ public class EnemyAttacking : MonoBehaviour {
     {
         if (enemyBehavior.getAction() == EnemyBehavior.actions.attack)
         {
-            // Start attacking
+            // Start attacking if we aren't already
             if (attackCoroutine == null) attackCoroutine = StartCoroutine(attack());
         }
         else
@@ -36,12 +36,18 @@ public class EnemyAttacking : MonoBehaviour {
 
     IEnumerator attack()
     {
-        KillableInstance enemy = enemyBehavior.getTarget().GetComponent<KillableInstance>();
-        while (true)
-        {
-            enemy.Damage(-3);
+        KillableInstance attackTarget;
+        if (enemyBehavior.targetIsPlayer()) attackTarget = References.player.GetComponent<PlayerStats>();
+        else if (enemyBehavior.targetIsCastle()) attackTarget = References.castle.GetComponent<Castle>();
+        else attackTarget = enemyBehavior.getTarget().GetComponent<KillableInstance>();
 
+        while (attackTarget.isAlive)
+        {
             yield return new WaitForSeconds(1.5f);
+            
+            attackTarget.Damage(-3);
         }
+
+        enemyBehavior.changeIntent(this.gameObject);
     }
 }

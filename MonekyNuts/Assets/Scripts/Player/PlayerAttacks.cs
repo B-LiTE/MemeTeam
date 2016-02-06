@@ -1,26 +1,10 @@
 ﻿using UnityEngine;
 using System.Collections;
 
+[RequireComponent(typeof(PlayerBehavior))]
 public class PlayerAttacks : MonoBehaviour {
 
-    PlayerCameraRotation realtimeCamera;
-    /*
-     
-     STILL WORKING ON
-    
-    conditions to start attacking
-    - attackable object
-    - within range
-
-    conditions to stop attacking
-    - enemy dies
-    - clicks on another target
-    - starts moving
-     
-     */
-    // Object being attacked
-    [SerializeField]
-    Vector3 destination;
+    PlayerBehavior playerBehavior;
 
     // DEBUG - range to attack from
     [SerializeField]
@@ -31,9 +15,7 @@ public class PlayerAttacks : MonoBehaviour {
 
     void Awake()
     {
-        // Set up references
-        destination = transform.position;
-        realtimeCamera = References.realtimeCamera.GetComponent<PlayerCameraRotation>();
+        playerBehavior = GetComponent<PlayerBehavior>();
     }
 
     void Start()
@@ -43,50 +25,51 @@ public class PlayerAttacks : MonoBehaviour {
 
     void onStateChange()
     {
-        if (References.stateManager.CurrentState == StateManager.states.realtime) attackCoroutine = StartCoroutine(checkMovement());
+        /*if (References.stateManager.CurrentState == StateManager.states.realtime) attackCoroutine = StartCoroutine(checkMovement());
         else
         {
             if (attackCoroutine != null) StopCoroutine(attackCoroutine);
+        }*/
+    }
+
+    public void changeAttack(bool shouldAttack)
+    {
+        if (shouldAttack)
+        {
+            if (attackCoroutine == null) attackCoroutine = StartCoroutine(attack());
+        }
+        else
+        {
+            if (attackCoroutine != null)
+            {
+                StopCoroutine(attackCoroutine);
+                attackCoroutine = null;
+            }
         }
     }
 
-    IEnumerator checkMovement()
+    IEnumerator attack()
     {
-        while (true)
+        KillableInstance attackTarget = playerBehavior.getTarget().GetComponent<KillableInstance>();
+
+        while (attackTarget.isAlive)
         {
-            // If we are not rotating and the mouse button was let go...
-            if (!realtimeCamera.rotating && Input.GetMouseButtonUp(0))
+            while (inRangeOfTarget())
             {
-                // ...and we hit an object within range...
-                RaycastHit hitInfo;
-                if (Physics.Raycast(References.realtimeCamera.ScreenPointToRay(Input.mousePosition), out hitInfo, attackRange))
-                {
-                    // ...and we are allowed to attack the object...
-                    if (canAttack(hitInfo.transform.tag))
-                    {
-                        // Start attacking?
-                    }
-                }
+                yield return new WaitForSeconds(1.5f);
+                
+                if (inRangeOfTarget()) attackTarget.Damage(-5);
             }
 
             yield return null;
         }
     }
 
-    /// <summary>
-    /// Checks if the clicked on object can be attacked
-    /// </summary>
-    /// <param name="tag">the tag of the clicked object</param>
-    /// <returns>Returns true if player can attack it, false if not</returns>
-    bool canAttack(string tag)
+    bool inRangeOfTarget()
     {
-        switch (tag)
-        {
-            case "Enemy":
-                return true;
+        Vector3 targetPosition = new Vector3(playerBehavior.getTarget().transform.position.x, 0, playerBehavior.getTarget().transform.position.z);
+        Vector3 currentPosition = new Vector3(transform.position.x, 0, transform.position.z);
 
-            default:
-                return false;
-        }
+        return Vector3.Distance(currentPosition, targetPosition) <= attackRange;
     }
 }

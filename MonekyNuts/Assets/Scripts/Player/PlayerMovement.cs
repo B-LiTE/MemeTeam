@@ -1,84 +1,74 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-[RequireComponent(typeof(Rigidbody))]
+[RequireComponent(typeof(PlayerBehavior), typeof(NavMeshAgent))]
 public class PlayerMovement : MonoBehaviour {
 
-    PlayerCameraRotation realtimeCamera;
+    PlayerBehavior playerBehavior;
 
     // Reference to navigation agent
     NavMeshAgent navigation;
 
-    // DEBUG - Position to travel to
-    [SerializeField]
-    Vector3 destination;
-
     // Reference to coroutine
-    Coroutine movementCoroutine;
+    Coroutine followTargetCoroutine;
+
+    [SerializeField]
+    float cutoffDistance;
 
     void Awake()
     {
         // Set up references
+        playerBehavior = GetComponent<PlayerBehavior>();
         navigation = GetComponent<NavMeshAgent>();
-        destination = transform.position;
-        realtimeCamera = References.realtimeCamera.GetComponent<PlayerCameraRotation>();
     }
 
-    void Start()
+    public void goTo(Vector3 destination)
     {
-        References.stateManager.changeState += onStateChange;
-    }
-
-    void onStateChange()
-    {
-        if (References.stateManager.CurrentState == StateManager.states.realtime) movementCoroutine = StartCoroutine(checkMovement());
+        if (playerBehavior.targetIsEnemy())
+        {
+            if (followTargetCoroutine == null) followTargetCoroutine = StartCoroutine(followTarget());
+        }
         else
         {
-            if (movementCoroutine != null) StopCoroutine(movementCoroutine);
+            if (followTargetCoroutine != null)
+            {
+                StopCoroutine(followTargetCoroutine);
+                followTargetCoroutine = null;
+            }
+
+            navigation.SetDestination(zeroedYVector(destination));
         }
     }
 
-    IEnumerator checkMovement()
+    IEnumerator followTarget()
     {
-        while (true)
+        KillableInstance attackTarget = playerBehavior.getTarget().GetComponent<KillableInstance>();
+
+        while (attackTarget.isAlive)
         {
-            // If we are not rotating and the mouse button was let go...
-            if (!realtimeCamera.rotating && Input.GetMouseButtonUp(0))
+            while (!inRangeOfTarget())
             {
-                // ...and we hit an object within range...
-                RaycastHit hitInfo;
-                if (Physics.Raycast(References.realtimeCamera.ScreenPointToRay(Input.mousePosition), out hitInfo, 100))
-                {
-                    // ...and we are allowed to travel to the object...
-                    if (canTravelTo(hitInfo.transform.tag))
-                    {
-                        // Set the destination to be the clicked point
-                        destination = hitInfo.point;
-                        navigation.SetDestination(destination);
-                    }
-                }
+                navigation.SetDestination(playerBehavior.getTarget().transform.position);
+
+                yield return new WaitForSeconds(0.25f);
             }
 
             yield return null;
         }
     }
 
-    /// <summary>
-    /// Checks if the clicked on object can be travelled to
-    /// </summary>
-    /// <param name="tag">the tag of the clicked object</param>
-    /// <returns>Returns true if player can travel to it, false if not</returns>
-    bool canTravelTo(string tag)
+    bool inRangeOfTarget()
     {
-        switch (tag)
-        {
-            case "Terrain":
-            case "Enemy":
-            case "Collectible":
-                return true;
+        return Vector3.Distance(zeroedYVector(transform.position), zeroedYVector(playerBehavior.getTarget().transform.position)) <= cutoffDistance;
+    }
 
-            default:
-                return false;
-        }
+    /// <summary>
+    /// Returns a copy of a vector with the Y field zeroed out
+    /// </summary>
+    /// <param name="vector">The vector to zero</param>
+    /// <returns></returns>
+    Vector3 zeroedYVector(Vector3 vector)
+    {
+        return new Vector3(vector.x, 0, vector.z);
     }
 }
