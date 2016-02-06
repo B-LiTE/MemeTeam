@@ -1,9 +1,11 @@
 ﻿using UnityEngine;
 using System.Collections;
 
+[RequireComponent(typeof(PlayerStats), typeof(PlayerMouseCommands))]
 [RequireComponent(typeof(PlayerMovement), typeof(PlayerAttacks))]
 public class PlayerBehavior : MonoBehaviour {
-    
+
+    PlayerStats playerStats;
     PlayerMovement playerMovement;
     PlayerAttacks playerAttacks;
 
@@ -12,6 +14,7 @@ public class PlayerBehavior : MonoBehaviour {
 
     void Awake()
     {
+        playerStats = GetComponent<PlayerStats>();
         playerMovement = GetComponent<PlayerMovement>();
         playerAttacks = GetComponent<PlayerAttacks>();
     }

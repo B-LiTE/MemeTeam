@@ -1,10 +1,11 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-[RequireComponent(typeof(PlayerBehavior), typeof(NavMeshAgent))]
+[RequireComponent(typeof(PlayerBehavior), typeof(PlayerAttacks), typeof(NavMeshAgent))]
 public class PlayerMovement : MonoBehaviour {
 
     PlayerBehavior playerBehavior;
+    PlayerAttacks playerAttacks;
 
     // Reference to navigation agent
     NavMeshAgent navigation;
@@ -19,6 +20,7 @@ public class PlayerMovement : MonoBehaviour {
     {
         // Set up references
         playerBehavior = GetComponent<PlayerBehavior>();
+        playerAttacks = GetComponent<PlayerAttacks>();
         navigation = GetComponent<NavMeshAgent>();
     }
 
@@ -59,7 +61,7 @@ public class PlayerMovement : MonoBehaviour {
 
     bool inRangeOfTarget()
     {
-        return Vector3.Distance(zeroedYVector(transform.position), zeroedYVector(playerBehavior.getTarget().transform.position)) <= cutoffDistance;
+        return Vector3.Distance(zeroedYVector(transform.position), zeroedYVector(playerBehavior.getTarget().transform.position)) <= playerAttacks.attackRange;
     }
 
     /// <summary>

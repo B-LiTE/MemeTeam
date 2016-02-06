@@ -6,9 +6,11 @@ public class PlayerAttacks : MonoBehaviour {
 
     PlayerBehavior playerBehavior;
 
-    // DEBUG - range to attack from
+    // Range to attack from
+    public int attackRange;
+
     [SerializeField]
-    int attackRange;
+    float secondsBetweenAttacks;
 
     // Reference to coroutine
     Coroutine attackCoroutine;
@@ -56,7 +58,7 @@ public class PlayerAttacks : MonoBehaviour {
         {
             while (inRangeOfTarget())
             {
-                yield return new WaitForSeconds(1.5f);
+                yield return new WaitForSeconds(secondsBetweenAttacks);
                 
                 if (inRangeOfTarget()) attackTarget.Damage(-5);
             }

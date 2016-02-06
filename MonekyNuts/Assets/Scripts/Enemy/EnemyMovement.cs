@@ -206,14 +206,7 @@ public class EnemyMovement : MonoBehaviour {
         while (true)
         {
             // Pick a random point within our vision
-            int i = 0;
-            do
-            {
-                wanderingDestination = enemyTargetSeeking.pickRandomPointInSight();
-                while (navigation.pathPending) yield return null;
-                if (i++ > 50) break;
-            } while (navigation.pathStatus != NavMeshPathStatus.PathComplete);
-            //Debug.Log("took " + i + " + long");
+            wanderingDestination = enemyTargetSeeking.pickRandomPointInSight();
             Debug.DrawLine(transform.position, wanderingDestination, Color.black, 5f);
 
             // Start traveling to it

@@ -21,6 +21,8 @@ public class EnemyTargetSeeking : MonoBehaviour {
     public delegate void voidDelegate();
     public event voidDelegate onTargetVisible;
 
+    Vector3 infinity = new Vector3(Mathf.Infinity, Mathf.Infinity, Mathf.Infinity);
+
     void Awake()
     {
         enemyBehavior = GetComponent<EnemyBehavior>();
@@ -142,7 +144,10 @@ public class EnemyTargetSeeking : MonoBehaviour {
         chosenPoint.z += ((transform.forward.z / Mathf.Abs(transform.forward.z)) * deltaZ);//= (transform.forward.z * deltaZ);
         chosenPoint.x += ((transform.forward.x / Mathf.Abs(transform.forward.x)) * deltaX);//= (transform.right.x * deltaX);
 
-        return chosenPoint;
+        NavMeshHit hit;
+        // If the point isn't on the NavMesh, return our current position
+        if (!NavMesh.SamplePosition(chosenPoint, out hit, 20, 1)) return transform.position;
+        return hit.position;
     }
 
 
@@ -163,11 +168,28 @@ public class EnemyTargetSeeking : MonoBehaviour {
     /// <returns>Returns the object the ray hits</returns>
     RaycastHit raycastTo(GameObject target)
     {
+        return raycastTo(target.transform.position);
+    }
+
+    /// <summary>
+    /// Casts a ray towards a target and returns whatever object it hits
+    /// </summary>
+    /// <param name="target">Point to cast a ray towards</param>
+    /// <returns>Returns the object the ray hits</returns>
+    RaycastHit raycastTo(Vector3 target)
+    {
         RaycastHit hitInfo;
-        Vector3 direction = new Vector3(target.transform.position.x - transform.position.x, 0, target.transform.position.z - transform.position.z);
+        Vector3 direction = new Vector3(target.x - transform.position.x, 0, target.z - transform.position.z);
         Physics.Raycast(transform.position, direction, out hitInfo, sensingRadius, visibleLayers);
         return hitInfo;
     }
+
+
+
+
+
+
+
 
     /// <summary>
     /// Checks whether an object is within the enemy's sight lines
@@ -192,6 +214,15 @@ public class EnemyTargetSeeking : MonoBehaviour {
         return angle < fieldOfViewAngle * 0.5f;
     }
     
+
+
+
+
+
+
+
+
+
     /// <summary>
     /// Check if the gameobject has unobstructed line of sight to the target
     /// </summary>
@@ -203,6 +234,23 @@ public class EnemyTargetSeeking : MonoBehaviour {
         {
             RaycastHit hitInfo = raycastTo(target);
             if (hitInfo.transform != null && hitInfo.transform.gameObject == target) return true;
+        }
+
+        return false;
+    }
+
+    /// <summary>
+    /// Check if the enemy has unobstructed line of sight to the point in space
+    /// </summary>
+    /// <param name="target">Point in space trying to be seen</param>
+    /// <returns>Returns true if unobstructed, false if not</returns>
+    bool canSee(Vector3 target)
+    {
+        if (inSightLines(target))
+        {
+            RaycastHit hitInfo = raycastTo(target);
+            if (hitInfo.transform != null) Debug.Log(hitInfo.point + " " + hitInfo.transform.name);
+            if (hitInfo.transform == null) return true;
         }
 
         return false;

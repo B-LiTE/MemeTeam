@@ -15,6 +15,8 @@ public abstract class KillableInstance : MonoBehaviour{
 
     public GameObject HealthBar;
 
+    Coroutine regenerationCoroutine;
+
 
 
 
@@ -25,9 +27,18 @@ public abstract class KillableInstance : MonoBehaviour{
         damageMultiplier = 100 / (100 + armor);
     }
 
-    void Update()
+    void Start()
     {
-        ChangeHealth(healthRegenRate * Time.deltaTime);
+        if (healthRegenRate != 0) regenerationCoroutine = StartCoroutine(regeneration());
+    }
+
+    IEnumerator regeneration()
+    {
+        while (true)
+        {
+            ChangeHealth(healthRegenRate * Time.deltaTime);
+            yield return null;
+        }
     }
 
     public virtual void ChangeHealth(float amount)
