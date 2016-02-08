@@ -46,7 +46,7 @@ public class PickUpItem : MonoBehaviour {
 		}
 		FindObjectOfType<Inventory>().SendMessage("PickUpDropItem",gameObject);
 	}
-	IEnumerator BeCollected()
+	/*IEnumerator BeCollected()
 	{ 
 		GameObject player = FindObjectOfType<PlayerMovement>().gameObject;
 
@@ -61,6 +61,6 @@ public class PickUpItem : MonoBehaviour {
 	public void StartBeCollected()
 	{
 		StartCoroutine(BeCollected());
-	}
+	}*/
 
 }

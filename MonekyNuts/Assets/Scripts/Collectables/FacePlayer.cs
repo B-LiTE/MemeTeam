@@ -5,7 +5,12 @@ public class FacePlayer : MonoBehaviour {
 
     public Transform target;
     public Vector3 lookAt;
-	
+
+
+	void Start()
+	{
+		target = References.realtimeCamera.transform;
+	}
 	// Update is called once per frame
 	void Update () 
     {

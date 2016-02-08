@@ -55,6 +55,8 @@ public class Treasure_Chest : Interactive_Object{
 				                                          	(transform.position.z + ((2 * maxHorizontalDist)) * (((float)(Random.Range(0,100)) / 100))) - maxHorizontalDist);
 			}
 			GetComponent<SpriteRenderer>().sprite = opened;
+			gameObject.AddComponent<FadeOutDestroy>();
+			Destroy(gameObject.GetComponent<NavMeshObstacle>());
 			isOpened = true;
 			base.canBeInteracted = false;
 		}
