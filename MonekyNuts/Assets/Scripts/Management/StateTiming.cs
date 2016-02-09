@@ -18,9 +18,9 @@ public class StateTiming : MonoBehaviour {
         References.stateManager.CurrentState = StateManager.states.strategy;
         while (true)
         {
-            yield return new WaitForSeconds(secondsOfStrategy);//2 * minutes);
+            yield return new WaitForSeconds(secondsOfStrategy);//2 * secondsInAMinute);
             References.stateManager.CurrentState = StateManager.states.realtime;
-            yield return new WaitForSeconds(secondsOfRealtime);//1 * minutes);
+            yield return new WaitForSeconds(secondsOfRealtime);//1 * secondsInAMinute);
             References.stateManager.CurrentState = StateManager.states.strategy;
         }
     }

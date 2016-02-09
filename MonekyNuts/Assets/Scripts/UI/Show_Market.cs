@@ -10,7 +10,7 @@ public class Show_Market : MonoBehaviour {
 
 	void Start()
 	{
-		References.stateManager.changeState += onChangeState;
+		//References.stateManager.changeState += onChangeState;
 	}
 	
 	void onChangeState()

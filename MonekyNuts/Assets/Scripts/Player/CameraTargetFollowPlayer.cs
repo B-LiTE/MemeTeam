@@ -3,8 +3,12 @@ using System.Collections;
 
 public class CameraTargetFollowPlayer : MonoBehaviour {
 
-    [SerializeField]
     Transform target;
+
+    void Start()
+    {
+        target = References.player.transform;
+    }
 
     void Update()
     {
