@@ -17,6 +17,9 @@ public abstract class KillableInstance : MonoBehaviour{
 
     Coroutine regenerationCoroutine;
 
+    public delegate void myDelegate();
+    public event myDelegate alertOnDeath;
+
 
 
 
@@ -50,6 +53,7 @@ public abstract class KillableInstance : MonoBehaviour{
         if (currHealth <= 0)
         {
             isAlive = false;
+            if (alertOnDeath != null) alertOnDeath();
             Die();
         }
     }

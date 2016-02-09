@@ -22,6 +22,16 @@ public class PlayerMovement : MonoBehaviour {
         playerBehavior = GetComponent<PlayerBehavior>();
         playerAttacks = GetComponent<PlayerAttacks>();
         navigation = GetComponent<NavMeshAgent>();
+
+        References.stateManager.changeState += onStateChange;
+    }
+
+    void onStateChange()
+    {
+        if (References.stateManager.CurrentState != StateManager.states.realtime)
+        {
+            stopMoving();
+        }
     }
 
     public void goTo(Vector3 destination)
@@ -57,6 +67,19 @@ public class PlayerMovement : MonoBehaviour {
 
             yield return null;
         }
+    }
+
+    void stopMoving()
+    {
+        if (followTargetCoroutine != null)
+        {
+            StopCoroutine(followTargetCoroutine);
+            followTargetCoroutine = null;
+        }
+
+        navigation.ResetPath();
+        navigation.SetDestination(transform.position);
+        navigation.velocity = Vector3.zero;
     }
 
     bool inRangeOfTarget()

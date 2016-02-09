@@ -33,8 +33,21 @@ public class EnemyBehavior : MonoBehaviour {
 
     void Start()
     {
+        References.stateManager.changeState += onStateChange;
         changeIntent(transform.gameObject);
         changeAction(actions.moveToTarget);
+    }
+
+
+
+
+    void onStateChange()
+    {
+        if (References.stateManager.CurrentState == StateManager.states.realtime)
+        {
+            callChangeOfIntentions();
+            callChangeOfActions();
+        }
     }
 
 
@@ -66,8 +79,8 @@ public class EnemyBehavior : MonoBehaviour {
 
 
     // Event calls
-    public void callChangeOfIntentions() { if (changeOfIntentions != null) changeOfIntentions(); }
-    public void callChangeOfActions() { if (changeOfActions != null) changeOfActions(); }
+    public void callChangeOfIntentions() { if (changeOfIntentions != null && References.stateManager.CurrentState == StateManager.states.realtime) changeOfIntentions(); }
+    public void callChangeOfActions() { if (changeOfActions != null && References.stateManager.CurrentState == StateManager.states.realtime) changeOfActions(); }
 
 
 

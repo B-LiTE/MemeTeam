@@ -10,10 +10,20 @@ public class EnemyAttacking : MonoBehaviour {
 
     void Awake()
     {
-        
-        enemyBehavior = GetComponent<EnemyBehavior>();
+        References.stateManager.changeState += onStateChange;
 
+        enemyBehavior = GetComponent<EnemyBehavior>();
         enemyBehavior.changeOfActions += onChangeAction;
+    }
+
+    void onStateChange()
+    {
+        // If we are attacking, stop attacking
+        if (attackCoroutine != null)
+        {
+            StopCoroutine(attackCoroutine);
+            attackCoroutine = null;
+        }
     }
 
     void onChangeAction()
@@ -41,6 +51,8 @@ public class EnemyAttacking : MonoBehaviour {
         else if (enemyBehavior.targetIsCastle()) attackTarget = References.castle.GetComponent<Castle>();
         else attackTarget = enemyBehavior.getTarget().GetComponent<KillableInstance>();
 
+        attackTarget.alertOnDeath += stopAttacking;
+
         while (attackTarget.isAlive)
         {
             yield return new WaitForSeconds(1.5f);
@@ -49,5 +61,15 @@ public class EnemyAttacking : MonoBehaviour {
         }
 
         enemyBehavior.changeIntent(this.gameObject);
+    }
+
+    void stopAttacking()
+    {
+        // Stop attacking
+        if (attackCoroutine != null)
+        {
+            StopCoroutine(attackCoroutine);
+            attackCoroutine = null;
+        }
     }
 }

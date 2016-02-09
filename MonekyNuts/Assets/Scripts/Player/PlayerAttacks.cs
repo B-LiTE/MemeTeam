@@ -27,11 +27,10 @@ public class PlayerAttacks : MonoBehaviour {
 
     void onStateChange()
     {
-        /*if (References.stateManager.CurrentState == StateManager.states.realtime) attackCoroutine = StartCoroutine(checkMovement());
-        else
+        if (References.stateManager.CurrentState != StateManager.states.realtime)
         {
-            if (attackCoroutine != null) StopCoroutine(attackCoroutine);
-        }*/
+            changeAttack(false);
+        }
     }
 
     public void changeAttack(bool shouldAttack)
@@ -53,6 +52,7 @@ public class PlayerAttacks : MonoBehaviour {
     IEnumerator attack()
     {
         KillableInstance attackTarget = playerBehavior.getTarget().GetComponent<KillableInstance>();
+        attackTarget.alertOnDeath += stopAttacking;
 
         while (attackTarget.isAlive)
         {
@@ -73,5 +73,14 @@ public class PlayerAttacks : MonoBehaviour {
         Vector3 currentPosition = new Vector3(transform.position.x, 0, transform.position.z);
 
         return Vector3.Distance(currentPosition, targetPosition) <= attackRange;
+    }
+
+    void stopAttacking()
+    {
+        if (attackCoroutine != null)
+        {
+            StopCoroutine(attackCoroutine);
+            attackCoroutine = null;
+        }
     }
 }

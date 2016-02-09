@@ -31,13 +31,6 @@ public class EnemyMovement : MonoBehaviour {
         enemyTargetSeeking.onTargetVisible += onTargetVisible;
     }
 
-    void Start()
-    {
-        // Pretend as if we've changed intentions so that we check whether it changed on startup
-        //onChangeIntent();
-        //onChangeAction();
-    }
-
 
 
 
@@ -51,7 +44,10 @@ public class EnemyMovement : MonoBehaviour {
     /// </summary>
     void onStateChange()
     {
-        //if (References.stateManager.CurrentState != StateManager.states.realtime) setDestination(transform.position);
+        if (References.stateManager.CurrentState != StateManager.states.realtime)
+        {
+            stopMoving();
+        }
     }
 
 
