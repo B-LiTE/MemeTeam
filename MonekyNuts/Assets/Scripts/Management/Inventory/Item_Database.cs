@@ -17,6 +17,7 @@ public class Item_Database : MonoBehaviour {
 		allItems.Add(new Item(2,"Wheel","Magic",3));
         allItems.Add(new Item(3, "Tree", "Magic", 6));
 		allItems.Add(new Potion_Item(4, "Potion", "Potion", 5, 50));
+		allItems.Add(new Armor_Item (5, "Armor", "Armor", 1, 10));
 
 	}
 	

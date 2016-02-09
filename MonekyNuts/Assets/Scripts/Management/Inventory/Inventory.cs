@@ -154,6 +154,7 @@ public class Inventory : MonoBehaviour {
 			{
 				FindObjectOfType<PlayerStats>().GetComponent<PlayerStats>().ChangeActiveWeapon(activeSlotIndex);
 			}
+			if(wherePlaced <= 8 && wherePlaced >= 1) FindObjectOfType<PlayerStats>().GetComponent<PlayerStats>().ChangeActiveArmor(wherePlaced);
 			
 			}
 		
@@ -269,6 +270,7 @@ public class Inventory : MonoBehaviour {
 		{
 			FindObjectOfType<PlayerStats>().GetComponent<PlayerStats>().ChangeActiveWeapon(activeSlotIndex);
 		}
+		if(slotIndex <= 8 && slotIndex >= 1) FindObjectOfType<PlayerStats>().GetComponent<PlayerStats>().ChangeActiveArmor(slotIndex);
 	}
 	void RemoveItemStack(int slotIndex)
 	{
