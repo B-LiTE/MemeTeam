@@ -37,8 +37,7 @@ public class Treasure_Chest : Interactive_Object{
 				dropItem.GetComponent<SpriteRenderer>().color = Color.clear;
 				dropItem.GetComponent<SpriteRenderer>().sprite = database.inventorySprites[contents[i].itemId];
 				dropItem.AddComponent<FadeInFromClear>();
-				dropItem.AddComponent<FacePlayer>();
-				dropItem.GetComponent<FacePlayer>().target = GameObject.FindGameObjectWithTag("Camera_Realtime").transform;
+				dropItem.AddComponent<FaceCamera>();
 				dropItem.AddComponent<LevitationBehavior>();
 				dropItem.GetComponent<LevitationBehavior>().levitationDistance = 0.2f;
 				dropItem.GetComponent<LevitationBehavior>().levitationSpeed = .5f;
