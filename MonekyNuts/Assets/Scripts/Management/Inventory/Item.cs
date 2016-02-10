@@ -10,8 +10,9 @@ public class Item {
     public string itemType;
 
     public int itemMaxStack;
+	public int goldPrice;
 
-    public Item(int itemId, string itemName, string itemType, int itemMaxStack)
+    public Item(int itemId, string itemName, string itemType, int itemMaxStack, int goldPrice)
     {
         this.itemId = itemId;
         this.itemName = itemName;

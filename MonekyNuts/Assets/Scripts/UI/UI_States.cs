@@ -43,7 +43,7 @@ public class UI_States : MonoBehaviour {
 		}*/
 		inventoryStorage.SetActive (false);
 		inventoryWheelStorage.SetActive (false);
-		//market.SetActive(false);
+		market.SetActive(false);
 		showInventoryButton.SetActive(false);
 		showMarketButton.SetActive (false);
 	}
