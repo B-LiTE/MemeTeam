@@ -29,6 +29,12 @@ public class EnemyMovement : MonoBehaviour {
         enemyBehavior.changeOfActions += onChangeAction;
         enemyBehavior.changeOfIntentions += onChangeIntent;
         enemyTargetSeeking.onTargetVisible += onTargetVisible;
+        //enemyBehavior.onEnemyDeath += onDeath;
+    }
+
+    void onDeath()
+    {
+        //References.stateManager.changeState -= onStateChange;
     }
 
 

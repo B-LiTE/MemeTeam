@@ -6,7 +6,7 @@ public abstract class KillableInstance : MonoBehaviour{
 
     public float currHealth;
     public float totHealth;
-    public float armor;
+    public float armor = 0;
 
     public float healthRegenRate; //per second
 
@@ -17,17 +17,18 @@ public abstract class KillableInstance : MonoBehaviour{
 
     Coroutine regenerationCoroutine;
 
-    public delegate void myDelegate();
-    public event myDelegate alertOnDeath;
+    public delegate void voidDelegate();
+    public event voidDelegate alertOnDeath;
 
 
 
 
 
 
-    void Awake()
+    protected void Awake()
     {
-        damageMultiplier = 100 / (100 + armor);
+        Debug.Log(this.gameObject.name + " 100 + armor = " + (100 + armor));
+        damageMultiplier = 100 / (float)(100 + armor);
     }
 
     void Start()
@@ -48,7 +49,7 @@ public abstract class KillableInstance : MonoBehaviour{
     {
         
         currHealth += amount;
-        
+        Debug.Log("after " + amount + " change in health, curHeal = " + currHealth);
         if (currHealth > totHealth) currHealth = totHealth;
         if (currHealth <= 0)
         {
@@ -58,9 +59,12 @@ public abstract class KillableInstance : MonoBehaviour{
         }
     }
 
-    public virtual void Damage(float amount) //need to pass in negative number for this to work
+    public virtual void Damage(float amount)
     {
-        ChangeHealth(amount * damageMultiplier);  
+        Debug.Log(this.gameObject.name + " took " + amount + " damage??");
+        Debug.Log("damageMultiplier = " + damageMultiplier);
+        Debug.Log("-Mathf.abs = " + (-Mathf.Abs(amount)));
+        ChangeHealth(-Mathf.Abs(amount) * damageMultiplier);
     }
 
 

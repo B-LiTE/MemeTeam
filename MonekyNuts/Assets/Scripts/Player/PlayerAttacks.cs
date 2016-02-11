@@ -1,10 +1,13 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-[RequireComponent(typeof(PlayerBehavior))]
+[RequireComponent(typeof(PlayerBehavior), typeof(PlayerStats))]
 public class PlayerAttacks : MonoBehaviour {
 
     PlayerBehavior playerBehavior;
+    PlayerStats playerStats;
+
+    KillableInstance attackTarget;
 
     // Range to attack from
     public int attackRange;
@@ -18,6 +21,7 @@ public class PlayerAttacks : MonoBehaviour {
     void Awake()
     {
         playerBehavior = GetComponent<PlayerBehavior>();
+        playerStats = GetComponent<PlayerStats>();
     }
 
     void Start()
@@ -41,17 +45,13 @@ public class PlayerAttacks : MonoBehaviour {
         }
         else
         {
-            if (attackCoroutine != null)
-            {
-                StopCoroutine(attackCoroutine);
-                attackCoroutine = null;
-            }
+            stopAttacking();
         }
     }
 
     IEnumerator attack()
     {
-        KillableInstance attackTarget = playerBehavior.getTarget().GetComponent<KillableInstance>();
+        attackTarget = playerBehavior.getTarget().GetComponent<KillableInstance>();
         attackTarget.alertOnDeath += stopAttacking;
 
         while (attackTarget.isAlive)
@@ -59,8 +59,8 @@ public class PlayerAttacks : MonoBehaviour {
             while (inRangeOfTarget())
             {
                 yield return new WaitForSeconds(secondsBetweenAttacks);
-                
-                if (inRangeOfTarget()) attackTarget.Damage(-5);
+                Debug.Log(attackTarget.name + " is takeing damagine");
+                if (inRangeOfTarget()) attackTarget.Damage(playerStats.activeDamage);
             }
 
             yield return null;
@@ -77,6 +77,13 @@ public class PlayerAttacks : MonoBehaviour {
 
     void stopAttacking()
     {
+        Debug.Log("called stop attack");
+        if (attackTarget != null)
+        {
+            attackTarget.alertOnDeath -= stopAttacking;
+            attackTarget = null;
+        }
+
         if (attackCoroutine != null)
         {
             StopCoroutine(attackCoroutine);

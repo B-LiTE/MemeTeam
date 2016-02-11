@@ -10,10 +10,16 @@ public class EnemyAttacking : MonoBehaviour {
 
     void Awake()
     {
-        References.stateManager.changeState += onStateChange;
-
         enemyBehavior = GetComponent<EnemyBehavior>();
+
+        References.stateManager.changeState += onStateChange;
         enemyBehavior.changeOfActions += onChangeAction;
+        //enemyBehavior.onEnemyDeath += onDeath;
+    }
+
+    void onDeath()
+    {
+        //References.stateManager.changeState -= onStateChange;
     }
 
     void onStateChange()
