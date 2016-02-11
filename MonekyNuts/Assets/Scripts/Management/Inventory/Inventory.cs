@@ -153,9 +153,11 @@ public class Inventory : MonoBehaviour {
 			if(wherePlaced == activeSlotIndex)
 			{
 				FindObjectOfType<PlayerStats>().GetComponent<PlayerStats>().ChangeActiveWeapon(activeSlotIndex);
+				Debug.Log ("called....");
 			}
 			if(wherePlaced <= 8 && wherePlaced >= 1) FindObjectOfType<PlayerStats>().GetComponent<PlayerStats>().ChangeActiveArmor(wherePlaced);
-			
+			Debug.Log ("called....");
+
 			}
 		
 			return foundPlace; //returns if it successfully added the item or not
@@ -174,11 +176,13 @@ public class Inventory : MonoBehaviour {
 		if(inventory[slotIndex].itemType != "Empty")
 		{
 			slotsDisplay[slotIndex].GetComponent<Image>().sprite = GetComponent<Item_Database>().inventorySprites[inventory[slotIndex].itemId];
+			slotsDisplay[slotIndex].gameObject.SetActive(true);
 
 		}
 		else
 		{
 			slotsDisplay[slotIndex].GetComponent<Image>().sprite = null;
+			slotsDisplay[slotIndex].gameObject.SetActive(false);
 		}
 		if(slotIndex <= 8 && slotIndex >= 1)
 		{
@@ -210,6 +214,9 @@ public class Inventory : MonoBehaviour {
 
 	void SlotIsClicked(int slotIndex)
 	{
+		Item prevItem = inventory[slotIndex];
+		if(slotIndex != 0)
+		{
 		isItemChangeComplete = false;
 		if(!isItemMoving) //if the item isn't on the cursor, this click means an item is being picked up
 		{
@@ -255,7 +262,6 @@ public class Inventory : MonoBehaviour {
 			}
 			else //however if it is empty! just place it!
 			{
-				;
 				isItemMoving = false;
 				itemOnCursor.GetComponent<Item_Attached_Cursor>().ChangeSprite(-1); //get rid of its sprite
 				itemOnCursor.transform.position = new Vector3(99999,99999,6);
@@ -266,11 +272,20 @@ public class Inventory : MonoBehaviour {
 			}
 		}
 		isItemChangeComplete = true;
-		if(slotIndex == activeSlotIndex)
+			if(slotIndex == activeSlotIndex)
 		{
 			FindObjectOfType<PlayerStats>().GetComponent<PlayerStats>().ChangeActiveWeapon(activeSlotIndex);
 		}
-		if(slotIndex <= 8 && slotIndex >= 1) FindObjectOfType<PlayerStats>().GetComponent<PlayerStats>().ChangeActiveArmor(slotIndex);
+			if(slotIndex <= 8 && slotIndex >= 1) 
+				FindObjectOfType<PlayerStats>().GetComponent<PlayerStats>().ChangeActiveArmor(slotIndex);
+		}
+		else //this means the trash is being clicked
+		{
+			isItemMoving = false;
+			itemOnCursor.GetComponent<Item_Attached_Cursor>().ChangeSprite(-1); //get rid of its sprite
+			itemOnCursor.transform.position = new Vector3(99999,99999,6);
+			itemOnCursor.SetActive(false);
+		}
 	}
 	void RemoveItemStack(int slotIndex)
 	{
@@ -297,10 +312,11 @@ public class Inventory : MonoBehaviour {
 	}
 	void Start()
 	{
+		/*
 		AddItem(1);
 		AddItem(2);
 		AddItem(2);
-		AddItem(1);
+		AddItem(1);*/
 	}
 
 

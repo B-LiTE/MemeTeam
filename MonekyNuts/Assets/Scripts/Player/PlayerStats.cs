@@ -28,7 +28,7 @@ public class PlayerStats : KillableInstance {
 
 		activeItem = inventory.inventory [1];
 		for (int i = 1; i < 9; i++)armorArray [i] = inventory.inventory [i];
-		AddItemStats(activeItem);
+		ChangeActiveWeapon(1);
 		UpdateStats ();
 		//
 		totHealth = 100;
@@ -36,50 +36,67 @@ public class PlayerStats : KillableInstance {
 	}
 
 	public void ChangeActiveWeapon(int slotIndex) //pass in the location of where active item has been chenged;
-	{
-		if (inventory.inventory [slotIndex].itemType == "Weapon") {
+	{		
 			inventory.activeSlotIndex = slotIndex;
-			RemoveItemStats (activeItem);
+			RemoveItemStats (activeItem,"Weapon");
 			activeItem = inventory.inventory [slotIndex];
-			AddItemStats (activeItem);
+			AddItemStats (activeItem,"Weapon");
+		
 
 			UpdateStats ();
-		}
+		
 	}
 	public void ChangeActiveArmor(int slotIndex) //pass in the location of where armor has been chenged;
 	{
-		RemoveItemStats (armorArray[slotIndex]);
+
+
+		RemoveItemStats (armorArray[slotIndex],"Armor");
 		armorArray [slotIndex] = inventory.inventory [slotIndex];
-		AddItemStats (armorArray[slotIndex]);
+		AddItemStats (armorArray[slotIndex],"Armor");
 		
-		//UpdateStats ();
+
+		
 	}
 
-	public void RemoveItemStats(Item item)
+	public void RemoveItemStats(Item item, string type)
 	{
-		if(item.itemType == "Weapon")
+		if(type == "Weapon")
 		{
+			if(item.itemType == "Weapon")
+			{
 			Weapon_Item trueItem = item as Weapon_Item;
 			addedDamage -= trueItem.damage;
+			Debug.Log ("added damage is currently" + addedDamage);
+			}
 		}
-		else if(item.itemType == "Armor")
+		else if(type == "Armor")
 		{
+			if(item.itemType == "Armor")
+			{
 			Armor_Item trueItem = item as Armor_Item;
 			armor -= trueItem.armorValue;
+			}
 		}
 	}
 
-	public void AddItemStats(Item item)
+	public void AddItemStats(Item item, string type)
 	{
-		if(item.itemType == "Weapon")
+		if(type == "Weapon")
 		{
+			if(item.itemType == "Weapon")
+			{
 			Weapon_Item trueItem = item as Weapon_Item;
 			addedDamage += trueItem.damage;
+			Debug.Log ("added damage is currently" + addedDamage);
+			}
 		}
-		else if(item.itemType == "Armor")
+		else if(type == "Armor")
 		{
+			if(item.itemType == "Armor")
+			{
 			Armor_Item trueItem = item as Armor_Item;
 			armor += trueItem.armorValue;
+			}
 		}
 	}
 
