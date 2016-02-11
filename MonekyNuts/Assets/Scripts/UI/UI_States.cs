@@ -46,5 +46,7 @@ public class UI_States : MonoBehaviour {
 		market.SetActive(false);
 		showInventoryButton.SetActive(false);
 		showMarketButton.SetActive (false);
+		showMarketButton.GetComponent<Show_Market> ().isMarketVisible = false;
+		
 	}
 }

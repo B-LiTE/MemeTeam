@@ -7,6 +7,8 @@ public class Market : MonoBehaviour {
 
 	public MarketArrays marketArrays;
 	public Item_Database itemDatabase;
+	public Show_Market showMarket;
+
 	public int[] activeArray;
 
 	public int[] buyableItems = new int[3];
@@ -16,15 +18,16 @@ public class Market : MonoBehaviour {
 
 	void Start () 
 	{
+		References.stateManager.changeState += RandomizeMarket;
+
 		marketArrays = GetComponent<MarketArrays>();
 		itemDatabase = GetComponent<Item_Database>();
+		showMarket = FindObjectOfType<Show_Market> ().GetComponent<Show_Market> ();
 		ChangeMarket ();
 		RandomizeMarket();
 	}
 	void Update()
 	{
-		if (Input.GetKeyDown (KeyCode.R))
-			RandomizeMarket ();
 	}
 	public void ChangeMarket() //need to call this when moving to next level
 	{
@@ -85,7 +88,7 @@ public class Market : MonoBehaviour {
 				}
 			buyableItems[i] = activeArray[number];
 		}
-		UpdateMarketDisplay();
+
 	}
 
 }
