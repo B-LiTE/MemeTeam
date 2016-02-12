@@ -59,7 +59,6 @@ public class PlayerAttacks : MonoBehaviour {
             while (inRangeOfTarget())
             {
                 yield return new WaitForSeconds(secondsBetweenAttacks);
-                Debug.Log(attackTarget.name + " is takeing damagine");
                 if (inRangeOfTarget()) attackTarget.Damage(playerStats.activeDamage);
             }
 
@@ -77,7 +76,6 @@ public class PlayerAttacks : MonoBehaviour {
 
     void stopAttacking()
     {
-        Debug.Log("called stop attack");
         if (attackTarget != null)
         {
             attackTarget.alertOnDeath -= stopAttacking;

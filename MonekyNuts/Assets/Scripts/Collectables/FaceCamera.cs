@@ -9,15 +9,8 @@ public class FaceCamera : MonoBehaviour {
 	void Start()
 	{
 		target = References.realtimeCamera.transform;
-        References.stateManager.changeState += onChangeState;
         StartCoroutine(faceCamera());
 	}
-
-    void onChangeState()
-    {
-        if (References.stateManager.CurrentState == StateManager.states.realtime) target = References.realtimeCamera.transform;
-        else target = References.strategicCamera.transform;
-    }
 
     IEnumerator faceCamera()
     {

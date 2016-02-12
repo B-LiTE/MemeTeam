@@ -38,7 +38,7 @@ public class PlayerMovement : MonoBehaviour {
     {
         if (playerBehavior.targetIsEnemy())
         {
-            if (followTargetCoroutine == null) followTargetCoroutine = StartCoroutine(followTarget());
+            followTargetCoroutine = StartCoroutine(followTarget());
         }
         else
         {
@@ -77,7 +77,6 @@ public class PlayerMovement : MonoBehaviour {
             followTargetCoroutine = null;
         }
 
-        navigation.ResetPath();
         navigation.SetDestination(transform.position);
         navigation.velocity = Vector3.zero;
     }

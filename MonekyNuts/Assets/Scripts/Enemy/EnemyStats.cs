@@ -13,8 +13,7 @@ public class EnemyStats : KillableInstance {
 
     protected override void Die()
     {
-        Debug.Log("dead");
-        //enemyBehavior.callOnDeath();
+        enemyBehavior.callOnDeath();
         Destroy(gameObject);
     }
 }

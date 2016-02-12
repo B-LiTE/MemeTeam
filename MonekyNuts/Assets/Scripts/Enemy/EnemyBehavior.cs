@@ -21,7 +21,7 @@ public class EnemyBehavior : MonoBehaviour {
 
 
     public delegate void voidDelegate();
-    public event voidDelegate changeOfIntentions, changeOfActions;//, onEnemyDeath;
+    public event voidDelegate changeOfIntentions, changeOfActions, onEnemyDeath;
 
     [SerializeField]
     GameObject target;
@@ -34,7 +34,7 @@ public class EnemyBehavior : MonoBehaviour {
     void Start()
     {
         References.stateManager.changeState += onStateChange;
-        //onEnemyDeath += onDeath;
+        onEnemyDeath += onDeath;
 
         changeIntent(transform.gameObject);
         changeAction(actions.moveToTarget);
@@ -43,7 +43,7 @@ public class EnemyBehavior : MonoBehaviour {
 
     void onDeath()
     {
-        //References.stateManager.changeState -= onStateChange;
+        References.stateManager.changeState -= onStateChange;
     }
 
 
@@ -89,7 +89,7 @@ public class EnemyBehavior : MonoBehaviour {
     // Event calls
     public void callChangeOfIntentions() { if (changeOfIntentions != null && References.stateManager.CurrentState == StateManager.states.realtime) changeOfIntentions(); }
     public void callChangeOfActions() { if (changeOfActions != null && References.stateManager.CurrentState == StateManager.states.realtime) changeOfActions(); }
-    public void callOnDeath() { }//if (onEnemyDeath != null) onEnemyDeath(); }
+    public void callOnDeath() { if (onEnemyDeath != null) onEnemyDeath(); }
 
 
 

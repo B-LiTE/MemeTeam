@@ -14,12 +14,12 @@ public class EnemyAttacking : MonoBehaviour {
 
         References.stateManager.changeState += onStateChange;
         enemyBehavior.changeOfActions += onChangeAction;
-        //enemyBehavior.onEnemyDeath += onDeath;
+        enemyBehavior.onEnemyDeath += onDeath;
     }
 
     void onDeath()
     {
-        //References.stateManager.changeState -= onStateChange;
+        References.stateManager.changeState -= onStateChange;
     }
 
     void onStateChange()

@@ -29,12 +29,12 @@ public class EnemyMovement : MonoBehaviour {
         enemyBehavior.changeOfActions += onChangeAction;
         enemyBehavior.changeOfIntentions += onChangeIntent;
         enemyTargetSeeking.onTargetVisible += onTargetVisible;
-        //enemyBehavior.onEnemyDeath += onDeath;
+        enemyBehavior.onEnemyDeath += onDeath;
     }
 
     void onDeath()
     {
-        //References.stateManager.changeState -= onStateChange;
+        References.stateManager.changeState -= onStateChange;
     }
 
 
@@ -270,7 +270,7 @@ public class EnemyMovement : MonoBehaviour {
 
     void stopMoving()
     {
-        navigation.ResetPath();
+        navigation.SetDestination(transform.position);
         navigation.velocity = Vector3.zero;
     }
 

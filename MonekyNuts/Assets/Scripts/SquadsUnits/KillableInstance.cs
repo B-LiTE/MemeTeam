@@ -27,7 +27,6 @@ public abstract class KillableInstance : MonoBehaviour{
 
     protected void Awake()
     {
-        Debug.Log(this.gameObject.name + " 100 + armor = " + (100 + armor));
         damageMultiplier = 100 / (float)(100 + armor);
     }
 
@@ -49,7 +48,6 @@ public abstract class KillableInstance : MonoBehaviour{
     {
         
         currHealth += amount;
-        Debug.Log("after " + amount + " change in health, curHeal = " + currHealth);
         if (currHealth > totHealth) currHealth = totHealth;
         if (currHealth <= 0)
         {
@@ -61,9 +59,6 @@ public abstract class KillableInstance : MonoBehaviour{
 
     public virtual void Damage(float amount)
     {
-        Debug.Log(this.gameObject.name + " took " + amount + " damage??");
-        Debug.Log("damageMultiplier = " + damageMultiplier);
-        Debug.Log("-Mathf.abs = " + (-Mathf.Abs(amount)));
         ChangeHealth(-Mathf.Abs(amount) * damageMultiplier);
     }
 
