@@ -1,21 +1,33 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-[RequireComponent(typeof(EnemyBehavior))]
+[RequireComponent(typeof(EnemyBehavior), typeof(EnemyStats))]
 public class EnemyAttacking : MonoBehaviour {
 
     EnemyBehavior enemyBehavior;
+    EnemyStats enemyStats;
 
     Coroutine attackCoroutine;
+
+    KillableInstance attackTarget;
 
     void Awake()
     {
         enemyBehavior = GetComponent<EnemyBehavior>();
+        enemyStats = GetComponent<EnemyStats>();
 
         References.stateManager.changeState += onStateChange;
         enemyBehavior.changeOfActions += onChangeAction;
         enemyBehavior.onEnemyDeath += onDeath;
     }
+
+
+
+
+
+
+
+
 
     void onDeath()
     {
@@ -50,9 +62,15 @@ public class EnemyAttacking : MonoBehaviour {
         }
     }
 
+
+
+
+
+
+
+
     IEnumerator attack()
     {
-        KillableInstance attackTarget;
         if (enemyBehavior.targetIsPlayer()) attackTarget = References.player.GetComponent<PlayerStats>();
         else if (enemyBehavior.targetIsCastle()) attackTarget = References.castle.GetComponent<Castle>();
         else attackTarget = enemyBehavior.getTarget().GetComponent<KillableInstance>();
@@ -61,16 +79,30 @@ public class EnemyAttacking : MonoBehaviour {
 
         while (attackTarget.isAlive)
         {
-            yield return new WaitForSeconds(1.5f);
+            yield return new WaitForSeconds(enemyStats.secondsBetweenAttacks);
             
-            attackTarget.Damage(-3);
+            attackTarget.Damage(enemyStats.attackValue);
         }
 
         enemyBehavior.changeIntent(this.gameObject);
     }
 
+
+
+
+
+
+
+
+
     void stopAttacking()
     {
+        if (attackTarget != null)
+        {
+            attackTarget.alertOnDeath -= stopAttacking;
+            attackTarget = null;
+        }
+
         // Stop attacking
         if (attackCoroutine != null)
         {

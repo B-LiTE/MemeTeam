@@ -11,7 +11,7 @@ public class EnemyBehavior : MonoBehaviour {
 
     // ACTIONS: Actions are dumb. They do only one thing and don't care about why (the intention).
     // Actions SHOULD NOT use either "changeAction" or "changeIntention".
-    public enum actions { moveToTarget, attack, rotate };
+    public enum actions { move, attack, rotate };
     [SerializeField]
     actions action;
 
@@ -37,7 +37,7 @@ public class EnemyBehavior : MonoBehaviour {
         onEnemyDeath += onDeath;
 
         changeIntent(transform.gameObject);
-        changeAction(actions.moveToTarget);
+        changeAction(actions.move);
     }
 
 

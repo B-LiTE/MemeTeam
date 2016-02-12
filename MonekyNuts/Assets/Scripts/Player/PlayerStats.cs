@@ -11,6 +11,9 @@ public class PlayerStats : KillableInstance {
 	public float addedDamage;
 	public float activeDamage; //add the other two for this one to actually use
 
+    public float attackRange;
+    public float secondsBetweenAttacks;
+
 	public Inventory inventory;
 
 	public RectTransform healthBar;

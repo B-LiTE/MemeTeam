@@ -1,10 +1,12 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-[RequireComponent(typeof(EnemyBehavior), typeof(NavMeshAgent), typeof(EnemyTargetSeeking))]
+[RequireComponent(typeof(EnemyBehavior), typeof(EnemyStats), typeof(EnemyTargetSeeking))]
+[RequireComponent(typeof(NavMeshAgent))]
 public class EnemyMovement : MonoBehaviour {
 
     EnemyBehavior enemyBehavior;
+    EnemyStats enemyStats;
     EnemyTargetSeeking enemyTargetSeeking;
 
     // Reference to navigation agent
@@ -22,6 +24,7 @@ public class EnemyMovement : MonoBehaviour {
     {
         // Set up references
         enemyBehavior = GetComponent<EnemyBehavior>();
+        enemyStats = GetComponent<EnemyStats>();
         navigation = GetComponent<NavMeshAgent>();
         enemyTargetSeeking = GetComponent<EnemyTargetSeeking>();
 
@@ -96,7 +99,7 @@ public class EnemyMovement : MonoBehaviour {
     void onChangeAction()
     {
         // If the action is to move...
-        if (enemyBehavior.getAction() == EnemyBehavior.actions.moveToTarget)
+        if (enemyBehavior.getAction() == EnemyBehavior.actions.move)
         {
             // Stop rotating if we are already
             stopRotateCoroutine();
@@ -157,36 +160,49 @@ public class EnemyMovement : MonoBehaviour {
             // If the enemy can see the target...
             if (enemyTargetSeeking.targetVisible)
             {
-                // ...and we aren't close enough, change our action to move towards it
-                if (!closeEnoughToTarget()) enemyBehavior.changeAction(EnemyBehavior.actions.moveToTarget);
-                // Otherwise, since we ARE close enough...
-                else
+                while (enemyTargetSeeking.targetVisible)
                 {
-                    // Stop moving
-                    stopMoving();
+                    // As long as we aren't in range of the target...
+                    while (!closeEnoughToTarget() && enemyTargetSeeking.targetVisible)
+                    {
+                        // Change our action to move towards it
+                        enemyBehavior.changeAction(EnemyBehavior.actions.move);
 
-                    // Change our action to attack
+                        yield return new WaitForSeconds(0.25f);
+                    }
+
+                    if (!enemyTargetSeeking.targetVisible) break;
+
+                    // Now that we are close enough, stop moving and begin attacking
+                    stopMoving();
                     enemyBehavior.changeAction(EnemyBehavior.actions.attack);
+
+                    yield return new WaitForSeconds(0.03f);
                 }
             }
             // If the enemy can't see the target...
             else
             {
-                // Stop moving
-                stopMoving();
-
-                for (int i = 0; i < 3; i++)
+                // Let the enemy get close enough to where the target was before continuing
+                if (closeEnoughToNavigationDestination())
                 {
-                    // Rotate to try and find it
-                    enemyBehavior.changeAction(EnemyBehavior.actions.rotate);
-                    yield return rotateCoroutine;
+                    // Since we are at the location that the target was and we still don't see them, stop moving
+                    stopMoving();
 
-                    // Idle for a short time
-                    yield return new WaitForSeconds(Random.Range(0.5f, 2f));
+                    for (int i = 0; i < 3; i++)
+                    {
+                        // Rotate to try and find it
+                        enemyBehavior.changeAction(EnemyBehavior.actions.rotate);
+                        yield return rotateCoroutine;
+
+                        // Idle for a short time
+                        yield return new WaitForSeconds(Random.Range(0.5f, 2f));
+                    }
+
+                    // If we rotated three times and still couldn't find it, give up and start wandering
+                    enemyBehavior.changeIntent(transform.gameObject);
                 }
-
-                // If we rotated three times and still couldn't find it, give up and start wandering
-                enemyBehavior.changeIntent(transform.gameObject);
+                //else enemyBehavior.changeAction(EnemyBehavior.actions.move);
             }
 
             yield return new WaitForSeconds(0.03f);
@@ -212,7 +228,7 @@ public class EnemyMovement : MonoBehaviour {
             Debug.DrawLine(transform.position, wanderingDestination, Color.black, 5f);
 
             // Start traveling to it
-            enemyBehavior.changeAction(EnemyBehavior.actions.moveToTarget);
+            enemyBehavior.changeAction(EnemyBehavior.actions.move);
 
             // Wait for enemy to finish traveling
             while (!closeEnoughToDestination()) yield return null;
@@ -333,7 +349,8 @@ public class EnemyMovement : MonoBehaviour {
         // Get the distance to our target
         float distanceToTarget = Vector3.Distance(zeroedYVector(transform.position), zeroedYVector(enemyBehavior.getTarget().GetComponent<Collider>().bounds.ClosestPoint(transform.position)));
 
-        return distanceToTarget <= movementCutoff;
+        if (enemyBehavior.getIntent() != EnemyBehavior.intentions.wander) return distanceToTarget <= enemyStats.attackRange;
+        else return distanceToTarget <= movementCutoff;
     }
 
 
@@ -348,6 +365,15 @@ public class EnemyMovement : MonoBehaviour {
         float distanceToDestination = Vector3.Distance(zeroedYVector(transform.position), zeroedYVector(wanderingDestination));
 
         return distanceToDestination <= movementCutoff;
+    }
+
+
+
+
+    bool closeEnoughToNavigationDestination()
+    {
+        return Vector3.Distance(zeroedYVector(transform.position), zeroedYVector(navigation.destination)) <= movementCutoff;
+        //return navigation.remainingDistance <= movementCutoff;
     }
 
 

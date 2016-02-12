@@ -8,18 +8,20 @@ public class Castle_Health_Display : MonoBehaviour {
 	public Castle castle;
 	public Sprite[] sprites = new Sprite[10];
 
+    Text healthText;
+
 	void Start()
 	{
 		castle = FindObjectOfType<Castle>().GetComponent<Castle>();
-
+        healthText = GetComponentInChildren<Text>();
 	}
 	void Update()
 	{
 		UpdateCastleHealth(castle.currHealth / castle.totHealth);
-		Debug.Log (castle.currHealth / castle.totHealth);
 	}
 	public void UpdateCastleHealth(float ratio)
 	{
+        healthText.text = (int)(ratio * 100) + "%";
 
 			if(ratio < .9f)
 			{

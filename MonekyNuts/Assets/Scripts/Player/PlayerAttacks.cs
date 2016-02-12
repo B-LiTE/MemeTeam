@@ -9,12 +9,6 @@ public class PlayerAttacks : MonoBehaviour {
 
     KillableInstance attackTarget;
 
-    // Range to attack from
-    public int attackRange;
-
-    [SerializeField]
-    float secondsBetweenAttacks;
-
     // Reference to coroutine
     Coroutine attackCoroutine;
 
@@ -29,6 +23,12 @@ public class PlayerAttacks : MonoBehaviour {
         References.stateManager.changeState += onStateChange;
     }
 
+
+
+
+
+
+
     void onStateChange()
     {
         if (References.stateManager.CurrentState != StateManager.states.realtime)
@@ -36,6 +36,8 @@ public class PlayerAttacks : MonoBehaviour {
             changeAttack(false);
         }
     }
+
+
 
     public void changeAttack(bool shouldAttack)
     {
@@ -49,6 +51,15 @@ public class PlayerAttacks : MonoBehaviour {
         }
     }
 
+
+
+
+
+
+
+
+
+
     IEnumerator attack()
     {
         attackTarget = playerBehavior.getTarget().GetComponent<KillableInstance>();
@@ -58,7 +69,7 @@ public class PlayerAttacks : MonoBehaviour {
         {
             while (inRangeOfTarget())
             {
-                yield return new WaitForSeconds(secondsBetweenAttacks);
+                yield return new WaitForSeconds(playerStats.secondsBetweenAttacks);
                 if (inRangeOfTarget()) attackTarget.Damage(playerStats.activeDamage);
             }
 
@@ -66,13 +77,30 @@ public class PlayerAttacks : MonoBehaviour {
         }
     }
 
+
+
+
+
+
+
+
+
+
+
     bool inRangeOfTarget()
     {
         Vector3 targetPosition = new Vector3(playerBehavior.getTarget().transform.position.x, 0, playerBehavior.getTarget().transform.position.z);
         Vector3 currentPosition = new Vector3(transform.position.x, 0, transform.position.z);
 
-        return Vector3.Distance(currentPosition, targetPosition) <= attackRange;
+        return Vector3.Distance(currentPosition, targetPosition) <= playerStats.attackRange;
     }
+
+
+
+
+
+
+
 
     void stopAttacking()
     {

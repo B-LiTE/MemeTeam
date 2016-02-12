@@ -1,10 +1,12 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-[RequireComponent(typeof(PlayerBehavior), typeof(PlayerAttacks), typeof(NavMeshAgent))]
+[RequireComponent(typeof(PlayerBehavior), typeof(PlayerStats), typeof(PlayerAttacks))]
+[RequireComponent(typeof(NavMeshAgent))]
 public class PlayerMovement : MonoBehaviour {
 
     PlayerBehavior playerBehavior;
+    PlayerStats playerStats;
     PlayerAttacks playerAttacks;
 
     // Reference to navigation agent
@@ -20,6 +22,7 @@ public class PlayerMovement : MonoBehaviour {
     {
         // Set up references
         playerBehavior = GetComponent<PlayerBehavior>();
+        playerStats = GetComponent<PlayerStats>();
         playerAttacks = GetComponent<PlayerAttacks>();
         navigation = GetComponent<NavMeshAgent>();
 
@@ -31,6 +34,7 @@ public class PlayerMovement : MonoBehaviour {
         if (References.stateManager.CurrentState != StateManager.states.realtime)
         {
             stopMoving();
+            stopFollowTargetCoroutine();
         }
     }
 
@@ -42,11 +46,7 @@ public class PlayerMovement : MonoBehaviour {
         }
         else
         {
-            if (followTargetCoroutine != null)
-            {
-                StopCoroutine(followTargetCoroutine);
-                followTargetCoroutine = null;
-            }
+            stopFollowTargetCoroutine();
 
             navigation.SetDestination(zeroedYVector(destination));
         }
@@ -65,25 +65,30 @@ public class PlayerMovement : MonoBehaviour {
                 yield return new WaitForSeconds(0.25f);
             }
 
+            stopMoving();
+
             yield return null;
         }
     }
 
     void stopMoving()
     {
+        navigation.SetDestination(transform.position);
+        navigation.velocity = Vector3.zero;
+    }
+
+    void stopFollowTargetCoroutine()
+    {
         if (followTargetCoroutine != null)
         {
             StopCoroutine(followTargetCoroutine);
             followTargetCoroutine = null;
         }
-
-        navigation.SetDestination(transform.position);
-        navigation.velocity = Vector3.zero;
     }
 
     bool inRangeOfTarget()
     {
-        return Vector3.Distance(zeroedYVector(transform.position), zeroedYVector(playerBehavior.getTarget().transform.position)) <= playerAttacks.attackRange;
+        return Vector3.Distance(zeroedYVector(transform.position), zeroedYVector(playerBehavior.getTarget().transform.position)) <= playerStats.attackRange;
     }
 
     /// <summary>

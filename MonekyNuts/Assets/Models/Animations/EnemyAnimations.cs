@@ -15,7 +15,7 @@ public class EnemyAnimations : MonoBehaviour {
 
     void onActionChange()
     {
-        if (enemyBehavior.getAction() == EnemyBehavior.actions.moveToTarget) anim.SetBool("Run", true);
+        if (enemyBehavior.getAction() == EnemyBehavior.actions.move) anim.SetBool("Run", true);
         else anim.SetBool("Run", false);
     }
 
