@@ -1,11 +1,13 @@
 fileFormatVersion: 2
 guid: 672c66bb98d94d347b7ccecaf34eb049
-timeCreated: 1455043270
-licenseType: Pro
+timeCreated: 1455555496
+licenseType: Free
 MonoImporter:
   serializedVersion: 2
-  defaultReferences: []
-  executionOrder: -5
+  defaultReferences:
+  - HealthBar: {instanceID: 0}
+  - troopPrefab: {fileID: 143518, guid: 35632258488ce7e4dad2ef72965b2924, type: 2}
+  executionOrder: -10
   icon: {instanceID: 0}
   userData: 
   assetBundleName: 

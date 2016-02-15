@@ -12,7 +12,7 @@ public class PickUpBuff : MonoBehaviour {
     }
     void OnTriggerEnter(Collider Player)
     {
-        if (Player.CompareTag("Player"))
+        if (personCanPickUp(Player.gameObject))
         {
             
             if (buffType == "gold")
@@ -20,6 +20,19 @@ public class PickUpBuff : MonoBehaviour {
                 FindObjectOfType<GameStats>().GetComponent<GameStats>().ChangeGoldCount(1);
             }
             
+        }
+    }
+
+    bool personCanPickUp(GameObject person)
+    {
+        switch (person.tag)
+        {
+            case "Player":
+            case "Troop":
+                return true;
+
+            default:
+                return false;
         }
     }
 }

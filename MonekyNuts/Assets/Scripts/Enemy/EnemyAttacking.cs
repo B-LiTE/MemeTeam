@@ -54,11 +54,7 @@ public class EnemyAttacking : MonoBehaviour {
         else
         {
             // If we are attacking, stop attacking
-            if (attackCoroutine != null)
-            {
-                StopCoroutine(attackCoroutine);
-                attackCoroutine = null;
-            }
+            stopAttacking();
         }
     }
 
@@ -79,9 +75,11 @@ public class EnemyAttacking : MonoBehaviour {
 
         while (attackTarget.isAlive)
         {
-            yield return new WaitForSeconds(enemyStats.secondsBetweenAttacks);
-            
+            yield return new WaitForSeconds(enemyStats.secondsBetweenAttacks / 2);
+
             attackTarget.Damage(enemyStats.attackValue);
+
+            yield return new WaitForSeconds(enemyStats.secondsBetweenAttacks / 2);
         }
 
         enemyBehavior.changeIntent(this.gameObject);

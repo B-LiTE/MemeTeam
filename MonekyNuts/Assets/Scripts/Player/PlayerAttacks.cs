@@ -69,8 +69,11 @@ public class PlayerAttacks : MonoBehaviour {
         {
             while (inRangeOfTarget())
             {
-                yield return new WaitForSeconds(playerStats.secondsBetweenAttacks);
+                yield return new WaitForSeconds(playerStats.secondsBetweenAttacks / 2);
+
                 if (inRangeOfTarget()) attackTarget.Damage(playerStats.activeDamage);
+
+                yield return new WaitForSeconds(playerStats.secondsBetweenAttacks / 2);
             }
 
             yield return null;

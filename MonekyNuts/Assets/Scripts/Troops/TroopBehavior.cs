@@ -1,11 +1,11 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class EnemyBehavior : MonoBehaviour {
+public class TroopBehavior : MonoBehaviour {
 
-    // INTENTIONS: Intentions are smart. They guide the enemy's behavior through many steps to get to the end goal.
+    // INTENTIONS: Intentions are smart. They guide the troop's behavior through many steps to get to the end goal.
     // Intention methods should use "changeAction" to guide behavior as needed.
-    public enum intentions { attackPlayer, attackCastle, attackTroop, wander };
+    public enum intentions { attackEnemy, getCollectible, protectCastle, wander };
     [SerializeField]
     intentions intent;
 
@@ -21,7 +21,7 @@ public class EnemyBehavior : MonoBehaviour {
 
 
     public delegate void voidDelegate();
-    public event voidDelegate changeOfIntentions, changeOfActions, onEnemyDeath;
+    public event voidDelegate changeOfIntentions, changeOfActions, onTroopDeath;
 
     [SerializeField]
     GameObject target;
@@ -34,7 +34,7 @@ public class EnemyBehavior : MonoBehaviour {
     void Start()
     {
         References.stateManager.changeState += onStateChange;
-        onEnemyDeath += onDeath;
+        onTroopDeath += onDeath;
 
         changeIntent(transform.gameObject);
         changeAction(actions.move);
@@ -62,9 +62,9 @@ public class EnemyBehavior : MonoBehaviour {
 
 
     // Target checking and getters
-    public bool targetIsPlayer() { return target != null && LayerMask.LayerToName(target.layer) == "Player"; }
+    public bool targetIsEnemy() { return target != null && LayerMask.LayerToName(target.layer) == "Enemies"; }
+    public bool targetIsCollectible() { return target != null && LayerMask.LayerToName(target.layer) == "Collectibles"; }
     public bool targetIsCastle() { return target != null && LayerMask.LayerToName(target.layer) == "Castle"; }
-    public bool targetIsTroop() { return target != null && LayerMask.LayerToName(target.layer) == "Troops"; }
     public GameObject getTarget() { return target; }
     public actions getAction() { return action; }
     public intentions getIntent() { return intent; }
@@ -72,12 +72,12 @@ public class EnemyBehavior : MonoBehaviour {
     {
         switch (LayerMask.LayerToName(target.layer))
         {
-            case "Player":
-                return intentions.attackPlayer;
+            case "Enemies":
+                return intentions.attackEnemy;
+            case "Collectibles":
+                return intentions.getCollectible;
             case "Castle":
-                return intentions.attackCastle;
-            case "Troops":
-                return intentions.attackTroop;
+                return intentions.protectCastle;
             default:
                 return intentions.wander;
         }
@@ -89,13 +89,13 @@ public class EnemyBehavior : MonoBehaviour {
     // Event calls
     public void callChangeOfIntentions() { if (changeOfIntentions != null && References.stateManager.CurrentState == StateManager.states.realtime) changeOfIntentions(); }
     public void callChangeOfActions() { if (changeOfActions != null && References.stateManager.CurrentState == StateManager.states.realtime) changeOfActions(); }
-    public void callOnDeath() { if (onEnemyDeath != null) onEnemyDeath(); }
+    public void callOnDeath() { if (onTroopDeath != null) onTroopDeath(); }
 
 
 
 
     /// <summary>
-    /// Changes the action of the enemy
+    /// Changes the action of the troop
     /// </summary>
     /// <param name="newAction">Action to change to</param>
     public void changeAction(actions newAction)
@@ -110,7 +110,7 @@ public class EnemyBehavior : MonoBehaviour {
 
 
     /// <summary>
-    /// Changes the intention of the enemy based on the input recieved
+    /// Changes the intention of the troop based on the input recieved
     /// </summary>
     /// <param name="target">The target object or creature</param>
     public void changeIntent(GameObject target)
@@ -118,40 +118,40 @@ public class EnemyBehavior : MonoBehaviour {
         this.target = target;
         int currentIntent = (int)intent;
 
-        // If the target is the player...
-        if (targetIsPlayer())
+        // If the target is an enemy...
+        if (targetIsEnemy())
         {
-            // ...and we aren't on the "attack player" intent... 
-            if (currentIntent != (int)intentions.attackPlayer)
+            // ...and we aren't on the "attack enemy" intent... 
+            if (currentIntent != (int)intentions.attackEnemy)
             {
                 // Change the intent
-                intent = intentions.attackPlayer;
+                intent = intentions.attackEnemy;
+                callChangeOfIntentions();
+            }
+        }
+        // If the target is a collectible...
+        else if (targetIsCollectible())
+        {
+            // ...and we aren't on the "get collectible" intent...
+            if (currentIntent != (int)intentions.getCollectible)
+            {
+                // Change the intent
+                intent = intentions.getCollectible;
                 callChangeOfIntentions();
             }
         }
         // If the target is the castle...
         else if (targetIsCastle())
         {
-            // ...and we aren't on the "attack castle" intent...
-            if (currentIntent != (int)intentions.attackCastle)
+            // ...and we aren't on the "protect castle" intent...
+            if (currentIntent != (int)intentions.protectCastle)
             {
                 // Change the intent
-                intent = intentions.attackCastle;
+                intent = intentions.protectCastle;
                 callChangeOfIntentions();
             }
         }
-        // If the target is a troop...
-        else if (targetIsTroop())
-        {
-            // ...and we aren't on the "attack troop" intent...
-            if (currentIntent != (int)intentions.attackTroop)
-            {
-                // Change the intent
-                intent = intentions.attackTroop;
-                callChangeOfIntentions();
-            }
-        }
-        // If the target isn't the player, castle, or a troop, change to the "wandering" intent
+        // If the target isn't an enemy, collectible, or castle, change to the "wandering" intent
         else
         {
             this.target = this.gameObject;

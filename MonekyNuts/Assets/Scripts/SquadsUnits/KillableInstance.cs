@@ -46,9 +46,9 @@ public abstract class KillableInstance : MonoBehaviour{
 
     public virtual void ChangeHealth(float amount)
     {
-        
         currHealth += amount;
         if (currHealth > totHealth) currHealth = totHealth;
+        Debug.Log(currHealth + " on " + gameObject.name);
         if (currHealth <= 0)
         {
             isAlive = false;

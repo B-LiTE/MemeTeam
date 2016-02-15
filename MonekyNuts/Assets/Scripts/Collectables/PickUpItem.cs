@@ -15,7 +15,7 @@ public class PickUpItem : MonoBehaviour {
 
 	void OnTriggerEnter(Collider player)
 	{
-		if(player.gameObject.CompareTag("Player"))
+		if(personCanPickUp(player.gameObject))
 		{
 			isPlayerOver = true;
 			StartCoroutine(PickUpSoon());
@@ -25,7 +25,7 @@ public class PickUpItem : MonoBehaviour {
 	}
 	void OnTriggerExit(Collider player)
 	{
-		if(player.gameObject.CompareTag("Player"))
+		if(personCanPickUp(player.gameObject))
 		{
 			isPlayerOver = false;
 
@@ -62,5 +62,18 @@ public class PickUpItem : MonoBehaviour {
 	{
 		StartCoroutine(BeCollected());
 	}*/
+
+    bool personCanPickUp(GameObject person)
+    {
+        switch (person.tag)
+        {
+            case "Player":
+            case "Troop":
+                return true;
+
+            default:
+                return false;
+        }
+    }
 
 }
