@@ -2,10 +2,10 @@
 using System.Collections;
 using System.Collections.Generic;
 
-[RequireComponent(typeof(EnemyBehavior))]
-public class EnemyTargetSeeking : MonoBehaviour {
+[RequireComponent(typeof(TroopBehavior))]
+public class TroopTargetSeeking : MonoBehaviour {
 
-    EnemyBehavior enemyBehavior;
+    TroopBehavior troopBehavior;
 
     [SerializeField]
     public bool targetVisible;
@@ -23,7 +23,7 @@ public class EnemyTargetSeeking : MonoBehaviour {
 
     void Awake()
     {
-        enemyBehavior = GetComponent<EnemyBehavior>();
+        troopBehavior = GetComponent<TroopBehavior>();
     }
 
     void Start()
@@ -53,47 +53,47 @@ public class EnemyTargetSeeking : MonoBehaviour {
             // Get all important objects in the sensing radius
             Collider[] sensedObjects = Physics.OverlapSphere(transform.position, sensingRadius, targetLayers);
 
-            int intentChoice = (int)EnemyBehavior.intentions.wander;
+            int intentChoice = (int)TroopBehavior.intentions.wander;
             foreach (Collider item in sensedObjects)
             {
                 GameObject currentItem = item.transform.gameObject;
 
-                // If the enemy can see the item...
+                // If the troop can see the item...
                 if (canSee(currentItem))
                 {
                     // ...and our target is the same as the item...
-                    if (enemyBehavior.getTarget() == currentItem)
+                    if (troopBehavior.getTarget() == currentItem)
                     {
                         // Set our choice and continue
-                        intentChoice = (int)enemyBehavior.getIntent();
+                        intentChoice = (int)troopBehavior.getIntent();
                         continue;
                     }
 
                     // If the item is the same or higher priority than the current item...
-                    if ((int)enemyBehavior.getIntentGiven(currentItem) <= intentChoice)
+                    if ((int)troopBehavior.getIntentGiven(currentItem) <= intentChoice)
                     {
                         // Change the intent
-                        enemyBehavior.changeIntent(currentItem);
-                        intentChoice = (int)enemyBehavior.getIntentGiven(currentItem);
+                        troopBehavior.changeIntent(currentItem);
+                        intentChoice = (int)troopBehavior.getIntentGiven(currentItem);
 
-                        // If the item is the player, break out of the loop since the player is the highest priority
-                        if (enemyBehavior.targetIsPlayer()) break;
+                        // If the item is an enemy, break out of the loop since an enemy is the highest priority
+                        if (troopBehavior.targetIsEnemy()) break;
                     }
                 }
-                // If the enemy can't see the item...
+                // If the troop can't see the item...
                 else
                 {
                     // ...but our target is the item...
-                    if (enemyBehavior.getTarget() == currentItem)
+                    if (troopBehavior.getTarget() == currentItem)
                     {
                         // The target is around here somewhere (because they're still in the sensing radius)
-                        intentChoice = (int)enemyBehavior.getIntent();
+                        intentChoice = (int)troopBehavior.getIntent();
                     }
                 }
             }
 
             // If we haven't changed intentions, start wandering
-            if (intentChoice == (int)EnemyBehavior.intentions.wander) enemyBehavior.changeIntent(this.gameObject);
+            if (intentChoice == (int)TroopBehavior.intentions.wander) troopBehavior.changeIntent(this.gameObject);
 
             yield return new WaitForSeconds(0.03f);
         }
@@ -110,7 +110,7 @@ public class EnemyTargetSeeking : MonoBehaviour {
     {
         while (true)
         {
-            if (canSee(enemyBehavior.getTarget()))
+            if (canSee(troopBehavior.getTarget()))
             {
                 if (!targetVisible)
                 {
@@ -190,7 +190,7 @@ public class EnemyTargetSeeking : MonoBehaviour {
 
 
     /// <summary>
-    /// Checks whether an object is within the enemy's sight lines
+    /// Checks whether an object is within the troop's sight lines
     /// </summary>
     /// <param name="target">Object to test</param>
     /// <returns>Returns true if the object is in sight lines, false if not</returns>
@@ -200,7 +200,7 @@ public class EnemyTargetSeeking : MonoBehaviour {
     }
 
     /// <summary>
-    /// Checks whether a point is within the enemy's sight lines
+    /// Checks whether a point is within the troop's sight lines
     /// </summary>
     /// <param name="target">Point to test</param>
     /// <returns>Returns true if the point is in sight lines, false if not</returns>
@@ -238,7 +238,7 @@ public class EnemyTargetSeeking : MonoBehaviour {
     }
 
     /// <summary>
-    /// Check if the enemy has unobstructed line of sight to the point in space
+    /// Check if the troop has unobstructed line of sight to the point in space
     /// </summary>
     /// <param name="target">Point in space trying to be seen</param>
     /// <returns>Returns true if unobstructed, false if not</returns>

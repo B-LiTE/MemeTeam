@@ -3,26 +3,27 @@ using System.Collections;
 
 public class StateTiming : MonoBehaviour {
 
-    // DEBUG - number of seconds of strategy and realtime parts
     [SerializeField]
-    int secondsOfStrategy, secondsOfRealtime;
+    public int secondsOfRealtime;
+
+    Coroutine realtimePhaseCoroutine;
 
     void Start()
     {
-        StartCoroutine(gameplayStateChanging());
+        References.stateManager.CurrentState = StateManager.states.strategy;
     }
 
-    IEnumerator gameplayStateChanging()
+    public void startRealtimePhase()
     {
-        int secondsInAMinute = 60;
+        if (realtimePhaseCoroutine == null) realtimePhaseCoroutine = StartCoroutine(realtimePhase());
+    }
+
+    IEnumerator realtimePhase()
+    {
+        References.stateManager.CurrentState = StateManager.states.realtime;
+        yield return new WaitForSeconds(secondsOfRealtime);
         References.stateManager.CurrentState = StateManager.states.strategy;
-        while (true)
-        {
-            yield return new WaitForSeconds(secondsOfStrategy);//2 * secondsInAMinute);
-            References.stateManager.CurrentState = StateManager.states.realtime;
-            yield return new WaitForSeconds(secondsOfRealtime);//1 * secondsInAMinute);
-            References.stateManager.CurrentState = StateManager.states.strategy;
-        }
+        realtimePhaseCoroutine = null;
     }
 
 }
