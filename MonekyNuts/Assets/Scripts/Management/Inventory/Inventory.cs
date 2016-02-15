@@ -164,9 +164,64 @@ public class Inventory : MonoBehaviour {
 		
 		
 	}
+	public bool AddItemStorage(int dropItemId)
+	{
+		int dropMaxStack = GetComponent<Item_Database> ().allItems [dropItemId].itemMaxStack;
+		int wherePlaced = 0;
+		bool foundPlace = false;
+		bool breakOut = false;
+		if (dropMaxStack > 0) 
+		{
+			breakOut = false;
+			bool foundFirstEmptySlot = false;
+			int emptySlot = -1; //if it doesn't find an existing stack to add to, then it will add to the first found empty instead.
+			for (int i = 9; i < 21 && !breakOut; i++) { //9 - 21 is only the storage
+				if (inventory [i].itemId == dropItemId && stackInSlots [i] < dropMaxStack) { //if theres an existing stack of the item with room
+					stackInSlots [i]++; //just add to the existing count
+					foundPlace = true;
+					wherePlaced = i;
+					
+					breakOut = true; //escape the loop
+				}
+				if (!foundFirstEmptySlot) {
+					if (inventory [i].itemType == "Empty") {
+						emptySlot = i;
+						foundFirstEmptySlot = true;
+					}
+				}
+			}
+			if (!foundPlace && emptySlot != -1) { //if there wasnt an existing stack add it to the first empty
+				inventory [emptySlot] = GetComponent<Item_Database> ().allItems [dropItemId];
+				stackInSlots [emptySlot]++; 
+				foundPlace = true;
+				wherePlaced = emptySlot;
+			}
+		}
+		else { //if its not stackable
+			breakOut = false;
+			for (int i = 1; i < INVENTORY_SIZE && !breakOut; i++) { //1 - 50 is the actual inventory
+				if (inventory [i].itemId == -1) { //if the slot is empty
+					inventory [i] = GetComponent<Item_Database> ().allItems [dropItemId];
+					stackInSlots [i]++; //just add to the existing count
+					foundPlace = true;
+					wherePlaced = i;
+					
+					breakOut = true; //escape the loop
+				}
+			}
+		}
+		return foundPlace;
+	}
 	public void PickUpDropItem(GameObject item)
 	{
 		if(AddItem(item.GetComponent<PickUpItem>().itemId))
+		{
+			Destroy(item);
+		}
+	}
+	public void TroopPickUpItem(GameObject item)
+	{
+		if(AddItemStorage(item.GetComponent<PickUpItem>().itemId))
 		{
 			Destroy(item);
 		}

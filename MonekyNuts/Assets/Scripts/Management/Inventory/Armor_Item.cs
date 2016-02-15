@@ -16,4 +16,8 @@ public class Armor_Item : Item {
 
 		this.armorValue = armorValue_;
 	}
+	public override string ToString ()
+	{
+		return itemName + "\nArmor: " + armorValue;
+	}
 }

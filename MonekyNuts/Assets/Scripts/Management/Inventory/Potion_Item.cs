@@ -16,6 +16,9 @@ public class Potion_Item : Item
 
 		this.healAmount = healAmount;
 	}
-
+	public override string ToString ()
+	{
+		return itemName + "\nHeal Amount: " + healAmount;
+	}
 
 }

@@ -18,6 +18,7 @@ public class Market : MonoBehaviour {
 
 	void Start () 
 	{
+		Debug.Log ("the market exists");
 		References.stateManager.changeState += RandomizeMarket;
 
 		marketArrays = GetComponent<MarketArrays>();
@@ -39,7 +40,7 @@ public class Market : MonoBehaviour {
 	{
 		for(int i = 0;i < buyableItems.Length;i++)
 		{
-			purchaseButtons[i].GetComponentInChildren<Text>().text = itemDatabase.allItems[buyableItems[i]].itemName + "<color=#9C0101>\nBuy Price: " + itemDatabase.allItems[buyableItems[i]].goldPrice + "</color>";
+			purchaseButtons[i].GetComponentInChildren<Text>().text = itemDatabase.allItems[buyableItems[i]].ToString() + "<color=#9C0101>\nBuy Price: " + itemDatabase.allItems[buyableItems[i]].goldPrice + "</color>";
 			purchaseButtons[i].GetComponent<Purchase_Item>().itemID = buyableItems[i];
 			purchaseDisplays[i].GetComponent<Image>().sprite = itemDatabase.inventorySprites[buyableItems[i]];
 		}
