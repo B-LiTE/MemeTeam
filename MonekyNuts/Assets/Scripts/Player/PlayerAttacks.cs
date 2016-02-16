@@ -7,6 +7,9 @@ public class PlayerAttacks : MonoBehaviour {
     PlayerBehavior playerBehavior;
     PlayerStats playerStats;
 
+    [SerializeField]
+    Animations playerAnimations;
+
     KillableInstance attackTarget;
 
     // Reference to coroutine
@@ -69,9 +72,11 @@ public class PlayerAttacks : MonoBehaviour {
         {
             while (inRangeOfTarget())
             {
+                playerAnimations.attackAnimation(true);
                 yield return new WaitForSeconds(playerStats.secondsBetweenAttacks / 2);
 
                 if (inRangeOfTarget()) attackTarget.Damage(playerStats.activeDamage);
+                playerAnimations.attackAnimation(false);
 
                 yield return new WaitForSeconds(playerStats.secondsBetweenAttacks / 2);
             }

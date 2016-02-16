@@ -1,0 +1,253 @@
+fileFormatVersion: 2
+guid: 7650d71eb1a2c1c4c8d7becdf4b80554
+timeCreated: 1455645719
+licenseType: Free
+ModelImporter:
+  serializedVersion: 18
+  fileIDToRecycleName:
+    100000: Armature
+    100002: Calf.L
+    100004: Calf.R
+    100006: Clavical.L
+    100008: Clavical.R
+    100010: Fingers.L
+    100012: Fingers.R
+    100014: Fingers1.L
+    100016: Fingers1.L_end
+    100018: Fingers1.R
+    100020: Fingers1.R_end
+    100022: Foot.L
+    100024: Foot.L_end
+    100026: Foot.R
+    100028: Foot.R_end
+    100030: Forearm.L
+    100032: Forearm.R
+    100034: Hand.L
+    100036: Hand.R
+    100038: Head
+    100040: Head_end
+    100042: Pelvis
+    100044: PM3D_ZSphere_3
+    100046: Spine
+    100048: Spine1
+    100050: Thigh.L
+    100052: Thigh.R
+    100054: Thumb.L
+    100056: Thumb.R
+    100058: Thumb1.L
+    100060: Thumb1.R
+    100062: Thumb2.L
+    100064: Thumb2.L_end
+    100066: Thumb2.R
+    100068: Thumb2.R_end
+    100070: Upperarm.L
+    100072: Upperarm.R
+    100074: //RootNode
+    400000: Armature
+    400002: Calf.L
+    400004: Calf.R
+    400006: Clavical.L
+    400008: Clavical.R
+    400010: Fingers.L
+    400012: Fingers.R
+    400014: Fingers1.L
+    400016: Fingers1.L_end
+    400018: Fingers1.R
+    400020: Fingers1.R_end
+    400022: Foot.L
+    400024: Foot.L_end
+    400026: Foot.R
+    400028: Foot.R_end
+    400030: Forearm.L
+    400032: Forearm.R
+    400034: Hand.L
+    400036: Hand.R
+    400038: Head
+    400040: Head_end
+    400042: Pelvis
+    400044: PM3D_ZSphere_3
+    400046: Spine
+    400048: Spine1
+    400050: Thigh.L
+    400052: Thigh.R
+    400054: Thumb.L
+    400056: Thumb.R
+    400058: Thumb1.L
+    400060: Thumb1.R
+    400062: Thumb2.L
+    400064: Thumb2.L_end
+    400066: Thumb2.R
+    400068: Thumb2.R_end
+    400070: Upperarm.L
+    400072: Upperarm.R
+    400074: //RootNode
+    4300000: PM3D_ZSphere_3
+    7400000: mixamo.com
+    9500000: //RootNode
+    13700000: PM3D_ZSphere_3
+  materials:
+    importMaterials: 1
+    materialName: 0
+    materialSearch: 1
+  animations:
+    legacyGenerateAnimations: 4
+    bakeSimulation: 0
+    optimizeGameObjects: 0
+    motionNodeName: 
+    animationImportErrors: 
+    animationImportWarnings: 
+    animationRetargetingWarnings: 
+    animationDoRetargetingWarnings: 0
+    animationCompression: 1
+    animationRotationError: .5
+    animationPositionError: .5
+    animationScaleError: .5
+    animationWrapMode: 0
+    extraExposedTransformPaths: []
+    clipAnimations:
+    - serializedVersion: 16
+      name: mixamo.com
+      takeName: mixamo.com
+      firstFrame: 0
+      lastFrame: 35
+      wrapMode: 0
+      orientationOffsetY: 0
+      level: 0
+      cycleOffset: 0
+      loop: 0
+      loopTime: 1
+      loopBlend: 1
+      loopBlendOrientation: 0
+      loopBlendPositionY: 0
+      loopBlendPositionXZ: 0
+      keepOriginalOrientation: 0
+      keepOriginalPositionY: 1
+      keepOriginalPositionXZ: 0
+      heightFromFeet: 0
+      mirror: 0
+      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
+      curves: []
+      events: []
+      transformMask:
+      - path: 
+        weight: 1
+      - path: Armature
+        weight: 1
+      - path: Armature/Pelvis
+        weight: 1
+      - path: Armature/Pelvis/Spine
+        weight: 1
+      - path: Armature/Pelvis/Spine/Spine1
+        weight: 1
+      - path: Armature/Pelvis/Spine/Spine1/Clavical.L
+        weight: 1
+      - path: Armature/Pelvis/Spine/Spine1/Clavical.L/Upperarm.L
+        weight: 1
+      - path: Armature/Pelvis/Spine/Spine1/Clavical.L/Upperarm.L/Forearm.L
+        weight: 1
+      - path: Armature/Pelvis/Spine/Spine1/Clavical.L/Upperarm.L/Forearm.L/Hand.L
+        weight: 1
+      - path: Armature/Pelvis/Spine/Spine1/Clavical.L/Upperarm.L/Forearm.L/Hand.L/Fingers.L
+        weight: 1
+      - path: Armature/Pelvis/Spine/Spine1/Clavical.L/Upperarm.L/Forearm.L/Hand.L/Fingers.L/Fingers1.L
+        weight: 1
+      - path: Armature/Pelvis/Spine/Spine1/Clavical.L/Upperarm.L/Forearm.L/Hand.L/Fingers.L/Fingers1.L/Fingers1.L_end
+        weight: 1
+      - path: Armature/Pelvis/Spine/Spine1/Clavical.L/Upperarm.L/Forearm.L/Hand.L/Thumb.L
+        weight: 1
+      - path: Armature/Pelvis/Spine/Spine1/Clavical.L/Upperarm.L/Forearm.L/Hand.L/Thumb.L/Thumb1.L
+        weight: 1
+      - path: Armature/Pelvis/Spine/Spine1/Clavical.L/Upperarm.L/Forearm.L/Hand.L/Thumb.L/Thumb1.L/Thumb2.L
+        weight: 1
+      - path: Armature/Pelvis/Spine/Spine1/Clavical.L/Upperarm.L/Forearm.L/Hand.L/Thumb.L/Thumb1.L/Thumb2.L/Thumb2.L_end
+        weight: 1
+      - path: Armature/Pelvis/Spine/Spine1/Clavical.R
+        weight: 1
+      - path: Armature/Pelvis/Spine/Spine1/Clavical.R/Upperarm.R
+        weight: 1
+      - path: Armature/Pelvis/Spine/Spine1/Clavical.R/Upperarm.R/Forearm.R
+        weight: 1
+      - path: Armature/Pelvis/Spine/Spine1/Clavical.R/Upperarm.R/Forearm.R/Hand.R
+        weight: 1
+      - path: Armature/Pelvis/Spine/Spine1/Clavical.R/Upperarm.R/Forearm.R/Hand.R/Fingers.R
+        weight: 1
+      - path: Armature/Pelvis/Spine/Spine1/Clavical.R/Upperarm.R/Forearm.R/Hand.R/Fingers.R/Fingers1.R
+        weight: 1
+      - path: Armature/Pelvis/Spine/Spine1/Clavical.R/Upperarm.R/Forearm.R/Hand.R/Fingers.R/Fingers1.R/Fingers1.R_end
+        weight: 1
+      - path: Armature/Pelvis/Spine/Spine1/Clavical.R/Upperarm.R/Forearm.R/Hand.R/Thumb.R
+        weight: 1
+      - path: Armature/Pelvis/Spine/Spine1/Clavical.R/Upperarm.R/Forearm.R/Hand.R/Thumb.R/Thumb1.R
+        weight: 1
+      - path: Armature/Pelvis/Spine/Spine1/Clavical.R/Upperarm.R/Forearm.R/Hand.R/Thumb.R/Thumb1.R/Thumb2.R
+        weight: 1
+      - path: Armature/Pelvis/Spine/Spine1/Clavical.R/Upperarm.R/Forearm.R/Hand.R/Thumb.R/Thumb1.R/Thumb2.R/Thumb2.R_end
+        weight: 1
+      - path: Armature/Pelvis/Spine/Spine1/Head
+        weight: 1
+      - path: Armature/Pelvis/Spine/Spine1/Head/Head_end
+        weight: 1
+      - path: Armature/Pelvis/Thigh.L
+        weight: 1
+      - path: Armature/Pelvis/Thigh.L/Calf.L
+        weight: 1
+      - path: Armature/Pelvis/Thigh.L/Calf.L/Foot.L
+        weight: 1
+      - path: Armature/Pelvis/Thigh.L/Calf.L/Foot.L/Foot.L_end
+        weight: 1
+      - path: Armature/Pelvis/Thigh.R
+        weight: 1
+      - path: Armature/Pelvis/Thigh.R/Calf.R
+        weight: 1
+      - path: Armature/Pelvis/Thigh.R/Calf.R/Foot.R
+        weight: 1
+      - path: Armature/Pelvis/Thigh.R/Calf.R/Foot.R/Foot.R_end
+        weight: 1
+      - path: PM3D_ZSphere_3
+        weight: 1
+      maskType: 0
+      maskSource: {instanceID: 0}
+    isReadable: 1
+  meshes:
+    lODScreenPercentages: []
+    globalScale: 1
+    meshCompression: 0
+    addColliders: 0
+    importBlendShapes: 1
+    swapUVChannels: 0
+    generateSecondaryUV: 0
+    useFileUnits: 1
+    optimizeMeshForGPU: 1
+    keepQuads: 0
+    weldVertices: 1
+    secondaryUVAngleDistortion: 8
+    secondaryUVAreaDistortion: 15.000001
+    secondaryUVHardAngle: 88
+    secondaryUVPackMargin: 4
+    useFileScale: 1
+  tangentSpace:
+    normalSmoothAngle: 60
+    splitTangentsAcrossUV: 1
+    normalImportMode: 0
+    tangentImportMode: 1
+  importAnimation: 1
+  copyAvatar: 0
+  humanDescription:
+    human: []
+    skeleton: []
+    armTwist: .5
+    foreArmTwist: .5
+    upperLegTwist: .5
+    legTwist: .5
+    armStretch: .0500000007
+    legStretch: .0500000007
+    feetSpacing: 0
+    rootMotionBoneName: 
+    hasTranslationDoF: 0
+  lastHumanDescriptionAvatarSource: {instanceID: 0}
+  animationType: 2
+  humanoidOversampling: 1
+  additionalBone: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
