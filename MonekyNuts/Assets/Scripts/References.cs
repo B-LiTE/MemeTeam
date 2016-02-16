@@ -14,6 +14,7 @@ public static class References {
     public static Item_Database itemDatabase = manager.GetComponent<Item_Database>();
     public static Inventory inventory = manager.GetComponent<Inventory>();
     public static Market market = manager.GetComponent<Market>();
+	public static MarketArrays marketArrays = manager.GetComponent<MarketArrays>();
 
     // Cameras
     public static Camera realtimeCamera = GameObject.FindGameObjectWithTag("Camera_Realtime").GetComponent<Camera>();
