@@ -88,17 +88,17 @@ public class TroopAttacking : MonoBehaviour {
 
     void stopAttacking()
     {
-        if (attackTarget != null)
-        {
-            attackTarget.alertOnDeath -= stopAttacking;
-            attackTarget = null;
-        }
 
         // Stop attacking
         if (attackCoroutine != null)
         {
             StopCoroutine(attackCoroutine);
             attackCoroutine = null;
+        }
+        if (attackTarget != null)
+        {
+            attackTarget.alertOnDeath -= stopAttacking;
+            attackTarget = null;
         }
     }
 }
