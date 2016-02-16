@@ -15,7 +15,7 @@ public class Item_Database : MonoBehaviour {
         allItems.Add(new Item(0,"Empty","Empty",0,0)); //first entry in the inventory HAS to be empty!
         allItems.Add(new Weapon_Item(1,"Iron Sword","Weapon",1,10,10,3,1));
 		allItems.Add(new Armor_Item(2,"Iron Shield","Armor",1,35,10));
-        allItems.Add(new Weapon_Item(3, "Volcano Sword", "Weapon",1,3,30,3.2f,1));
+        allItems.Add(new Weapon_Item(3, "Volcano Sword", "Weapon",1,25,30,3.2f,1));
 		allItems.Add(new Potion_Item(4, "Potion", "Potion",20, 5, 50));
 		allItems.Add(new Weapon_Item(5, "Rainbow Sword", "Weapon",1,50,50,3.5f,1));
 		allItems.Add(new Weapon_Item(6, "Jagged Knife", "Weapon",1,35,30,3f,1));

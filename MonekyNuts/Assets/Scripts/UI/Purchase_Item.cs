@@ -12,9 +12,12 @@ public class Purchase_Item : MonoBehaviour {
 	}
 	public void PurchaseItem()
 	{
-		if(inventory.AddItem(itemID)) //if theres inventory space
+		if (References.gameStats.goldCount >= References.itemDatabase.allItems [itemID].goldPrice) 
 		{
-			//reduce gold
+			if (inventory.AddItem (itemID)) 
+			{ 
+				References.gameStats.ChangeGoldCount(-References.itemDatabase.allItems [itemID].goldPrice);
+			}
 		}
 	}
 }

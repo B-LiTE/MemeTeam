@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using UnityEngine.UI;
 
 public class PickUpItem : MonoBehaviour {
 
@@ -11,6 +12,7 @@ public class PickUpItem : MonoBehaviour {
 	void Start()
 	{
 		StartCoroutine(CreationTime());
+		GetComponent<SpriteRenderer> ().sprite = References.itemDatabase.inventorySprites [itemId];
 	}
 
 	void OnTriggerEnter(Collider player)
