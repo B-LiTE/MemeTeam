@@ -11,10 +11,14 @@ public class PlayerStats : KillableInstance {
 	public float addedDamage;
 	public float activeDamage; //add the other two for this one to actually use
 
+	public float baseAttackSpeed;
+	public float attackSpeed;
+	public float baseAttackRange;
     public float attackRange;
     public float secondsBetweenAttacks;
 
 	public Inventory inventory;
+	public float goldCount;
 
 	public RectTransform healthBar;
 	
@@ -36,6 +40,10 @@ public class PlayerStats : KillableInstance {
 		//
 		totHealth = 100;
 		currHealth = totHealth;
+		baseAttackRange = 3;
+		baseAttackSpeed = 1;
+
+		goldCount = 0;
 	}
 
 	public void ChangeActiveWeapon(int slotIndex) //pass in the location of where active item has been chenged;
@@ -67,9 +75,11 @@ public class PlayerStats : KillableInstance {
 		{
 			if(item.itemType == "Weapon")
 			{
-			Weapon_Item trueItem = item as Weapon_Item;
-			addedDamage -= trueItem.damage;
-			Debug.Log ("added damage is currently" + addedDamage);
+				Weapon_Item trueItem = item as Weapon_Item;
+				addedDamage -= trueItem.damage;
+				attackSpeed = baseAttackSpeed;
+				attackRange = baseAttackRange;
+				Debug.Log ("added damage is currently" + addedDamage);
 			}
 		}
 		else if(type == "Armor")
@@ -88,9 +98,11 @@ public class PlayerStats : KillableInstance {
 		{
 			if(item.itemType == "Weapon")
 			{
-			Weapon_Item trueItem = item as Weapon_Item;
-			addedDamage += trueItem.damage;
-			Debug.Log ("added damage is currently" + addedDamage);
+				Weapon_Item trueItem = item as Weapon_Item;
+				addedDamage += trueItem.damage;
+				attackSpeed = trueItem.attackSpeed;
+				attackRange = trueItem.range;
+				Debug.Log ("added damage is currently" + addedDamage);
 			}
 		}
 		else if(type == "Armor")

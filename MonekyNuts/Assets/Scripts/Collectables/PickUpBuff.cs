@@ -4,20 +4,28 @@ using System.Collections;
 public class PickUpBuff : MonoBehaviour {
 
     public string buffType; //the type of thing it is that we are picking up
-    private GameStats thing;
+	public int buffAmount;
+    private GameStats stats;
 
     void Awake()
     {
-
+		stats = FindObjectOfType<GameStats>().GetComponent<GameStats>();
+		AmountRandomizer();
     }
+	void AmountRandomizer()
+	{
+		buffAmount = (int)Random.Range (5,15);
+	}
     void OnTriggerEnter(Collider Player)
     {
+
         if (personCanPickUp(Player.gameObject))
         {
             
             if (buffType == "gold")
             {
-                FindObjectOfType<GameStats>().GetComponent<GameStats>().ChangeGoldCount(1);
+                stats.ChangeGoldCount(buffAmount);
+				Destroy(gameObject);
             }
             
         }

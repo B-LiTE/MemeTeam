@@ -210,6 +210,10 @@ public class Inventory : MonoBehaviour {
 				}
 			}
 		}
+		if (foundPlace) {//if one IS found!
+			UpdateInventorySprite (wherePlaced);
+			UpdateInventoryStackCounter (wherePlaced);
+		}
 		return foundPlace;
 	}
 	public void PickUpDropItem(GameObject item)
