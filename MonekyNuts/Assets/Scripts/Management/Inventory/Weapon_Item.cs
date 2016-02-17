@@ -22,6 +22,6 @@ public class Weapon_Item : Item {
 	}
 	public override string ToString ()
 	{
-		return itemName + "\nDamage: " + damage + "\nRange: " + range + "\n Attack Speed" + attackSpeed;
+		return itemName + "\nDamage: " + damage + "\nRange: " + range + "\n Attack Speed: " + attackSpeed;
 	}
 }

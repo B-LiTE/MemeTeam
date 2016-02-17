@@ -47,5 +47,6 @@ public class Show_Market : MonoBehaviour {
 		market.SetActive(true);
 		showMarketButton.GetComponentInChildren<Text> ().text = "Hide Market";
 		isMarketVisible = true;
+		FindObjectOfType<Purchase_Troops> ().RefreshCost ();
 	}
 }
