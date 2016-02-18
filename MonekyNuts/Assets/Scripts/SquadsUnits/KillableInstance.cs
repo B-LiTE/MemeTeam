@@ -27,7 +27,7 @@ public abstract class KillableInstance : MonoBehaviour{
 
     protected void Awake()
     {
-        damageMultiplier = 100 / (float)(100 + armor);
+		RefreshDamageMultiplier();
     }
 
     void Start()
@@ -59,8 +59,15 @@ public abstract class KillableInstance : MonoBehaviour{
 
     public virtual void Damage(float amount)
     {
+		
+		RefreshDamageMultiplier();
         ChangeHealth(-Mathf.Abs(amount) * damageMultiplier);
+		Debug.Log (-Mathf.Abs(amount) * damageMultiplier + "  damage " + armor + " armor " + damageMultiplier + " multiplier ");
     }
+	public void RefreshDamageMultiplier()
+	{
+		damageMultiplier = 100 / (float)(100 + armor);
+	}
 
 
 

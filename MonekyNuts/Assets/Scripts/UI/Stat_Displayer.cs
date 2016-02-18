@@ -12,7 +12,9 @@ public class Stat_Displayer : MonoBehaviour {
 	}
 	void Update()
 	{
-		GetComponent<Text>().text = "Attack: " + playerStats.activeDamage + "\nArmor: " + playerStats.armor;
+		//GetComponent<Text>().text = "Attack: " + playerStats.activeDamage + "\nArmor: " + playerStats.armor;
+		GetComponent<Text>().text = string.Format("Attack: {0,-6} Range: {1,-6}\nArmor: {2,-6}  Attack Speed: {3,-6}",
+		                                          playerStats.activeDamage,playerStats.attackRange,playerStats.armor,playerStats.attackSpeed);
 	}
 	
 

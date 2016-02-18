@@ -42,6 +42,7 @@ public class PlayerStats : KillableInstance {
 		currHealth = totHealth;
 		baseAttackRange = 3;
 		baseAttackSpeed = 1;
+		attackRange = baseAttackRange;
 
 		goldCount = 0;
 	}
@@ -59,7 +60,6 @@ public class PlayerStats : KillableInstance {
 	}
 	public void ChangeActiveArmor(int slotIndex) //pass in the location of where armor has been chenged;
 	{
-
 
 		RemoveItemStats (armorArray[slotIndex],"Armor");
 		armorArray [slotIndex] = inventory.inventory [slotIndex];
@@ -127,6 +127,7 @@ public class PlayerStats : KillableInstance {
 	}
 	public override void Damage(float amount)
 	{
+
 		base.Damage (amount);
 		UsePotion();
 		UpdateHealthBar ();
