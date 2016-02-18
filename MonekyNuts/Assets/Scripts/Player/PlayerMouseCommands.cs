@@ -49,7 +49,7 @@ public class PlayerMouseCommands : MonoBehaviour {
                 {
                     // Get the object that we touched (if any)
                     RaycastHit hitInfo;
-                    if (Physics.Raycast(References.realtimeCamera.ScreenPointToRay(Input.mousePosition), out hitInfo, 100))
+                    if (Physics.Raycast(References.realtimeCamera.ScreenPointToRay(Input.mousePosition), out hitInfo, 1000))
                     {
                         // Send what we touched to the player behavior for processing
                         playerBehavior.changeTarget(hitInfo.transform.gameObject, hitInfo.point);

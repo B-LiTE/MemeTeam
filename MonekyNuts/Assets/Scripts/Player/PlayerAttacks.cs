@@ -72,13 +72,26 @@ public class PlayerAttacks : MonoBehaviour {
         {
             while (inRangeOfTarget())
             {
-                playerAnimations.attackAnimation(true);
-                yield return new WaitForSeconds(playerStats.secondsBetweenAttacks / 2);
+                if (playerBehavior.seesTarget())
+                {
+                    playerAnimations.attackAnimation(true);
+                    yield return new WaitForSeconds(playerStats.secondsBetweenAttacks / 2);
 
-                if (inRangeOfTarget()) attackTarget.Damage(playerStats.activeDamage);
-                playerAnimations.attackAnimation(false);
+                    if (inRangeOfTarget())
+                    {
+                        attackTarget.Damage(playerStats.activeDamage);
+                        playerAnimations.attackAnimation(false);
+                    }
 
-                yield return new WaitForSeconds(playerStats.secondsBetweenAttacks / 2);
+                    yield return new WaitForSeconds(playerStats.secondsBetweenAttacks / 2);
+                }
+                else
+                {
+                    float angle = Vector3.Angle(transform.forward, playerBehavior.getTarget().transform.position);
+                    Debug.Log("angle = " + angle);
+                    //playerBehavior.startRotating(Vector3.Angle(transform.position, playerBehavior.getTarget().transform.position));
+                    yield return StartCoroutine(References.player.GetComponent<PlayerMovement>().rotate(angle));
+                }
             }
 
             yield return null;
