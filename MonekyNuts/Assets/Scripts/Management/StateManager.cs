@@ -33,17 +33,6 @@ public class StateManager : MonoBehaviour {
         StartCoroutine(checkPause());
     }
 
-    // DEBUG - to change between states
-    void Update()
-    {
-        if (Input.GetKeyUp(KeyCode.Alpha1))
-            CurrentState = states.menu;
-        else if (Input.GetKeyUp(KeyCode.Alpha2))
-            CurrentState = states.realtime;
-        else if (Input.GetKeyUp(KeyCode.Alpha3))
-            CurrentState = states.strategy;
-    }
-
     public void pause(bool shouldPause)
     {
         isPaused = shouldPause;
