@@ -9,6 +9,7 @@ public class PlayerBehavior : MonoBehaviour {
     PlayerMovement playerMovement;
     PlayerAttacks playerAttacks;
 
+    [SerializeField]
     float fieldOfViewAngle;
 
     [SerializeField]
@@ -58,6 +59,11 @@ public class PlayerBehavior : MonoBehaviour {
     public bool seesTarget()
     {
         return canSee(target);
+    }
+
+    public void startRotating(float degrees)
+    {
+        playerMovement.startRotating(degrees);
     }
 
 

@@ -100,4 +100,35 @@ public class PlayerMovement : MonoBehaviour {
     {
         return new Vector3(vector.x, 0, vector.z);
     }
+
+
+
+
+    bool isRotating = false;
+    Coroutine rotationCoroutine;
+
+    public void startRotating(float degrees)
+    {
+        if (!isRotating) rotationCoroutine = StartCoroutine(rotate(degrees));
+        else
+        {
+            //StopCoroutine(rotationCoroutine);
+            //rotationCoroutine = StartCoroutine(rotate(degrees));
+        }
+    }
+
+    public IEnumerator rotate(float degrees)
+    {
+        isRotating = true;
+        float t = 0;
+        float current = transform.rotation.y;
+        while (t <= 1)
+        {
+            transform.rotation = Quaternion.Euler(new Vector3(transform.rotation.x, Mathf.Lerp(current, current + degrees, t), transform.rotation.z));
+
+            t += 0.1f;
+            yield return null;
+        }
+        isRotating = false;
+    }
 }
