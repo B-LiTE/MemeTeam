@@ -26,7 +26,6 @@ public abstract class Interactive_Object : MonoBehaviour {
 		{
 			if (other.CompareTag("Player"))
 			{	
-				Debug.Log ("the chest find player");
 				OnInteraction();
 				isInPlayerRange = true;
 			}

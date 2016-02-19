@@ -247,7 +247,6 @@ public class TroopTargetSeeking : MonoBehaviour {
         if (inSightLines(target))
         {
             RaycastHit hitInfo = raycastTo(target);
-            if (hitInfo.transform != null) Debug.Log(hitInfo.point + " " + hitInfo.transform.name);
             if (hitInfo.transform == null) return true;
         }
 

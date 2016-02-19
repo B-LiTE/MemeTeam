@@ -79,7 +79,6 @@ public class PlayerStats : KillableInstance {
 				addedDamage -= trueItem.damage;
 				attackSpeed = baseAttackSpeed;
 				attackRange = baseAttackRange;
-				Debug.Log ("added damage is currently" + addedDamage);
 			}
 		}
 		else if(type == "Armor")
@@ -102,7 +101,6 @@ public class PlayerStats : KillableInstance {
 				addedDamage += trueItem.damage;
 				attackSpeed = trueItem.attackSpeed;
 				attackRange = trueItem.range;
-				Debug.Log ("added damage is currently" + addedDamage);
 			}
 		}
 		else if(type == "Armor")

@@ -153,10 +153,8 @@ public class Inventory : MonoBehaviour {
 			if(wherePlaced == activeSlotIndex)
 			{
 				FindObjectOfType<PlayerStats>().GetComponent<PlayerStats>().ChangeActiveWeapon(activeSlotIndex);
-				Debug.Log ("called....");
 			}
 			if(wherePlaced <= 8 && wherePlaced >= 1) FindObjectOfType<PlayerStats>().GetComponent<PlayerStats>().ChangeActiveArmor(wherePlaced);
-			Debug.Log ("called....");
 
 			}
 		
