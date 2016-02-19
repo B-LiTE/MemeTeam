@@ -17,11 +17,14 @@ public class PickUpItem : MonoBehaviour {
 
 	void OnTriggerEnter(Collider player)
 	{
-		if(personCanPickUp(player.gameObject))
+		if (player.CompareTag ("Player")) 
 		{
-			isPlayerOver = true;
-			StartCoroutine(PickUpSoon());
+			FindObjectOfType<Inventory>().SendMessage("PickUpDropItem",gameObject);
 
+		} 
+		else if (player.CompareTag ("Troop")) 
+		{
+			FindObjectOfType<Inventory>().SendMessage("TroopPickUpItem",gameObject);
 		}
 
 	}
@@ -40,7 +43,7 @@ public class PickUpItem : MonoBehaviour {
 		yield return new WaitForSeconds(.6f);
 		canBePickedUp = true;
 	}
-	IEnumerator PickUpSoon()
+	IEnumerator PickUpSoon(string type)
 	{
 		while(!canBePickedUp || !isPlayerOver)
 		{
