@@ -27,21 +27,21 @@ public class Item_Database : MonoBehaviour {
 		allItems.Add(new Weapon_Item(12, "Mechanism Sword", "Weapon",1,40,35,3f,1));
 		allItems.Add(new Potion_Item(13, "Alpha Potion", "Potion",20, 10, 75));
 		allItems.Add(new Potion_Item(14, "Omega Potion", "Potion",20, 15, 100));
-		allItems.Add(new Weapon_Item(15,"Crossbow","Weapon",1,20,12,8,1f));
-		allItems.Add(new Weapon_Item(16,"Phoenix","Weapon",1,20,12,8,1f));
-		allItems.Add(new Weapon_Item(17,"Wooden Bow","Weapon",1,10,8,7,1f));
-		allItems.Add(new Weapon_Item(18,"Green Bow","Weapon",1,20,8,12,1f));
-		allItems.Add(new Weapon_Item(19,"Mechanism Bow","Weapon",1,40,20,8,1f));
+		allItems.Add(new Weapon_Item(15,"Crossbow","Weapon",1,20,12,18,1f));
+		allItems.Add(new Weapon_Item(16,"Phoenix","Weapon",1,20,12,25,1f));
+		allItems.Add(new Weapon_Item(17,"Wooden Bow","Weapon",1,10,8,20,1f));
+		allItems.Add(new Weapon_Item(18,"Green Bow","Weapon",1,20,15,30,1f));
+		allItems.Add(new Weapon_Item(19,"Mechanism Bow","Weapon",1,40,20,18,1f));
 		allItems.Add (new Armor_Item(20,"Steel Shield","Armor",1,45,15));
 		allItems.Add (new Armor_Item(21,"Steel Helm","Armor",1,35,12));
 		allItems.Add (new Armor_Item(22,"Steel Gauntlets","Armor",1,30,8));
 		allItems.Add(new Armor_Item(23,"Steel Boots","Armor",1,35,12));
 		allItems.Add (new Weapon_Item(24,"Titan Blade","Weapon",1,40,35,4f,1));
-		allItems.Add(new Weapon_Item(25,"Soulless Staff","Weapon",1,100,50,6,1));
-		allItems.Add (new Weapon_Item(26,"Wizard's Wand","Weapon",1,15,10,10,1));
+		allItems.Add(new Weapon_Item(25,"Soulless Staff","Weapon",1,100,50,12,1));
+		allItems.Add (new Weapon_Item(26,"Wizard's Wand","Weapon",1,15,10,15,1));
 		allItems.Add (new Weapon_Item(27,"Savage Axe","Weapon",1,20,20,3,1));
 		allItems.Add (new Weapon_Item(28,"Ninja Knife","Weapon",1,30,40,1,1));
-		allItems.Add (new Weapon_Item(29,"Wind Staff","Weapon",1,70,35,6,1));
+		allItems.Add (new Weapon_Item(29,"Wind Staff","Weapon",1,70,35,15,1));
 
 
 	}
