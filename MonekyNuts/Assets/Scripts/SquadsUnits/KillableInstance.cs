@@ -13,7 +13,7 @@ public abstract class KillableInstance : MonoBehaviour{
     public bool isAlive = true;
     private float damageMultiplier;
 
-    public GameObject HealthBar;
+    public GameObject FloatingHealthBar;
 
     Coroutine regenerationCoroutine;
 
@@ -48,7 +48,6 @@ public abstract class KillableInstance : MonoBehaviour{
     {
         currHealth += amount;
         if (currHealth > totHealth) currHealth = totHealth;
-        Debug.Log(currHealth + " on " + gameObject.name);
         if (currHealth <= 0)
         {
             isAlive = false;
@@ -62,7 +61,6 @@ public abstract class KillableInstance : MonoBehaviour{
 		
 		RefreshDamageMultiplier();
         ChangeHealth(-Mathf.Abs(amount) * damageMultiplier);
-		Debug.Log (-Mathf.Abs(amount) * damageMultiplier + "  damage " + armor + " armor " + damageMultiplier + " multiplier ");
     }
 	public void RefreshDamageMultiplier()
 	{

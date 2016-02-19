@@ -20,7 +20,7 @@ public class PlayerStats : KillableInstance {
 	public Inventory inventory;
 	public float goldCount;
 
-	public RectTransform healthBar;
+	public RectTransform uiHealthBar;
 	
 	public void Update()
 	{
@@ -79,7 +79,6 @@ public class PlayerStats : KillableInstance {
 				addedDamage -= trueItem.damage;
 				attackSpeed = baseAttackSpeed;
 				attackRange = baseAttackRange;
-				Debug.Log ("added damage is currently" + addedDamage);
 			}
 		}
 		else if(type == "Armor")
@@ -102,7 +101,6 @@ public class PlayerStats : KillableInstance {
 				addedDamage += trueItem.damage;
 				attackSpeed = trueItem.attackSpeed;
 				attackRange = trueItem.range;
-				Debug.Log ("added damage is currently" + addedDamage);
 			}
 		}
 		else if(type == "Armor")
@@ -151,15 +149,15 @@ public class PlayerStats : KillableInstance {
 	public void UpdateHealthBar()
 	{
 		if (currHealth / totHealth > 0) {
-			healthBar.localScale = new Vector3 (currHealth / totHealth, 
-		                                    healthBar.localScale.y, 
-		                                    healthBar.localScale.z);
+			uiHealthBar.localScale = new Vector3 (currHealth / totHealth, 
+		                                    uiHealthBar.localScale.y, 
+		                                    uiHealthBar.localScale.z);
 		} 
 		else 
 		{
-			healthBar.localScale = new Vector3 (0, 
-			                                    healthBar.localScale.y, 
-			                                    healthBar.localScale.z);
+			uiHealthBar.localScale = new Vector3 (0, 
+			                                    uiHealthBar.localScale.y, 
+			                                    uiHealthBar.localScale.z);
 		}
 	}
 
