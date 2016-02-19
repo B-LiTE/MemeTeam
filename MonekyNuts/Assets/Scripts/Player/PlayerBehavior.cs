@@ -61,9 +61,9 @@ public class PlayerBehavior : MonoBehaviour {
         return canSee(target);
     }
 
-    public void startRotating(float degrees)
+    public Coroutine startRotating(float degrees)
     {
-        playerMovement.startRotating(degrees);
+        return playerMovement.startRotating(degrees);
     }
 
 

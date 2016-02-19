@@ -3,7 +3,7 @@ using System.Collections;
 
 public class StateManager : MonoBehaviour {
 
-    public enum states { menu, strategy, realtime };
+    public enum states { strategy, realtime };
     [SerializeField]
     states currentState;
     public states CurrentState
@@ -24,13 +24,19 @@ public class StateManager : MonoBehaviour {
 
     void Awake()
     {
-        CurrentState = states.menu;
+        StartCoroutine(gameStartChangeState());
         isPaused = false;
     }
 
     void Start()
     {
         StartCoroutine(checkPause());
+    }
+
+    IEnumerator gameStartChangeState()
+    {
+        yield return new WaitForEndOfFrame();
+        CurrentState = states.strategy;
     }
 
     public void pause(bool shouldPause)

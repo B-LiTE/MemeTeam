@@ -13,7 +13,7 @@ public abstract class KillableInstance : MonoBehaviour{
     public bool isAlive = true;
     private float damageMultiplier;
 
-    public GameObject HealthBar;
+    public GameObject FloatingHealthBar;
 
     Coroutine regenerationCoroutine;
 
