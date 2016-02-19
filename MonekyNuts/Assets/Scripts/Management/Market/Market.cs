@@ -32,8 +32,19 @@ public class Market : MonoBehaviour {
 	}
 	public void ChangeMarket() //need to call this when moving to next level
 	{
-		//if Level == 1
-		activeArray = marketArrays.testItems;
+		if (Application.loadedLevelName == "Kenny's Level") 
+		{
+			activeArray = marketArrays.levelOneItems;
+		} 
+		else if (Application.loadedLevelName == "Paul - Level 2") 
+		{ 
+			activeArray = marketArrays.levelTwoItems;
+		}
+		else if (Application.loadedLevelName == "Alex's Level") 
+		{ 
+			activeArray = marketArrays.levelThreeItems;
+		}
+
 
 	}
 	public void UpdateMarketDisplay()

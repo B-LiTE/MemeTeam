@@ -8,6 +8,8 @@ public class Treasure_Chest : Interactive_Object{
 	
 	[SerializeField]
 	List<Item> contents = new List<Item>();
+	[SerializeField]
+	GameObject collectable;
 	
 	Item_Database database;
 	
@@ -22,8 +24,8 @@ public class Treasure_Chest : Interactive_Object{
 		base.Start();
 		database = FindObjectOfType<Item_Database>().GetComponent<Item_Database>();
 		
-		for(int i = 0; i <10;i++)
-			contents.Add (database.allItems[1]);
+		for(int i = 0; i <3;i++)
+			contents.Add (database.allItems[References.market.activeArray[(int)Random.Range(1,References.market.activeArray.Length)]]);
 	}
 	public override void OnInteraction ()
 	{
@@ -31,25 +33,13 @@ public class Treasure_Chest : Interactive_Object{
 		{
 			for(int i = 0;i < contents.Count;i++)
 			{
-				GameObject dropItem = new GameObject(contents[i].itemName);
-				dropItem.AddComponent<SpriteRenderer>();
-				dropItem.GetComponent<SpriteRenderer>().sortingOrder = 1;
-				dropItem.GetComponent<SpriteRenderer>().color = Color.clear;
-				dropItem.GetComponent<SpriteRenderer>().sprite = database.inventorySprites[contents[i].itemId];
-				dropItem.AddComponent<FadeInFromClear>();
-				dropItem.AddComponent<FaceCamera>();
-				dropItem.AddComponent<LevitationBehavior>();
-				dropItem.GetComponent<LevitationBehavior>().levitationDistance = 0.2f;
-				dropItem.GetComponent<LevitationBehavior>().levitationSpeed = .5f;
-				dropItem.GetComponent<LevitationBehavior>().speedChangeRate = 0.5f;
-				//dropItem.GetComponent<Levitation>().enabled = false;
-				dropItem.AddComponent<PickUpItem>();
-				dropItem.GetComponent<PickUpItem>().itemId = contents[i].itemId;
-				dropItem.AddComponent<SphereCollider>();
-				dropItem.GetComponent<SphereCollider>().radius = 2f;
-				dropItem.GetComponent<SphereCollider>().isTrigger = true;
+				Instantiate(collectable);
+				collectable.GetComponent<PickUpItem>().itemId = contents[i].itemId;
+				collectable.GetComponent<SpriteRenderer>().sortingOrder = 1;
+				collectable.GetComponent<SpriteRenderer>().color = Color.clear;
+				collectable.AddComponent<FadeInFromClear>();
 
-				dropItem.transform.position = new Vector3((transform.position.x + ((2 * maxHorizontalDist)) * (((float)(Random.Range(0,100)) / 100))) - maxHorizontalDist, 
+				collectable.transform.position = new Vector3((transform.position.x + ((2 * maxHorizontalDist)) * (((float)(Random.Range(0,100)) / 100))) - maxHorizontalDist, 
 				                                          (transform.position.y + ((2 * maxVerticalDist)) * (((float)(Random.Range(0,100)) / 100))) - maxVerticalDist,
 				                                          	(transform.position.z + ((2 * maxHorizontalDist)) * (((float)(Random.Range(0,100)) / 100))) - maxHorizontalDist);
 			}
