@@ -230,15 +230,15 @@ public class Inventory : MonoBehaviour {
 			Destroy(item);
 		}
 	}
-	void UpdateInventorySprite(int slotIndex)
+	void UpdateInventorySprite(int slotIndex) //updates the sprite of a specific slot
 	{
-		if(inventory[slotIndex].itemType != "Empty")
+		if(inventory[slotIndex].itemType != "Empty") //make the sprite empty
 		{
 			slotsDisplay[slotIndex].GetComponent<Image>().sprite = GetComponent<Item_Database>().inventorySprites[inventory[slotIndex].itemId];
 			slotsDisplay[slotIndex].gameObject.SetActive(true);
 
 		}
-		else
+		else //get the sprite for the current item
 		{
 			slotsDisplay[slotIndex].GetComponent<Image>().sprite = null;
 			slotsDisplay[slotIndex].gameObject.SetActive(false);

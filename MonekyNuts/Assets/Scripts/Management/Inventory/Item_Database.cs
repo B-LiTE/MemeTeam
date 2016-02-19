@@ -4,14 +4,14 @@ using System.Collections.Generic;
 
 public class Item_Database : MonoBehaviour {
 
-    public Sprite[] inventorySprites = new Sprite[50];
+    public Sprite[] inventorySprites = new Sprite[50]; //array of sprites for each inventory item
 
     [SerializeField]
-    public List<Item> allItems = new List<Item>();
+    public List<Item> allItems = new List<Item>(); //array of all the types of items
 
 	void Awake () 
     {
-        //temporary!!!!!!!!!!
+        
         allItems.Add(new Item(0,"Empty","Empty",0,0)); //first entry in the inventory HAS to be empty!
         allItems.Add(new Weapon_Item(1,"Iron Sword","Weapon",1,10,10,3,1));
 		allItems.Add(new Armor_Item(2,"Iron Shield","Armor",1,35,10));
