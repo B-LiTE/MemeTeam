@@ -107,21 +107,16 @@ public class PlayerMovement : MonoBehaviour {
     bool isRotating = false;
     Coroutine rotationCoroutine;
 
-    public void startRotating(float degrees)
+    public Coroutine startRotating(float degrees)
     {
-        if (!isRotating) rotationCoroutine = StartCoroutine(rotate(degrees));
-        else
-        {
-            //StopCoroutine(rotationCoroutine);
-            //rotationCoroutine = StartCoroutine(rotate(degrees));
-        }
+        return StartCoroutine(rotate(degrees));
     }
 
-    public IEnumerator rotate(float degrees)
+    IEnumerator rotate(float degrees)
     {
         isRotating = true;
         float t = 0;
-        float current = transform.rotation.y;
+        float current = transform.rotation.eulerAngles.y;
         while (t <= 1)
         {
             transform.rotation = Quaternion.Euler(new Vector3(transform.rotation.x, Mathf.Lerp(current, current + degrees, t), transform.rotation.z));

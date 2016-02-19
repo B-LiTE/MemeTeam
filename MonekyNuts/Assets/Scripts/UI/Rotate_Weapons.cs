@@ -35,7 +35,6 @@ public class Rotate_Weapons : MonoBehaviour {
 			activeSlot -= 1;
 		else
 			activeSlot = 8;
-		Debug.Log ("Active slot is " + activeSlot);
 		while(isRotating)
 		{
 			
@@ -69,7 +68,6 @@ public class Rotate_Weapons : MonoBehaviour {
 			activeSlot += 1;
 		else
 			activeSlot = 1;
-		Debug.Log ("Active slot is " + activeSlot);
 		while(isRotating)
 		{
 			

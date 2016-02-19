@@ -11,6 +11,11 @@ public class EnemyStats : KillableInstance {
     [SerializeField]
     int chanceToChange;
 
+	[SerializeField]
+	GameObject gold;
+	[SerializeField]
+	int chanceGold;
+
     public float attackValue;
     public float secondsBetweenAttacks;
     public float attackRange;
@@ -26,6 +31,8 @@ public class EnemyStats : KillableInstance {
         enemyBehavior.callOnDeath();
 
         if (Random.Range(0, 100) > chanceToChange) Instantiate(troopPrefab, transform.position, transform.rotation);
+		if (Random.Range (0, 100) < chanceGold)
+			Instantiate (gold, new Vector3 (gameObject.transform.position.x, 1, gameObject.transform.position.z), transform.rotation);
 
         Destroy(gameObject);
     }

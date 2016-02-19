@@ -18,7 +18,6 @@ public class Market : MonoBehaviour {
 
 	void Start () 
 	{
-		Debug.Log ("the market exists");
 		References.stateManager.changeState += RandomizeMarket;
 
 		marketArrays = GetComponent<MarketArrays>();
