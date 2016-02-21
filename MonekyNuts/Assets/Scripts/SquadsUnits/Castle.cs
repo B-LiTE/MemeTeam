@@ -11,6 +11,7 @@ public class Castle : KillableInstance {
 	}
 	
 	// Update is called once per frame
+    // DEBUG
 	void Update () {
 
         if (Input.GetKeyDown(KeyCode.K)) Damage(-10);
@@ -24,7 +25,7 @@ public class Castle : KillableInstance {
 
     protected override void Die()
     {
-        Destroy(gameObject);
+        References.stateManager.loadLoseLevel();
     }
     public void UpdateHealthBar()
     {

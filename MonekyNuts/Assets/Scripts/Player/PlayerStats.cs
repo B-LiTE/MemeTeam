@@ -22,6 +22,7 @@ public class PlayerStats : KillableInstance {
 
 	public RectTransform uiHealthBar;
 	
+    // DEBUG
 	public void Update()
 	{
 		if (Input.GetKeyDown (KeyCode.Backspace)) {
@@ -163,7 +164,7 @@ public class PlayerStats : KillableInstance {
 
     protected override void Die()
     {
-        Debug.LogError("he dead");
+        References.stateManager.loadLoseLevel();
     }
 
 	
