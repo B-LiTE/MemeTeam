@@ -28,31 +28,34 @@ public class EnemySpawning : MonoBehaviour {
 
     void spawnEnemy()
     {
-        if (--strategyTimes <= 0)
+        if (References.stateManager.CurrentState == StateManager.states.strategy)
         {
-            strategyTimes = 3;
-
-            for (int i = 0; i < Random.Range(1, 4); i++)
+            if (--strategyTimes <= 0)
             {
-                float randomX, randomZ;
+                strategyTimes = 3;
 
-                if (Random.Range(0, 2) == 0)
+                for (int i = 0; i < Random.Range(1, 4); i++)
                 {
-                    if (Random.Range(0, 2) == 0) randomX = minX;
-                    else randomX = maxX;
+                    float randomX, randomZ;
 
-                    randomZ = Random.Range(minZ, maxZ);
+                    if (Random.Range(0, 2) == 0)
+                    {
+                        if (Random.Range(0, 2) == 0) randomX = minX;
+                        else randomX = maxX;
+
+                        randomZ = Random.Range(minZ, maxZ);
+                    }
+                    else
+                    {
+                        if (Random.Range(0, 2) == 0) randomZ = minZ;
+                        else randomZ = maxZ;
+
+                        randomX = Random.Range(minX, maxX);
+                    }
+
+                    GameObject newEnemy = (GameObject)GameObject.Instantiate(enemyPrefab, new Vector3(randomX, 0, randomZ), new Quaternion());
+                    newEnemy.transform.LookAt(References.castle.transform);
                 }
-                else
-                {
-                    if (Random.Range(0, 2) == 0) randomZ = minZ;
-                    else randomZ = maxZ;
-
-                    randomX = Random.Range(minX, maxX);
-                }
-
-                GameObject newEnemy = (GameObject)GameObject.Instantiate(enemyPrefab, new Vector3(randomX, 0, randomZ), new Quaternion());
-                newEnemy.transform.LookAt(References.castle.transform);
             }
         }
     }
