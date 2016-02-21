@@ -72,18 +72,19 @@ public class PlayerAttacks : MonoBehaviour {
         {
             while (inRangeOfTarget())
             {
+                yield return new WaitForSeconds(playerStats.secondsBetweenAttacks / 2);
+
                 if (playerBehavior.seesTarget())
                 {
-                    playerAnimations.attackAnimation(true);
-                    yield return new WaitForSeconds(playerStats.secondsBetweenAttacks / 2);
-
                     if (inRangeOfTarget())
                     {
-                        attackTarget.Damage(playerStats.activeDamage);
+                        playerAnimations.attackAnimation(true);
+
+                        attackTarget.Damage(playerStats.activeDamage, this.gameObject);
+
+                        yield return new WaitForSeconds(playerStats.secondsBetweenAttacks / 2);
                         playerAnimations.attackAnimation(false);
                     }
-
-                    yield return new WaitForSeconds(playerStats.secondsBetweenAttacks / 2);
                 }
                 else
                 {

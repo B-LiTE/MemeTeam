@@ -26,7 +26,7 @@ public class PlayerStats : KillableInstance {
 	public void Update()
 	{
 		if (Input.GetKeyDown (KeyCode.Backspace)) {
-			Damage (10);
+			Damage (10, this.gameObject);
 		}
 	}
 
@@ -124,10 +124,10 @@ public class PlayerStats : KillableInstance {
 		base.ChangeHealth (amount);
 		UpdateHealthBar ();
 	}
-	public override void Damage(float amount)
+	public override void Damage(float amount, GameObject attacker)
 	{
 
-		base.Damage (amount);
+		base.Damage (amount, attacker);
 		UsePotion();
 		UpdateHealthBar ();
 	}

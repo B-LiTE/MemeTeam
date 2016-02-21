@@ -77,7 +77,7 @@ public class EnemyAttacking : MonoBehaviour {
         {
             yield return new WaitForSeconds(enemyStats.secondsBetweenAttacks / 2);
 
-            attackTarget.Damage(enemyStats.attackValue);
+            attackTarget.Damage(enemyStats.attackValue, this.gameObject);
 
             yield return new WaitForSeconds(enemyStats.secondsBetweenAttacks / 2);
         }

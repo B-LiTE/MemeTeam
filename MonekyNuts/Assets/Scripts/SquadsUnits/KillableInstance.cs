@@ -56,7 +56,7 @@ public abstract class KillableInstance : MonoBehaviour{
         }
     }
 
-    public virtual void Damage(float amount)
+    public virtual void Damage(float amount, GameObject attacker)
     {
 		
 		RefreshDamageMultiplier();

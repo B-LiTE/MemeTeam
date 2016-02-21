@@ -70,7 +70,7 @@ public class TroopAttacking : MonoBehaviour {
         {
             yield return new WaitForSeconds(troopStats.secondsBetweenAttacks / 2);
 
-            attackTarget.Damage(troopStats.attackValue);
+            attackTarget.Damage(troopStats.attackValue, this.gameObject);
 
             yield return new WaitForSeconds(troopStats.secondsBetweenAttacks / 2);
         }

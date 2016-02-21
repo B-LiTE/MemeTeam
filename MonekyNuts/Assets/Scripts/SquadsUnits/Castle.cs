@@ -14,12 +14,12 @@ public class Castle : KillableInstance {
     // DEBUG
 	void Update () {
 
-        if (Input.GetKeyDown(KeyCode.K)) Damage(-10);
+        if (Input.GetKeyDown(KeyCode.K)) Damage(-10, this.gameObject);
         
 	}
-    public override void Damage(float amount)
+    public override void Damage(float amount, GameObject attacker)
     {
-        base.Damage(amount);
+        base.Damage(amount, attacker);
         UpdateHealthBar();
     }
 

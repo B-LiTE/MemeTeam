@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
+[RequireComponent(typeof(EnemyBehavior))]
 public class EnemyStats : KillableInstance {
 
     EnemyBehavior enemyBehavior;
@@ -35,5 +36,17 @@ public class EnemyStats : KillableInstance {
 			Instantiate (gold, new Vector3 (gameObject.transform.position.x, 1, gameObject.transform.position.z), transform.rotation);
 
         Destroy(gameObject);
+    }
+
+    public override void Damage(float amount, GameObject attacker)
+    {
+        base.Damage(amount, attacker);
+
+        if (enemyBehavior.getIntent() == EnemyBehavior.intentions.wander || enemyBehavior.getIntent() == EnemyBehavior.intentions.attackCastle)
+        {
+            // DEBUG
+            Debug.Log(this.gameObject.name + ": changing intent to " + attacker.name);
+            enemyBehavior.changeIntent(attacker);
+        }
     }
 }
