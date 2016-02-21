@@ -21,7 +21,6 @@ public class VictoryAnimations : MonoBehaviour {
 		button.gameObject.SetActive(false);
 		text.color = new Color(text.color.r,text.color.g,text.color.b,0);
 		StartCoroutine(Wait ());
-		StartCoroutine(Beat());
 	}
 	IEnumerator Wait() //duration waits before the objects begin to appear
 	{
