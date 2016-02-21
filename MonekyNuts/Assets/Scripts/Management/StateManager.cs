@@ -33,6 +33,8 @@ public class StateManager : MonoBehaviour {
 
     void Awake()
     {
+        References.resetVariables();
+
         StartCoroutine(gameStartChangeState());
         isPaused = false;
     }
@@ -41,6 +43,11 @@ public class StateManager : MonoBehaviour {
     {
         StartCoroutine(checkPause());
         StartCoroutine(checkEnemyCount());
+    }
+
+    void Update()
+    {
+        if (Input.GetKeyUp(KeyCode.Backspace)) StartCoroutine(showWinBeforeNext());
     }
 
     IEnumerator gameStartChangeState()

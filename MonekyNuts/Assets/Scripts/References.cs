@@ -24,4 +24,35 @@ public static class References {
     public static GameObject player = GameObject.FindGameObjectWithTag("Player");
     public static GameObject castle = GameObject.FindGameObjectWithTag("Castle");
 
+
+
+
+
+
+
+
+
+    public static void resetVariables()
+    {
+        // Managers
+        manager = GameObject.FindGameObjectWithTag("Manager");
+        stateManager = manager.GetComponent<StateManager>();
+        stateTiming = manager.GetComponent<StateTiming>();
+
+        // Game stats and information
+        gameStats = manager.GetComponent<GameStats>();
+        itemDatabase = manager.GetComponent<Item_Database>();
+        inventory = manager.GetComponent<Inventory>();
+        market = manager.GetComponent<Market>();
+	    marketArrays = manager.GetComponent<MarketArrays>();
+
+        // Cameras
+        realtimeCamera = GameObject.FindGameObjectWithTag("Camera_Realtime").GetComponent<Camera>();
+        strategicCamera = GameObject.FindGameObjectWithTag("Camera_Strategic").GetComponent<Camera>();
+
+        // Game entities
+        player = GameObject.FindGameObjectWithTag("Player");
+        castle = GameObject.FindGameObjectWithTag("Castle");
+    }
+
 }
