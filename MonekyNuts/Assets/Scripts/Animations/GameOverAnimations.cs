@@ -7,16 +7,30 @@ public class GameOverAnimations : MonoBehaviour {
     Vector3 startPos;
 
     [SerializeField]
-    UnityEngine.UI.Text text;
+    UnityEngine.UI.Text youLoseText, livesText;
 
     [SerializeField]
-    UnityEngine.UI.Button button;
+    UnityEngine.UI.Button mainMenuButton, lastLevelButton;
 
     void Start()
     {
-        text.color = new Color(text.color.r, text.color.g, text.color.b, 0);
+        youLoseText.color = new Color(youLoseText.color.r, youLoseText.color.g, youLoseText.color.b, 0);
+        livesText.color = new Color(livesText.color.r, livesText.color.g, livesText.color.b, 0);
+        mainMenuButton.gameObject.SetActive(false);
+        lastLevelButton.gameObject.SetActive(false);
         StartCoroutine(startGameOverAnimations());
     }
+
+
+
+
+
+
+
+
+
+
+
 
     IEnumerator startGameOverAnimations()
     {
@@ -31,6 +45,7 @@ public class GameOverAnimations : MonoBehaviour {
 
         yield return new WaitForSeconds(2.5f);
 
+        if (References.lives > 0) livesText.text = "Or, you have " + References.lives + " " + ((References.lives > 1) ? "lives" : "life") + " left...";
         StartCoroutine(fadeInWords());
     }
 
@@ -39,7 +54,9 @@ public class GameOverAnimations : MonoBehaviour {
         float t = 0;
         while (t < 1)
         {
-            text.color = new Color(text.color.r, text.color.g, text.color.b, t);
+            youLoseText.color = new Color(youLoseText.color.r, youLoseText.color.g, youLoseText.color.b, t);
+            if (References.lives > 0) livesText.color = new Color(livesText.color.r, livesText.color.g, livesText.color.b, t);
+
             t += 0.05f;
 
             yield return null;
@@ -47,7 +64,8 @@ public class GameOverAnimations : MonoBehaviour {
 
         yield return new WaitForSeconds(0.5f);
 
-        button.gameObject.SetActive(true);
+        mainMenuButton.gameObject.SetActive(true);
+        if (References.lives > 0) lastLevelButton.gameObject.SetActive(true);
     }
 
     IEnumerator vibrate()
@@ -76,9 +94,27 @@ public class GameOverAnimations : MonoBehaviour {
         return new Vector3(startPos.x + ranX, castle.transform.position.y, startPos.z + ranZ);
     }
 
+
+
+
+
+
+
+
+
+
+
+
+
+
     public void mainMenu()
     {
         Application.LoadLevel("Menu");
+    }
+
+    public void loadLastLevel()
+    {
+        Application.LoadLevel(References.lastLevelIndex);
     }
 
 }

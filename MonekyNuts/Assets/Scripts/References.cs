@@ -24,6 +24,9 @@ public static class References {
     public static GameObject player = GameObject.FindGameObjectWithTag("Player");
     public static GameObject castle = GameObject.FindGameObjectWithTag("Castle");
 
+    // Data
+    public static int lives = 3;
+    public static int lastLevelIndex;
 
 
 
@@ -32,7 +35,8 @@ public static class References {
 
 
 
-    public static void resetVariables()
+
+    public static void resetReferences()
     {
         // Managers
         manager = GameObject.FindGameObjectWithTag("Manager");
@@ -53,6 +57,9 @@ public static class References {
         // Game entities
         player = GameObject.FindGameObjectWithTag("Player");
         castle = GameObject.FindGameObjectWithTag("Castle");
+
+        // Data
+        lastLevelIndex = Application.loadedLevel;
     }
 
 }

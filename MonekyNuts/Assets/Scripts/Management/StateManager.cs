@@ -33,7 +33,7 @@ public class StateManager : MonoBehaviour {
 
     void Awake()
     {
-        References.resetVariables();
+        References.resetReferences();
 
         StartCoroutine(gameStartChangeState());
         isPaused = false;
@@ -45,9 +45,11 @@ public class StateManager : MonoBehaviour {
         StartCoroutine(checkEnemyCount());
     }
 
+    // DEBUG
     void Update()
     {
         if (Input.GetKeyUp(KeyCode.Backspace)) StartCoroutine(showWinBeforeNext());
+        if (Input.GetKeyUp(KeyCode.Backslash)) loadLoseLevel();
     }
 
     IEnumerator gameStartChangeState()
@@ -114,8 +116,6 @@ public class StateManager : MonoBehaviour {
 
 
 
-
-
     IEnumerator showWinBeforeNext()
     {
         float t = 0;
@@ -135,13 +135,34 @@ public class StateManager : MonoBehaviour {
 
 
 
-
-
     public void loadNextLevel()
     {
         loadingScreen.SetActive(true);
 
         if (nextLevelName != null) Application.LoadLevel(nextLevelName);
         else Application.LoadLevel(0);
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    public void loadLoseLevel()
+    {
+        References.lives--;
+        Application.LoadLevel("Game Over");
     }
 }
