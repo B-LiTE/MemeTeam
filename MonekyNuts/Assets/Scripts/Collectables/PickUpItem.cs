@@ -16,6 +16,7 @@ public class PickUpItem : MonoBehaviour {
 	{
 		StartCoroutine(CreationTime());
 		GetComponent<SpriteRenderer> ().sprite = References.itemDatabase.inventorySprites [itemId];
+		GetComponent<SpriteRenderer> ().enabled = true;
 	}
 
 	void OnTriggerEnter(Collider player)
