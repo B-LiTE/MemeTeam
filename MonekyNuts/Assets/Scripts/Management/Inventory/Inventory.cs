@@ -218,6 +218,9 @@ public class Inventory : MonoBehaviour {
 	{
 		if(AddItem(item.GetComponent<PickUpItem>().itemId))
 		{
+			//item.SendMessage("PlayPickUpItem");
+			GameObject sound = (GameObject)Instantiate(Resources.Load ("OneTimeSoundEffect", typeof (GameObject)));
+			sound.GetComponent<AudioSource>().clip = References.soundEffects.soundEffects[1];
 			Destroy(item);
 		}
 	}

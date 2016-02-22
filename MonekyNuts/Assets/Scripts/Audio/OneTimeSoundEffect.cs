@@ -9,13 +9,14 @@ public class OneTimeSoundEffect : MonoBehaviour {
 	{
 		sound = GetComponent<AudioSource> ();
 		sound.loop = false;
+		sound.Play ();
+		StartCoroutine (destoySelf ());
 	}
-	void Update()
+
+	IEnumerator destoySelf()
 	{
-		if (!sound.isPlaying) 
-		{
-			Destroy(gameObject);
-		}
+		yield return new WaitForSeconds(sound.clip.length + 0.25f);
+		Destroy (gameObject);
 	}
 
 }

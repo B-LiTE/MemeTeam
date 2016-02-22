@@ -14,6 +14,11 @@ public class GameStats : MonoBehaviour {
     {
         goldCount += amount;
         goldCountText.text = goldCount.ToString();
+		if (amount > 0) 
+		{
+			GameObject sound = (GameObject)Instantiate(Resources.Load ("OneTimeSoundEffect", typeof (GameObject)));
+			sound.GetComponent<AudioSource>().clip = References.soundEffects.soundEffects[2];
+		}
     }
     public void ChangeScore(int amount)
     {

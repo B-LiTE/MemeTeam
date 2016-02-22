@@ -9,6 +9,9 @@ public class PickUpItem : MonoBehaviour {
 	public bool isPlayerOver = false;
 	float moveSpeed = 2f;
 
+	[SerializeField]
+	AudioClip clip;
+
 	void Start()
 	{
 		StartCoroutine(CreationTime());
@@ -80,5 +83,10 @@ public class PickUpItem : MonoBehaviour {
                 return false;
         }
     }
+	public void PlayPickUpItem()
+	{
+		GameObject sound = (GameObject)Instantiate(Resources.Load ("OneTimeSoundEffect", typeof (GameObject)));
+		sound.GetComponent<AudioSource>().clip = clip;
+	}
 
 }

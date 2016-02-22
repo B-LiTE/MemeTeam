@@ -29,7 +29,7 @@ public class Purchase_Troops : MonoBehaviour {
 			troopObject.transform.position = new Vector3((int)Random.Range (-100,100),(int)Random.Range (-100,100),100);
 			RefreshCost();
 			GameObject sound = (GameObject)Instantiate(Resources.Load ("OneTimeSoundEffect", typeof (GameObject)));
-			sound.GetComponent<AudioSource>().clip = clip;
+			sound.GetComponent<AudioSource>().clip = References.soundEffects.soundEffects[0];
 		}
 	}
 
