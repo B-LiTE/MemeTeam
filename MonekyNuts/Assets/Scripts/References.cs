@@ -24,7 +24,7 @@ public static class References {
     // Game entities
     public static GameObject player = GameObject.FindGameObjectWithTag("Player");
     public static GameObject castle = GameObject.FindGameObjectWithTag("Castle");
-	//public static GameObject soundEffect = Resources.Load("OneTimeSoundEffect", typeof(GameObject));
+	public static GameObject soundEffect = (GameObject)Resources.Load("OneTimeSoundEffect", typeof(GameObject));
 
     // Data
     public static int lives = 3;

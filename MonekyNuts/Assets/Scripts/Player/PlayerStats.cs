@@ -87,7 +87,7 @@ public class PlayerStats : KillableInstance {
 			if(item.itemType == "Armor")
 			{
 			Armor_Item trueItem = item as Armor_Item;
-			armor -= trueItem.armorValue;
+			Armor -= trueItem.armorValue;
 			}
 		}
 	}
@@ -109,7 +109,7 @@ public class PlayerStats : KillableInstance {
 			if(item.itemType == "Armor")
 			{
 			Armor_Item trueItem = item as Armor_Item;
-			armor += trueItem.armorValue;
+			Armor += trueItem.armorValue;
 			}
 		}
 	}

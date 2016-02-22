@@ -107,19 +107,21 @@ public class PlayerMovement : MonoBehaviour {
     bool isRotating = false;
     Coroutine rotationCoroutine;
 
-    public Coroutine startRotating(float degrees)
+    public Coroutine startRotating()
     {
-        return StartCoroutine(rotate(degrees));
+        return StartCoroutine(rotate());
     }
 
-    IEnumerator rotate(float degrees)
+    IEnumerator rotate()
     {
+        Quaternion startRotation = transform.rotation;
+        Quaternion endRotation = Quaternion.LookRotation(playerBehavior.getTarget().transform.position - transform.position);
+
         isRotating = true;
         float t = 0;
-        float current = transform.rotation.eulerAngles.y;
         while (t <= 1)
         {
-            transform.rotation = Quaternion.Euler(new Vector3(transform.rotation.x, Mathf.Lerp(current, current + degrees, t), transform.rotation.z));
+            transform.rotation = Quaternion.Lerp(startRotation, endRotation, t);
 
             t += 0.1f;
             yield return null;

@@ -88,8 +88,7 @@ public class PlayerAttacks : MonoBehaviour {
                 }
                 else
                 {
-                    float angle = Vector3.Angle(transform.forward, playerBehavior.getTarget().transform.position);
-                    yield return playerBehavior.startRotating(angle);
+                    yield return playerBehavior.startRotating();
                 }
             }
 

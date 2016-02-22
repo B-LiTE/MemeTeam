@@ -6,7 +6,16 @@ public abstract class KillableInstance : MonoBehaviour{
 
     public float currHealth;
     public float totHealth;
-    public float armor = 0;
+    float armor = 0;
+    public float Armor
+    {
+        get { return armor; }
+        set
+        {
+            armor = value;
+            RefreshDamageMultiplier();
+        }
+    }
 
     public float healthRegenRate; //per second
 
@@ -46,6 +55,8 @@ public abstract class KillableInstance : MonoBehaviour{
 
     public virtual void ChangeHealth(float amount)
     {
+        // DEBUG
+        Debug.LogWarning(gameObject.name + ": " + currHealth + " + " + amount + " = " + (currHealth + amount));
         currHealth += amount;
         if (currHealth > totHealth) currHealth = totHealth;
         if (currHealth <= 0)
@@ -54,17 +65,17 @@ public abstract class KillableInstance : MonoBehaviour{
             if (alertOnDeath != null) alertOnDeath();
             Die();
         }
+        // DEBUG
+        if (currHealth <= 0) Debug.LogError("ENEMY " + gameObject.name + " IS BELOW 0 HEALTH");
     }
 
     public virtual void Damage(float amount, GameObject attacker)
     {
-		
-		RefreshDamageMultiplier();
         ChangeHealth(-Mathf.Abs(amount) * damageMultiplier);
     }
 	public void RefreshDamageMultiplier()
 	{
-		damageMultiplier = 100 / (float)(100 + armor);
+		damageMultiplier = 100 / (float)(100 + Armor);
 	}
 
 
