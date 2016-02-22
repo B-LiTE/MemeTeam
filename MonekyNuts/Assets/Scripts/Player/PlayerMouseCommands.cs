@@ -2,15 +2,16 @@
 using System.Collections;
 using UnityEngine.EventSystems;
 
+// Intercepts mouse clicks/touches and acts on the objects that were clicked
+
 [RequireComponent(typeof(PlayerBehavior), typeof(PlayerMovement))]
 public class PlayerMouseCommands : MonoBehaviour {
 
+    // References to other scripts and objects
     PlayerBehavior playerBehavior;
     PlayerMovement playerMovement;
     PlayerCameraRotation realtimeCamera;
-
     EventSystem events;
-
     [SerializeField]
     GameObject flag;
 
@@ -38,9 +39,11 @@ public class PlayerMouseCommands : MonoBehaviour {
 
     void onStateChange()
     {
+        // If we are in realtime, start checking mouse inputs
         if (References.stateManager.CurrentState == StateManager.states.realtime) mouseCoroutine = StartCoroutine(checkMouseInputs());
         else
         {
+            // Otherwise, stop checking mouse inputs
             if (mouseCoroutine != null) StopCoroutine(mouseCoroutine);
         }
     }
@@ -63,7 +66,8 @@ public class PlayerMouseCommands : MonoBehaviour {
                         // Send what we touched to the player behavior for processing
                         playerBehavior.changeTarget(hitInfo);
                     }
-
+                    
+                    // Place the flag where it needs to be placed
                     if (playerBehavior.targetIsEnemy()) startFlagFollowEnemy();
                     else startFlagAtDestination();
                 }
@@ -82,6 +86,7 @@ public class PlayerMouseCommands : MonoBehaviour {
 
 
 
+    // Start the flag following enemy coroutine while stopping the other one
     void startFlagFollowEnemy()
     {
         if (flagAtDestinationCoroutine != null)
@@ -116,6 +121,7 @@ public class PlayerMouseCommands : MonoBehaviour {
 
 
 
+    // Start the flag floating above destination coroutine while stopping the other one
     void startFlagAtDestination()
     {
         if (flagFollowEnemyCoroutine != null)

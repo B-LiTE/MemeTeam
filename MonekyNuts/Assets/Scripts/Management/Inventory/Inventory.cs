@@ -36,6 +36,7 @@ public class Inventory : MonoBehaviour {
 	}
 	void Awake()
 	{
+        References.stateManager.changeState += UpdateInventorySprites;
 		inventory = new Item[INVENTORY_SIZE];
 		for(int i= 0; i < INVENTORY_SIZE;i++)
 		{ 
@@ -231,6 +232,13 @@ public class Inventory : MonoBehaviour {
 			Destroy(item);
 		}
 	}
+    void UpdateInventorySprites()
+    {
+        for (int i = 1; i < 9; i++)
+        {
+            UpdateInventorySprite(i);
+        }
+    }
 	void UpdateInventorySprite(int slotIndex) //updates the sprite of a specific slot
 	{
 		if(inventory[slotIndex].itemType != "Empty") //make the sprite empty
@@ -250,7 +258,7 @@ public class Inventory : MonoBehaviour {
 			if(inventory[slotIndex].itemType != "Empty")
 			{
 				wheelSlots[slotIndex].GetComponent<Image>().sprite = GetComponent<Item_Database>().inventorySprites[inventory[slotIndex].itemId];
-                wheelSlots[slotIndex].SetActive(true);
+                if(References.stateManager.CurrentState == StateManager.states.realtime) wheelSlots[slotIndex].SetActive(true);
 			}
 			else
 			{

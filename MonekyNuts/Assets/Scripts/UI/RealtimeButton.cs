@@ -34,6 +34,7 @@ public class RealtimeButton : MonoBehaviour {
 
     public void startRealtime()
     {
-        References.stateTiming.startRealtimePhase();
+        // If don't have an item active in the inventory, start the action phase
+        if (!References.inventory.isItemMoving) References.stateTiming.startRealtimePhase();
     }
 }

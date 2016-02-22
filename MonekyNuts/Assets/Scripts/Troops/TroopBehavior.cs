@@ -20,9 +20,11 @@ public class TroopBehavior : MonoBehaviour {
 
 
 
+    // Important events
     public delegate void voidDelegate();
     public event voidDelegate changeOfIntentions, changeOfActions, onTroopDeath;
 
+    // Our general target to interact with
     [SerializeField]
     GameObject target;
 
@@ -33,9 +35,11 @@ public class TroopBehavior : MonoBehaviour {
 
     void Start()
     {
+        // Set up references
         References.stateManager.changeState += onStateChange;
         onTroopDeath += onDeath;
 
+        // Start wandering
         changeIntent(transform.gameObject);
         changeAction(actions.move);
     }
