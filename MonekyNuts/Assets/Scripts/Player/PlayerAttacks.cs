@@ -124,6 +124,8 @@ public class PlayerAttacks : MonoBehaviour {
 
     void stopAttacking()
     {
+        playerAnimations.attackAnimation(false);
+
         if (attackTarget != null)
         {
             attackTarget.alertOnDeath -= stopAttacking;
