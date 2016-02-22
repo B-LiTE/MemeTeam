@@ -75,6 +75,8 @@ public class TroopMovement : MonoBehaviour {
             // Stop wandering, if we were
             stopWanderCoroutine();
 
+            troopBehavior.getTarget().GetComponent<KillableInstance>().alertOnDeath += stopCheckInRangeOfTargetCoroutine;
+
             // Start checking if we're in range
             startCheckInRangeOfTargetCoroutine();
         }

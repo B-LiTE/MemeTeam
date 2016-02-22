@@ -66,7 +66,7 @@ public abstract class KillableInstance : MonoBehaviour{
             Die();
         }
         // DEBUG
-        if (currHealth <= 0) Debug.LogError("ENEMY " + gameObject.name + " IS BELOW 0 HEALTH");
+        //if (currHealth <= 0) Debug.LogError("ENEMY " + gameObject.name + " IS BELOW 0 HEALTH");
     }
 
     public virtual void Damage(float amount, GameObject attacker)

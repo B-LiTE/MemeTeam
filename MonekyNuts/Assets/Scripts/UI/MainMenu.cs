@@ -4,7 +4,7 @@ using System.Collections;
 public class MainMenu : MonoBehaviour {
 
     [SerializeField]
-    string[] buttonReferences = new string[] { "Kenny's Level", "Help Manual", "Quit" };
+    string[] buttonReferences;
 
     public void startGame()
     {

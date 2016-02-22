@@ -13,6 +13,9 @@ public class PlayerCameraRotation : MonoBehaviour {
     // Reference to realtime camera
     Camera realtimeCamera;
 
+    [SerializeField]
+    UnityEngine.UI.Image leftGradient, rightGradient;
+
     // Amount to rotate by
     [SerializeField]
     float magnitudeOfRotation;
@@ -37,11 +40,22 @@ public class PlayerCameraRotation : MonoBehaviour {
         {
             realtimeCamera.enabled = true;
             rotationCoroutine = StartCoroutine(checkRotation());
+
+            Vector3 leftBound = realtimeCamera.ViewportToScreenPoint(new Vector3(0.1f, 0, 0));
+            Vector3 rightBound = realtimeCamera.ViewportToScreenPoint(new Vector3(0.9f, 0, 0));
+
+            leftGradient.rectTransform.rect.Set(0, 0, leftBound.x, Screen.height);
+            rightGradient.rectTransform.rect.Set(rightBound.x, 0, Screen.width, Screen.height);
+
+            leftGradient.enabled = true;
+            rightGradient.enabled = true;
         }
         else
         {
             if (rotationCoroutine != null) StopCoroutine(rotationCoroutine);
             realtimeCamera.enabled = false;
+            leftGradient.enabled = false;
+            rightGradient.enabled = false;
         }
     }
 

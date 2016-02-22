@@ -51,6 +51,7 @@ public static class References {
         inventory = manager.GetComponent<Inventory>();
         market = manager.GetComponent<Market>();
 	    marketArrays = manager.GetComponent<MarketArrays>();
+        soundEffects = GameObject.FindObjectOfType<SoundEffectsDatabase>().GetComponent<SoundEffectsDatabase>();
 
         // Cameras
         realtimeCamera = GameObject.FindGameObjectWithTag("Camera_Realtime").GetComponent<Camera>();
@@ -59,6 +60,7 @@ public static class References {
         // Game entities
         player = GameObject.FindGameObjectWithTag("Player");
         castle = GameObject.FindGameObjectWithTag("Castle");
+        soundEffect = (GameObject)Resources.Load("OneTimeSoundEffect", typeof(GameObject));
 
         // Data
         lastLevelIndex = Application.loadedLevel;
