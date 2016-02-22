@@ -1,20 +1,26 @@
 ﻿using UnityEngine;
 using System.Collections;
 
+// Controls the player's behavior and acts as a liason between the various Player scripts
+
 [RequireComponent(typeof(PlayerStats), typeof(PlayerMouseCommands))]
 [RequireComponent(typeof(PlayerMovement), typeof(PlayerAttacks))]
 public class PlayerBehavior : MonoBehaviour {
 
+    // Set up the references to the other scripts
     PlayerStats playerStats;
     PlayerMovement playerMovement;
     PlayerAttacks playerAttacks;
 
+    // The range of view the player model has
     [SerializeField]
     float fieldOfViewAngle;
 
+    // The object we are interacting with
     [SerializeField]
     GameObject target;
 
+    // Set up references
     void Awake()
     {
         playerStats = GetComponent<PlayerStats>();
@@ -41,8 +47,10 @@ public class PlayerBehavior : MonoBehaviour {
     /// <param name="target">The target object or creature</param>
     public void changeTarget(RaycastHit hitInfo)
     {
+        // Set the target to be the object we clicked
         target = hitInfo.transform.gameObject;
 
+        // Start going to it and attack it if it's an enemy
         playerMovement.goTo(hitInfo.point);
         playerAttacks.changeAttack(targetIsEnemy());
     }
@@ -58,11 +66,13 @@ public class PlayerBehavior : MonoBehaviour {
 
 
 
+    // Public function for if the player can see the target
     public bool seesTarget()
     {
-        return canSee(target);
+        return canSee(target.transform.position);
     }
 
+    // Allows starting of player rotation
     public Coroutine startRotating()
     {
         return playerMovement.startRotating();
@@ -84,15 +94,6 @@ public class PlayerBehavior : MonoBehaviour {
 
 
 
-    /// <summary>
-    /// Casts a ray towards the target and returns whatever object it hits
-    /// </summary>
-    /// <param name="target">Object to cast a ray towards</param>
-    /// <returns>Returns the object the ray hits</returns>
-    RaycastHit raycastTo(GameObject target)
-    {
-        return raycastTo(target.transform.position);
-    }
 
     /// <summary>
     /// Casts a ray towards a target and returns whatever object it hits
@@ -114,15 +115,6 @@ public class PlayerBehavior : MonoBehaviour {
 
 
 
-    /// <summary>
-    /// Checks whether an object is within the enemy's sight lines
-    /// </summary>
-    /// <param name="target">Object to test</param>
-    /// <returns>Returns true if the object is in sight lines, false if not</returns>
-    bool inSightLines(GameObject target)
-    {
-        return inSightLines(target.transform.position);
-    }
 
     /// <summary>
     /// Checks whether a point is within the enemy's sight lines
@@ -146,21 +138,6 @@ public class PlayerBehavior : MonoBehaviour {
 
 
 
-    /// <summary>
-    /// Check if the gameobject has unobstructed line of sight to the target
-    /// </summary>
-    /// <param name="target">Object trying to be seen</param>
-    /// <returns>Returns true if unobstructed visual, false if not</returns>
-    bool canSee(GameObject target)
-    {
-        if (inSightLines(target))
-        {
-            RaycastHit hitInfo = raycastTo(target);
-            if (hitInfo.transform != null && hitInfo.transform.gameObject == target) return true;
-        }
-
-        return false;
-    }
 
     /// <summary>
     /// Check if the enemy has unobstructed line of sight to the point in space
@@ -169,12 +146,15 @@ public class PlayerBehavior : MonoBehaviour {
     /// <returns>Returns true if unobstructed, false if not</returns>
     bool canSee(Vector3 target)
     {
+        // If the target is within our vision...
         if (inSightLines(target))
         {
+            // ...and there's nothing blocking our view, return true
             RaycastHit hitInfo = raycastTo(target);
             if (hitInfo.transform == null) return true;
         }
 
+        // Otherwise, we can't see it. Return false
         return false;
     }
 }

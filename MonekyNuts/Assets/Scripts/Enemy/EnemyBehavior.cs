@@ -20,9 +20,11 @@ public class EnemyBehavior : MonoBehaviour {
 
 
 
+    // Important events
     public delegate void voidDelegate();
     public event voidDelegate changeOfIntentions, changeOfActions, onEnemyDeath;
 
+    // Our general target to interact with
     [SerializeField]
     GameObject target;
 
@@ -33,9 +35,11 @@ public class EnemyBehavior : MonoBehaviour {
 
     void Start()
     {
+        // Set up references
         References.stateManager.changeState += onStateChange;
         onEnemyDeath += onDeath;
 
+        // Start wandering
         changeIntent(transform.gameObject);
         changeAction(actions.move);
     }
