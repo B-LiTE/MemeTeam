@@ -10,7 +10,7 @@ public class PlayerMovement : MonoBehaviour {
     PlayerAttacks playerAttacks;
 
     // Reference to navigation agent
-    NavMeshAgent navigation;
+    public NavMeshAgent navigation;
 
     // Reference to coroutine
     Coroutine followTargetCoroutine;

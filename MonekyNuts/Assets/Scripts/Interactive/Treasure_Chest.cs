@@ -33,13 +33,13 @@ public class Treasure_Chest : Interactive_Object{
 		{
 			for(int i = 0;i < contents.Count;i++)
 			{
-				Instantiate(collectable);
-				collectable.GetComponent<PickUpItem>().itemId = contents[i].itemId;
-				collectable.GetComponent<SpriteRenderer>().sortingOrder = 1;
-				collectable.GetComponent<SpriteRenderer>().color = Color.clear;
-				collectable.AddComponent<FadeInFromClear>();
+				GameObject newCollectable = (GameObject)Instantiate(collectable);
+                newCollectable.GetComponent<PickUpItem>().itemId = contents[i].itemId;
+                newCollectable.GetComponent<SpriteRenderer>().sortingOrder = 1;
+                newCollectable.GetComponent<SpriteRenderer>().color = Color.clear;
+                newCollectable.AddComponent<FadeInFromClear>();
 
-				collectable.transform.position = new Vector3((transform.position.x + ((2 * maxHorizontalDist)) * (((float)(Random.Range(0,100)) / 100))) - maxHorizontalDist, 
+                newCollectable.transform.position = new Vector3((transform.position.x + ((2 * maxHorizontalDist)) * (((float)(Random.Range(0, 100)) / 100))) - maxHorizontalDist, 
 				                                          (transform.position.y + ((2 * maxVerticalDist)) * (((float)(Random.Range(0,100)) / 100))) - maxVerticalDist,
 				                                          	(transform.position.z + ((2 * maxHorizontalDist)) * (((float)(Random.Range(0,100)) / 100))) - maxHorizontalDist);
 			}

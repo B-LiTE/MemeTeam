@@ -2,14 +2,22 @@
 using System.Collections;
 using UnityEngine.EventSystems;
 
-[RequireComponent(typeof(PlayerBehavior))]
+[RequireComponent(typeof(PlayerBehavior), typeof(PlayerMovement))]
 public class PlayerMouseCommands : MonoBehaviour {
 
     PlayerBehavior playerBehavior;
-
+    PlayerMovement playerMovement;
     PlayerCameraRotation realtimeCamera;
 
     EventSystem events;
+
+    [SerializeField]
+    GameObject flag;
+
+    Coroutine flagFollowEnemyCoroutine, flagAtDestinationCoroutine;
+
+    [SerializeField]
+    float distanceAboveTarget;
 
     // Reference to coroutine
     Coroutine mouseCoroutine;
@@ -18,6 +26,7 @@ public class PlayerMouseCommands : MonoBehaviour {
     {
         // Set up references
         playerBehavior = GetComponent<PlayerBehavior>();
+        playerMovement = GetComponent<PlayerMovement>();
         realtimeCamera = References.realtimeCamera.GetComponent<PlayerCameraRotation>();
         events = EventSystem.current;
     }
@@ -52,12 +61,86 @@ public class PlayerMouseCommands : MonoBehaviour {
                     if (Physics.Raycast(References.realtimeCamera.ScreenPointToRay(Input.mousePosition), out hitInfo, 1000))
                     {
                         // Send what we touched to the player behavior for processing
-                        playerBehavior.changeTarget(hitInfo.transform.gameObject, hitInfo.point);
+                        playerBehavior.changeTarget(hitInfo);
                     }
+
+                    if (playerBehavior.targetIsEnemy()) startFlagFollowEnemy();
+                    else startFlagAtDestination();
                 }
             }
 
             yield return null;
         }
+    }
+
+
+
+
+
+
+
+
+
+
+    void startFlagFollowEnemy()
+    {
+        if (flagAtDestinationCoroutine != null)
+        {
+            StopCoroutine(flagAtDestinationCoroutine);
+            flagAtDestinationCoroutine = null;
+        }
+
+        flagFollowEnemyCoroutine = StartCoroutine(flagFollowEnemy());
+    }
+
+    IEnumerator flagFollowEnemy()
+    {
+        flag.SetActive(true);
+
+        while (playerBehavior.targetIsEnemy())
+        {
+            Vector3 enemyPosition = playerBehavior.getTarget().transform.position;
+            flag.transform.position = new Vector3(enemyPosition.x, enemyPosition.y + distanceAboveTarget, enemyPosition.z);
+
+            yield return null;
+        }
+
+        flag.SetActive(false);
+    }
+
+
+
+
+
+
+
+
+
+    void startFlagAtDestination()
+    {
+        if (flagFollowEnemyCoroutine != null)
+        {
+            StopCoroutine(flagFollowEnemyCoroutine);
+            flagFollowEnemyCoroutine = null;
+        }
+
+        flagAtDestinationCoroutine = StartCoroutine(flagAtDestination());
+    }
+
+    IEnumerator flagAtDestination()
+    {
+        flag.SetActive(true);
+
+        if (playerBehavior.targetIsCollectible()) flag.transform.position = new Vector3(playerMovement.navigation.destination.x, playerMovement.navigation.destination.y + 3 + distanceAboveTarget, playerMovement.navigation.destination.z);
+        else flag.transform.position = new Vector3(playerMovement.navigation.destination.x, playerMovement.navigation.destination.y + distanceAboveTarget, playerMovement.navigation.destination.z);
+
+        while (playerMovement.navigation.pathPending) yield return null;
+
+        while (!playerBehavior.targetIsEnemy() && playerMovement.navigation.remainingDistance > playerMovement.navigation.stoppingDistance)
+        {
+            yield return null;
+        }
+
+        flag.SetActive(false);
     }
 }
