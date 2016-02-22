@@ -50,52 +50,57 @@ public class TroopTargetSeeking : MonoBehaviour {
     {
         while (true)
         {
-            // Get all important objects in the sensing radius
-            Collider[] sensedObjects = Physics.OverlapSphere(transform.position, sensingRadius, targetLayers);
-
-            int intentChoice = (int)TroopBehavior.intentions.wander;
-            foreach (Collider item in sensedObjects)
+            while (References.stateManager.CurrentState == StateManager.states.realtime)
             {
-                GameObject currentItem = item.transform.gameObject;
+                // Get all important objects in the sensing radius
+                Collider[] sensedObjects = Physics.OverlapSphere(transform.position, sensingRadius, targetLayers);
 
-                // If the troop can see the item...
-                if (canSee(currentItem))
+                int intentChoice = (int)TroopBehavior.intentions.wander;
+                foreach (Collider item in sensedObjects)
                 {
-                    // ...and our target is the same as the item...
-                    if (troopBehavior.getTarget() == currentItem)
+                    GameObject currentItem = item.transform.gameObject;
+
+                    // If the troop can see the item...
+                    if (canSee(currentItem))
                     {
-                        // Set our choice and continue
-                        intentChoice = (int)troopBehavior.getIntent();
-                        continue;
+                        // ...and our target is the same as the item...
+                        if (troopBehavior.getTarget() == currentItem)
+                        {
+                            // Set our choice and continue
+                            intentChoice = (int)troopBehavior.getIntent();
+                            continue;
+                        }
+
+                        // If the item is the same or higher priority than the current item...
+                        if ((int)troopBehavior.getIntentGiven(currentItem) <= intentChoice)
+                        {
+                            // Change the intent
+                            troopBehavior.changeIntent(currentItem);
+                            intentChoice = (int)troopBehavior.getIntentGiven(currentItem);
+
+                            // If the item is an enemy, break out of the loop since an enemy is the highest priority
+                            if (troopBehavior.targetIsEnemy()) break;
+                        }
                     }
-
-                    // If the item is the same or higher priority than the current item...
-                    if ((int)troopBehavior.getIntentGiven(currentItem) <= intentChoice)
+                    // If the troop can't see the item...
+                    else
                     {
-                        // Change the intent
-                        troopBehavior.changeIntent(currentItem);
-                        intentChoice = (int)troopBehavior.getIntentGiven(currentItem);
-
-                        // If the item is an enemy, break out of the loop since an enemy is the highest priority
-                        if (troopBehavior.targetIsEnemy()) break;
+                        // ...but our target is the item...
+                        if (troopBehavior.getTarget() == currentItem)
+                        {
+                            // The target is around here somewhere (because they're still in the sensing radius)
+                            intentChoice = (int)troopBehavior.getIntent();
+                        }
                     }
                 }
-                // If the troop can't see the item...
-                else
-                {
-                    // ...but our target is the item...
-                    if (troopBehavior.getTarget() == currentItem)
-                    {
-                        // The target is around here somewhere (because they're still in the sensing radius)
-                        intentChoice = (int)troopBehavior.getIntent();
-                    }
-                }
+
+                // If we haven't changed intentions, start wandering
+                if (intentChoice == (int)TroopBehavior.intentions.wander) troopBehavior.changeIntent(this.gameObject);
+
+                yield return new WaitForSeconds(0.1f);
             }
 
-            // If we haven't changed intentions, start wandering
-            if (intentChoice == (int)TroopBehavior.intentions.wander) troopBehavior.changeIntent(this.gameObject);
-
-            yield return new WaitForSeconds(0.03f);
+            yield return null;
         }
     }
 

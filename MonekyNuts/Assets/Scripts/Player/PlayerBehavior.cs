@@ -28,6 +28,7 @@ public class PlayerBehavior : MonoBehaviour {
     // Target checking and getters
     public bool targetIsTerrain() { return target != null && LayerMask.LayerToName(target.layer) == "Terrain"; }
     public bool targetIsEnemy() { return target != null && LayerMask.LayerToName(target.layer) == "Enemies"; }
+    public bool targetIsCollectible() { return target != null && LayerMask.LayerToName(target.layer) == "Collectible"; }
     public GameObject getTarget() { return target; }
 
 
@@ -38,10 +39,11 @@ public class PlayerBehavior : MonoBehaviour {
     /// Changes the intention of the enemy based on the input recieved
     /// </summary>
     /// <param name="target">The target object or creature</param>
-    public void changeTarget(GameObject target, Vector3 worldSpaceMouseClick)
+    public void changeTarget(RaycastHit hitInfo)
     {
-        this.target = target;
-        playerMovement.goTo(worldSpaceMouseClick);
+        target = hitInfo.transform.gameObject;
+
+        playerMovement.goTo(hitInfo.point);
         playerAttacks.changeAttack(targetIsEnemy());
     }
 

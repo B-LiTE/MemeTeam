@@ -50,52 +50,57 @@ public class EnemyTargetSeeking : MonoBehaviour {
     {
         while (true)
         {
-            // Get all important objects in the sensing radius
-            Collider[] sensedObjects = Physics.OverlapSphere(transform.position, sensingRadius, targetLayers);
-
-            int intentChoice = (int)EnemyBehavior.intentions.wander;
-            foreach (Collider item in sensedObjects)
+            while (References.stateManager.CurrentState == StateManager.states.realtime)
             {
-                GameObject currentItem = item.transform.gameObject;
+                // Get all important objects in the sensing radius
+                Collider[] sensedObjects = Physics.OverlapSphere(transform.position, sensingRadius, targetLayers);
 
-                // If the enemy can see the item...
-                if (canSee(currentItem))
+                int intentChoice = (int)EnemyBehavior.intentions.wander;
+                foreach (Collider item in sensedObjects)
                 {
-                    // ...and our target is the same as the item...
-                    if (enemyBehavior.getTarget() == currentItem)
+                    GameObject currentItem = item.transform.gameObject;
+
+                    // If the enemy can see the item...
+                    if (canSee(currentItem))
                     {
-                        // Set our choice and continue
-                        intentChoice = (int)enemyBehavior.getIntent();
-                        continue;
+                        // ...and our target is the same as the item...
+                        if (enemyBehavior.getTarget() == currentItem)
+                        {
+                            // Set our choice and continue
+                            intentChoice = (int)enemyBehavior.getIntent();
+                            continue;
+                        }
+
+                        // If the item is the same or higher priority than the current item...
+                        if ((int)enemyBehavior.getIntentGiven(currentItem) <= intentChoice)
+                        {
+                            // Change the intent
+                            enemyBehavior.changeIntent(currentItem);
+                            intentChoice = (int)enemyBehavior.getIntentGiven(currentItem);
+
+                            // If the item is the player, break out of the loop since the player is the highest priority
+                            if (enemyBehavior.targetIsPlayer()) break;
+                        }
                     }
-
-                    // If the item is the same or higher priority than the current item...
-                    if ((int)enemyBehavior.getIntentGiven(currentItem) <= intentChoice)
+                    // If the enemy can't see the item...
+                    else
                     {
-                        // Change the intent
-                        enemyBehavior.changeIntent(currentItem);
-                        intentChoice = (int)enemyBehavior.getIntentGiven(currentItem);
-
-                        // If the item is the player, break out of the loop since the player is the highest priority
-                        if (enemyBehavior.targetIsPlayer()) break;
+                        // ...but our target is the item...
+                        if (enemyBehavior.getTarget() == currentItem)
+                        {
+                            // The target is around here somewhere (because they're still in the sensing radius)
+                            intentChoice = (int)enemyBehavior.getIntent();
+                        }
                     }
                 }
-                // If the enemy can't see the item...
-                else
-                {
-                    // ...but our target is the item...
-                    if (enemyBehavior.getTarget() == currentItem)
-                    {
-                        // The target is around here somewhere (because they're still in the sensing radius)
-                        intentChoice = (int)enemyBehavior.getIntent();
-                    }
-                }
+
+                // If we haven't changed intentions, start wandering
+                if (intentChoice == (int)EnemyBehavior.intentions.wander) enemyBehavior.changeIntent(this.gameObject);
+
+                yield return new WaitForSeconds(0.1f);
             }
 
-            // If we haven't changed intentions, start wandering
-            if (intentChoice == (int)EnemyBehavior.intentions.wander) enemyBehavior.changeIntent(this.gameObject);
-
-            yield return new WaitForSeconds(0.03f);
+            yield return null;
         }
     }
 
