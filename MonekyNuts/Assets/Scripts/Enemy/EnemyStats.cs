@@ -56,8 +56,6 @@ public class EnemyStats : KillableInstance {
 
         if (enemyBehavior.getIntent() == EnemyBehavior.intentions.wander || enemyBehavior.getIntent() == EnemyBehavior.intentions.attackCastle)
         {
-            // DEBUG
-            Debug.Log(this.gameObject.name + ": changing intent to " + attacker.name);
             enemyBehavior.changeIntent(attacker);
         }
     }

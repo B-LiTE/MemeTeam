@@ -45,13 +45,6 @@ public class StateManager : MonoBehaviour {
         StartCoroutine(checkEnemyCount());
     }
 
-    // DEBUG
-    void Update()
-    {
-        if (Input.GetKeyUp(KeyCode.Backspace)) StartCoroutine(showWinBeforeNext());
-        if (Input.GetKeyUp(KeyCode.Backslash)) loadLoseLevel();
-    }
-
     IEnumerator gameStartChangeState()
     {
         yield return new WaitForEndOfFrame();

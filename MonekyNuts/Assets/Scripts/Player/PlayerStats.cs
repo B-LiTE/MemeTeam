@@ -23,14 +23,6 @@ public class PlayerStats : KillableInstance {
 	public float goldCount;
 
 	public RectTransform uiHealthBar;
-	
-    // DEBUG
-	public void Update()
-	{
-		if (Input.GetKeyDown (KeyCode.Backspace)) {
-			Damage (10, this.gameObject);
-		}
-	}
 
 	public void Start ()
 	{

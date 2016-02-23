@@ -4,14 +4,6 @@ using System.Collections;
 public class Castle : KillableInstance {
 
     public RectTransform tempHealthBar;
-	
-	// Update is called once per frame
-    // DEBUG
-	void Update () {
-
-        if (Input.GetKeyDown(KeyCode.K)) Damage(-10, this.gameObject);
-        
-	}
     public override void Damage(float amount, GameObject attacker)
     {
         base.Damage(amount, attacker);

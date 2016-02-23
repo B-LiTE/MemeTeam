@@ -28,8 +28,6 @@ public class TroopStats : KillableInstance {
 
         if (troopBehavior.getIntent() != TroopBehavior.intentions.attackEnemy)
         {
-            // DEBUG
-            Debug.Log(this.gameObject.name + ": changing intent on " + attacker.name);
             troopBehavior.changeIntent(attacker);
         }
     }

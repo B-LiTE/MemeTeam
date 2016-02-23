@@ -55,8 +55,6 @@ public abstract class KillableInstance : MonoBehaviour{
 
     public virtual void ChangeHealth(float amount)
     {
-        // DEBUG
-        Debug.LogWarning(gameObject.name + ": " + currHealth + " + " + amount + " = " + (currHealth + amount));
         currHealth += amount;
         if (currHealth > totHealth) currHealth = totHealth;
         if (FloatingHealthBar != null) UpdateHealthBar();
@@ -66,8 +64,6 @@ public abstract class KillableInstance : MonoBehaviour{
             if (alertOnDeath != null) alertOnDeath();
             Die();
         }
-        // DEBUG
-        //if (currHealth <= 0) Debug.LogError("ENEMY " + gameObject.name + " IS BELOW 0 HEALTH");
     }
 
     public virtual void Damage(float amount, GameObject attacker)
