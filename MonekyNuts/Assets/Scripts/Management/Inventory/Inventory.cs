@@ -26,15 +26,8 @@ public class Inventory : MonoBehaviour {
     public StateManager currentState;
 
 
-	void Update()
-	{
-		if (Input.GetKeyDown (KeyCode.A))
-			AddItem (3);
-		
-		if (Input.GetKeyDown (KeyCode.S))
-			AddItem (2);
-	}
-	void Awake()
+
+	void Awake() //the game starts by filling the inventory with empty game objects
 	{
         References.stateManager.changeState += UpdateInventorySprites;
 		inventory = new Item[INVENTORY_SIZE];
@@ -45,7 +38,7 @@ public class Inventory : MonoBehaviour {
 
 		activeSlotIndex = 1;
 	}
-	public bool AddItem(int dropItemId) 
+	public bool AddItem(int dropItemId) //adds an item to the inventory - returns false if not enough room
 	{
 
 			int dropMaxStack = GetComponent<Item_Database> ().allItems [dropItemId].itemMaxStack;
@@ -215,7 +208,7 @@ public class Inventory : MonoBehaviour {
 		}
 		return foundPlace;
 	}
-	public void PickUpDropItem(GameObject item)
+	public void PickUpDropItem(GameObject item) //called by collectable items when player walks over them
 	{
 		if(AddItem(item.GetComponent<PickUpItem>().itemId))
 		{
@@ -225,14 +218,14 @@ public class Inventory : MonoBehaviour {
 			Destroy(item);
 		}
 	}
-	public void TroopPickUpItem(GameObject item)
+	public void TroopPickUpItem(GameObject item) //called by collectable items when troop walks over them
 	{
 		if(AddItemStorage(item.GetComponent<PickUpItem>().itemId))
 		{
 			Destroy(item);
 		}
 	}
-    void UpdateInventorySprites()
+    void UpdateInventorySprites() //updates all the inventory sprites on the wheel
     {
         for (int i = 1; i < 9; i++)
         {
@@ -266,7 +259,7 @@ public class Inventory : MonoBehaviour {
 			}
 		}
 	}
-	void UpdateInventoryStackCounter(int slotIndex)
+	void UpdateInventoryStackCounter(int slotIndex) //updates the display counter
 	{
 		if(stackInSlots[slotIndex] > 1)
 		{
@@ -280,7 +273,7 @@ public class Inventory : MonoBehaviour {
 		}
 	}
 
-	void SlotIsClicked(int slotIndex)
+	void SlotIsClicked(int slotIndex) //when the user taps on an inventory slot
 	{
 		Item prevItem = inventory[slotIndex];
 		if(slotIndex != 0)
@@ -371,7 +364,7 @@ public class Inventory : MonoBehaviour {
 			RemoveItemStack(slotIndex);
 		}
 	}
-	void PlaceItem(int itemID, int slotIndex, int stackCount)
+	void PlaceItem(int itemID, int slotIndex, int stackCount) //place a stack f items onto a slot
 	{
 		inventory[slotIndex] = GetComponent<Item_Database>().allItems[itemID];
 		stackInSlots[slotIndex] = stackCount;
