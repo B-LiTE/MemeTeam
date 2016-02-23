@@ -102,7 +102,7 @@ public class PlayerMouseCommands : MonoBehaviour {
     {
         flag.SetActive(true);
 
-        while (playerBehavior.getTarget().GetComponent<KillableInstance>().isAlive)
+        while (playerBehavior.targetIsEnemy())
         {
             Vector3 enemyPosition = playerBehavior.getTarget().transform.position;
             flag.transform.position = new Vector3(enemyPosition.x, enemyPosition.y + distanceAboveTarget, enemyPosition.z);
