@@ -69,7 +69,7 @@ public class PlayerBehavior : MonoBehaviour {
     // Public function for if the player can see the target
     public bool seesTarget()
     {
-        return canSee(target.transform.position);
+        return canSee(target);
     }
 
     // Allows starting of player rotation
@@ -144,14 +144,14 @@ public class PlayerBehavior : MonoBehaviour {
     /// </summary>
     /// <param name="target">Point in space trying to be seen</param>
     /// <returns>Returns true if unobstructed, false if not</returns>
-    bool canSee(Vector3 target)
+    bool canSee(GameObject target)
     {
         // If the target is within our vision...
-        if (inSightLines(target))
+        if (inSightLines(target.transform.position))
         {
             // ...and there's nothing blocking our view, return true
-            RaycastHit hitInfo = raycastTo(target);
-            if (hitInfo.transform == null) return true;
+            RaycastHit hitInfo = raycastTo(target.transform.position);
+            if (hitInfo.transform != null && hitInfo.transform.name == target.name) return true;
         }
 
         // Otherwise, we can't see it. Return false

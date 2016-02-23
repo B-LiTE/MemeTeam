@@ -113,6 +113,7 @@ public class PlayerAttacks : MonoBehaviour {
                 // If we can't see the target...
                 else
                 {
+                    Debug.Log("player started rotating");
                     // Pause script execution and rotate towards the target
                     yield return playerBehavior.startRotating();
                 }

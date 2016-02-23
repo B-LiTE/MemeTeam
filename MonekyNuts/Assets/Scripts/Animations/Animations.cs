@@ -18,10 +18,6 @@ public class Animations : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
 
-        // DEBUG
-        if (Input.GetKeyUp(KeyCode.V)) anim.SetBool("Arrow", true);
-        if (Input.GetKeyUp(KeyCode.B)) anim.SetBool("Arrow", false);
-
         if (playerNavigation.velocity.magnitude > 0)
         {
             if (!anim.GetBool("Run")) anim.SetBool("Run", true);
@@ -35,7 +31,7 @@ public class Animations : MonoBehaviour {
 
     public void attackAnimation(bool isAttacking)
     {
-        if (playerStats.attackRange >= 12) anim.SetBool("Arrow", isAttacking);
-        else anim.SetBool("Punch", isAttacking);
+        /*if (playerStats.attackRange >= 12) anim.SetBool("Arrow", isAttacking);
+        else */anim.SetBool("Punch", isAttacking);
     }
 }
