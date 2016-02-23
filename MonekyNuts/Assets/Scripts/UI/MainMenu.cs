@@ -8,7 +8,7 @@ public class MainMenu : MonoBehaviour {
 
     public void startGame()
     {
-		Destroy(GameObject.FindGameObjectWithTag("ImmortalMusic"));
+        Destroy(GameObject.FindGameObjectWithTag("ImmortalMusic"));
         Application.LoadLevel(buttonReferences[0]);
     }
 

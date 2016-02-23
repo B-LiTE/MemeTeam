@@ -127,7 +127,7 @@ public class PlayerMovement : MonoBehaviour {
     // Check if the distance between us and our target is less than our attacking range
     bool inRangeOfTarget()
     {
-        return Vector3.Distance(zeroedYVector(transform.position), zeroedYVector(playerBehavior.getTarget().transform.position)) <= playerStats.attackRange;
+        return Vector3.Distance(zeroedYVector(transform.position), zeroedYVector(playerBehavior.getTarget().transform.position)) <= 2 * playerStats.attackRange / 3;
     }
 
     /// <summary>
