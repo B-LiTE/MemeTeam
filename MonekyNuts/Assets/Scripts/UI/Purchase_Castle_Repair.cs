@@ -13,7 +13,8 @@ public class Purchase_Castle_Repair : MonoBehaviour {
 	}
 	void PurchaseRepair()
 	{
-		if(References.gameStats.goldCount >= repairPrice)
+		if(References.gameStats.goldCount >= repairPrice && References.castle.GetComponent<Castle>().currHealth < 
+		   													References.castle.GetComponent<Castle>().totHealth)
 		{
 			References.gameStats.ChangeGoldCount(-repairPrice);
 			References.castle.GetComponent<Castle>().ChangeHealth(.05f * References.castle.GetComponent<Castle>().totHealth);

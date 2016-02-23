@@ -26,6 +26,18 @@ public class EnemyStats : KillableInstance {
         base.Awake();
         enemyBehavior = GetComponent<EnemyBehavior>();
     }
+	void Start()
+	{
+		StartCoroutine (checkHealth ());
+	}
+	IEnumerator checkHealth()
+	{
+		while (true) {
+			if (currHealth <= 0)
+				Die ();
+			yield return new WaitForSeconds(0.5f);
+		}
+	}
 
     protected override void Die()
     {
