@@ -22,7 +22,7 @@ public abstract class KillableInstance : MonoBehaviour{
     public bool isAlive = true;
     private float damageMultiplier;
 
-    public GameObject FloatingHealthBar;
+    public RectTransform FloatingHealthBar;
 
     Coroutine regenerationCoroutine;
 
@@ -59,6 +59,7 @@ public abstract class KillableInstance : MonoBehaviour{
         Debug.LogWarning(gameObject.name + ": " + currHealth + " + " + amount + " = " + (currHealth + amount));
         currHealth += amount;
         if (currHealth > totHealth) currHealth = totHealth;
+        if (FloatingHealthBar != null) UpdateHealthBar();
         if (currHealth <= 0)
         {
             isAlive = false;
@@ -83,9 +84,18 @@ public abstract class KillableInstance : MonoBehaviour{
 
 
 
-    public void UpdateHealthBar(float amount)
+    public void UpdateHealthBar()
     {
-        ChangeHealth(-amount * damageMultiplier);  
+        // If our health is greater than zero, scale the health bar to represent our health
+        if (currHealth / totHealth > 0)
+        {
+            FloatingHealthBar.localScale = new Vector3(currHealth / totHealth, FloatingHealthBar.localScale.y, FloatingHealthBar.localScale.z);
+        }
+        else
+        {
+            // Otherwise, show none of the health bar
+            FloatingHealthBar.localScale = new Vector3(0, FloatingHealthBar.localScale.y, FloatingHealthBar.localScale.z);
+        }
     }
 
 	protected abstract void Die ();

@@ -4,11 +4,6 @@ using System.Collections;
 public class Castle : KillableInstance {
 
     public RectTransform tempHealthBar;
-
-	// Use this for initialization
-	void Start () {
-	
-	}
 	
 	// Update is called once per frame
     // DEBUG
