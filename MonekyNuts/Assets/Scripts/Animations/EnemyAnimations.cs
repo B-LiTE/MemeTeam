@@ -17,21 +17,15 @@ public class EnemyAnimations : MonoBehaviour {
     {
         if (enemyBehavior.getAction() == EnemyBehavior.actions.move) anim.SetBool("Run", true);
         else anim.SetBool("Run", false);
+
+        if (enemyBehavior.getAction() == EnemyBehavior.actions.attack) anim.SetBool("Punch", true);
+        else anim.SetBool("Punch", false);
     }
 
-	
-	// Update is called once per frame
-	/*void Update () {
-
-        anim.SetBool("Run", false);
-
-        if (Input.GetMouseButtonUp(0))
-        {
-            anim.SetBool("Run", true);
-        }
-        else if (GetComponentInParent<NavMeshAgent>().remainingDistance <= 1f)//(Vector3.Distance(References.player.GetComponent<NavMeshAgent>().destination, References.player.transform.position) <= References.player.GetComponent<NavMeshAgent>().stoppingDistance)
-        {
-            anim.SetBool("Run", false);
-        }
-	}*/
+    IEnumerator attack()
+    {
+        anim.SetBool("Punch", true);
+        yield return new WaitForSeconds(0.75f);
+        anim.SetBool("Punch", false);
+    }
 }
