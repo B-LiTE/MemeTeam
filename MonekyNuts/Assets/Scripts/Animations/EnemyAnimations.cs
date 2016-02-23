@@ -21,11 +21,4 @@ public class EnemyAnimations : MonoBehaviour {
         if (enemyBehavior.getAction() == EnemyBehavior.actions.attack) anim.SetBool("Punch", true);
         else anim.SetBool("Punch", false);
     }
-
-    IEnumerator attack()
-    {
-        anim.SetBool("Punch", true);
-        yield return new WaitForSeconds(0.75f);
-        anim.SetBool("Punch", false);
-    }
 }
