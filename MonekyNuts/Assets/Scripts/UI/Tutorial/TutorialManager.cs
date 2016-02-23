@@ -36,7 +36,6 @@ public class TutorialManager : MonoBehaviour {
 	}
 	void ChangeSlideRight() //displays the next slide of the tutorial
 	{
-		Debug.Log ("right");
 		if(slideIndex < slidesCount - 1)
 		{
 			slideIndex++;
