@@ -102,7 +102,7 @@ public class PlayerMouseCommands : MonoBehaviour {
     {
         flag.SetActive(true);
 
-        while (playerBehavior.targetIsEnemy())
+        while (playerBehavior.getTarget().GetComponent<KillableInstance>().isAlive)
         {
             Vector3 enemyPosition = playerBehavior.getTarget().transform.position;
             flag.transform.position = new Vector3(enemyPosition.x, enemyPosition.y + distanceAboveTarget, enemyPosition.z);
@@ -142,7 +142,7 @@ public class PlayerMouseCommands : MonoBehaviour {
 
         while (playerMovement.navigation.pathPending) yield return null;
 
-        while (!playerBehavior.targetIsEnemy() && playerMovement.navigation.remainingDistance > playerMovement.navigation.stoppingDistance)
+        while (playerMovement.navigation.remainingDistance > 0)
         {
             yield return null;
         }

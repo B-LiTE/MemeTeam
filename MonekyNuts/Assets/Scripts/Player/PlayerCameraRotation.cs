@@ -52,7 +52,7 @@ public class PlayerCameraRotation : MonoBehaviour {
             rotationCoroutine = StartCoroutine(checkRotation());
 
             // Figure out where to place the rotation gradients
-            Vector3 leftBound = realtimeCamera.ViewportToScreenPoint(new Vector3(0.1f, 0, 0));
+            Vector3 leftBound = realtimeCamera.ViewportToScreenPoint(new Vector3(0.1f, 10, 1));
             Vector3 rightBound = realtimeCamera.ViewportToScreenPoint(new Vector3(0.9f, 0, 0));
             
             // Place, resize, and enable the rotation gradients
