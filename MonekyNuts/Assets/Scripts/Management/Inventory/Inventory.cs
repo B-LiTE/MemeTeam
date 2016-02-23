@@ -47,7 +47,7 @@ public class Inventory : MonoBehaviour {
 			bool breakOut = false;
 			bool foundFirstEmptySlot = false;
 		
-		if (dropMaxStack > 0 && currentState.CurrentState == StateManager.states.realtime) { //if the item is stackable
+		if (dropMaxStack > 0 && currentState.CurrentState == StateManager.states.realtime) { //if the item is stackable and in realtime - send new stacks to wheel
 			breakOut = false;
 			foundFirstEmptySlot = false;
 			int emptySlot = -1; //if it doesn't find an existing stack to add to, then it will add to the first found empty instead.
@@ -59,7 +59,8 @@ public class Inventory : MonoBehaviour {
 					
 					breakOut = true; //escape the loop
 				}
-				if (!foundFirstEmptySlot) {
+				if (!foundFirstEmptySlot) 
+				{
 					if (inventory [i].itemType == "Empty") {
 						emptySlot = i;
 						foundFirstEmptySlot = true;
@@ -76,7 +77,7 @@ public class Inventory : MonoBehaviour {
 				breakOut = false;
 				foundFirstEmptySlot = false;
 				emptySlot = -1; //if it doesn't find an existing stack to add to, then it will add to the first found empty instead.
-				for (int i = 9; i < 21 && !breakOut; i++) { //1 - 50 is the actual inventory
+				for (int i = 9; i < 21 && !breakOut; i++) { //9 - 20 is the storage
 					if (inventory [i].itemId == dropItemId && stackInSlots [i] < dropMaxStack) { //if theres an existing stack of the item with room
 						stackInSlots [i]++; //just add to the existing count
 						foundPlace = true;
@@ -99,7 +100,7 @@ public class Inventory : MonoBehaviour {
 				}
 			}
 		} 
-		else if (dropMaxStack > 0 && currentState.CurrentState == StateManager.states.strategy) 
+		else if (dropMaxStack > 0 && currentState.CurrentState == StateManager.states.strategy) //if its strategy view, add it to wheel first
 		{
 			breakOut = false;
 			foundFirstEmptySlot = false;
@@ -214,7 +215,7 @@ public class Inventory : MonoBehaviour {
 		{
 			//item.SendMessage("PlayPickUpItem");
 			GameObject sound = (GameObject)Instantiate(Resources.Load ("OneTimeSoundEffect", typeof (GameObject)));
-			sound.GetComponent<AudioSource>().clip = References.soundEffects.soundEffects[1];
+			sound.GetComponent<AudioSource>().clip = References.soundEffects.soundEffects[1]; //play sound when pick up item
 			Destroy(item);
 		}
 	}
@@ -245,7 +246,7 @@ public class Inventory : MonoBehaviour {
 			slotsDisplay[slotIndex].GetComponent<Image>().sprite = null;
 			slotsDisplay[slotIndex].gameObject.SetActive(false);
 		}
-		if(slotIndex <= 8 && slotIndex >= 1)
+		if(slotIndex <= 8 && slotIndex >= 1) //if its an item also on the wheel then need to update additional sprites
 		{
 			
 			if(inventory[slotIndex].itemType != "Empty")
@@ -255,7 +256,7 @@ public class Inventory : MonoBehaviour {
 			}
 			else
 			{
-				wheelSlots[slotIndex].SetActive(false);
+				wheelSlots[slotIndex].SetActive(false); //deactivate the sprite if empty
 			}
 		}
 	}
@@ -298,18 +299,6 @@ public class Inventory : MonoBehaviour {
 		{
 			if(inventory[slotIndex].itemType != "Empty") //if there is an object where you are trying to move it
 			{
-				/* LATER STUFF FOR WHEN STACKS CAN BE SPLIT
-				if(itemOnCursor.GetComponent<Item_Attached_Cursor>().itemId == inventory[slotIndex]) //if the item on the cursor is the same as the one on the clicked slot
-				{
-					if(GetComponent<Item_Database>().allItems[inventory[slotIndex].itemId].maxStack >
-					   itemOnCursor.GetComponent<Item_Attached_Cursor>().itemStackCount + stackInSlots[slotIndex])
-						//if adding these stacks together would go over the max stack count of the item
-					{
-					}
-					else
-					{
-					}
-				}*/
 				int tempID = itemOnCursor.GetComponent<Item_Attached_Cursor>().itemId;
 				int tempStackCount = itemOnCursor.GetComponent<Item_Attached_Cursor>().itemStackCount;
 				itemOnCursor.GetComponent<Item_Attached_Cursor>().itemId = inventory[slotIndex].itemId;
@@ -371,14 +360,7 @@ public class Inventory : MonoBehaviour {
 		UpdateInventorySprite(slotIndex);
 		UpdateInventoryStackCounter(slotIndex);
 	}
-	void Start()
-	{
-		/*
-		AddItem(1);
-		AddItem(2);
-		AddItem(2);
-		AddItem(1);*/
-	}
+
 
 
   
