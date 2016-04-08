@@ -41,6 +41,7 @@ public class StateManager : MonoBehaviour {
 
     void Start()
     {
+        StartCoroutine(checkCheats());
         StartCoroutine(checkPause());
         StartCoroutine(checkEnemyCount());
     }
@@ -73,10 +74,69 @@ public class StateManager : MonoBehaviour {
     {
         while (true)
         {
-            if (Input.GetKeyUp(KeyCode.Escape))
+            if (Input.GetKeyUp(KeyCode.Space))
             {
                 isPaused = !isPaused;
                 pause(isPaused);
+            }
+
+            yield return null;
+        }
+    }
+
+    IEnumerator checkCheats()
+    {
+        while (true)
+        {
+            if (Input.GetKeyUp(KeyCode.Q))
+            {
+                loadingScreen.SetActive(true);
+                Application.LoadLevel("Victory");
+            }
+            else if (Input.GetKeyUp(KeyCode.W))
+            {
+                loadLoseLevel();
+            }
+            else if (Input.GetKeyUp(KeyCode.E))
+            {
+                StartCoroutine(showWinBeforeNext());
+            }
+            else if (Input.GetKeyUp(KeyCode.R))
+            {
+                Cheats.nextLevelWithoutLoad();
+            }
+            else if (Input.GetKeyUp(KeyCode.A))
+            {
+                References.gameStats.ChangeGoldCount(250);
+            }
+            else if (Input.GetKeyUp(KeyCode.S))
+            {
+
+            }
+            else if (Input.GetKeyUp(KeyCode.D))
+            {
+                References.castle.GetComponent<Castle>().ChangeHealth(1000);
+            }
+            else if (Input.GetKeyUp(KeyCode.F))
+            {
+                References.player.GetComponent<PlayerStats>().ChangeHealth(1000);
+            }
+            else if (Input.GetKeyUp(KeyCode.Z))
+            {
+                loadingScreen.SetActive(true);
+                Application.LoadLevel(0);
+            }
+            else if (Input.GetKeyUp(KeyCode.X))
+            {
+                Time.timeScale = 0.25f;
+            }
+            else if (Input.GetKeyUp(KeyCode.C))
+            {
+                Time.timeScale = 1;
+            }
+            else if (Input.GetKeyUp(KeyCode.V))
+            {
+                Time.timeScale = 2.5f;
             }
 
             yield return null;
