@@ -14,6 +14,7 @@ public class EnemyAttacking : MonoBehaviour {
     Coroutine attackCoroutine;
 
     // Reference to target we are attacking
+    [SerializeField]
     KillableInstance attackTarget;
 
     void Awake()
@@ -78,11 +79,18 @@ public class EnemyAttacking : MonoBehaviour {
     {
         // Get the appropriate target object
         if (enemyBehavior.targetIsPlayer()) attackTarget = References.player.GetComponent<PlayerStats>();
-        else if (enemyBehavior.targetIsCastle()) attackTarget = References.castle.GetComponent<Castle>();
+        else if (enemyBehavior.targetIsCastle())
+        {
+            Debug.Log("setting cast as targ");
+            Debug.Log(References.castle.name + " is castle");
+            Debug.Log((References.castle.GetComponent<Castle>() is KillableInstance) + " is killablE?");
+            attackTarget = References.castle.GetComponent<KillableInstance>();
+            Debug.Log("attack targ is " + attackTarget);
+        }
         else attackTarget = enemyBehavior.getTarget().GetComponent<KillableInstance>();
 
         // Subscribe to the target's death alert
-        attackTarget.alertOnDeath += stopAttacking;
+        //attackTarget.alertOnDeath += stopAttacking;
 
         // As long as the target is alive, wait for a short bit, then attack
         while (attackTarget.isAlive)
@@ -93,6 +101,8 @@ public class EnemyAttacking : MonoBehaviour {
 
             yield return new WaitForSeconds(enemyStats.secondsBetweenAttacks / 2);
         }
+
+        stopAttacking();
 
         // Now that the target is dead, start wandering
         enemyBehavior.changeIntent(this.gameObject);

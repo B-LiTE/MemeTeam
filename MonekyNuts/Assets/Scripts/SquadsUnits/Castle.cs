@@ -6,7 +6,8 @@ public class Castle : KillableInstance {
     public RectTransform tempHealthBar;
     public override void Damage(float amount, GameObject attacker)
     {
-        base.Damage(amount, attacker);
+        //base.Damage(amount, attacker);
+        ChangeHealth(-Mathf.Abs(amount));
         UpdateHealthBar();
     }
 
