@@ -4,7 +4,7 @@ using UnityEngine.EventSystems;
 
 // Intercepts mouse clicks/touches and acts on the objects that were clicked
 
-[RequireComponent(typeof(PlayerBehavior), typeof(PlayerMovement))]
+//[RequireComponent(typeof(PlayerBehavior), typeof(PlayerMovement))]
 public class PlayerMouseCommands : MonoBehaviour {
 
     // References to other scripts and objects

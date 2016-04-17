@@ -3,8 +3,8 @@ using System.Collections;
 
 // Controls the player's behavior and acts as a liason between the various Player scripts
 
-[RequireComponent(typeof(PlayerStats), typeof(PlayerMouseCommands))]
-[RequireComponent(typeof(PlayerMovement), typeof(PlayerAttacks))]
+//[RequireComponent(typeof(PlayerStats), typeof(PlayerMouseCommands))]
+//[RequireComponent(typeof(PlayerMovement), typeof(PlayerAttacks))]
 public class PlayerBehavior : MonoBehaviour {
 
     // Set up the references to the other scripts

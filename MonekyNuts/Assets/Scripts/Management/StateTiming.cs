@@ -4,7 +4,7 @@ using System.Collections;
 public class StateTiming : MonoBehaviour {
 
     [SerializeField]
-    public int secondsOfRealtime;
+    public int secondsOfRealtime, secondsLeftOfRealtime;
 
     Coroutine realtimePhaseCoroutine;
 
@@ -21,7 +21,15 @@ public class StateTiming : MonoBehaviour {
     IEnumerator realtimePhase()
     {
         References.stateManager.CurrentState = StateManager.states.realtime;
-        yield return new WaitForSeconds(secondsOfRealtime);
+
+        int t = secondsOfRealtime;
+        while (t > 0)
+        {
+            secondsOfRealtime = t--;
+
+            yield return new WaitForSeconds(1);
+        }
+
         References.stateManager.CurrentState = StateManager.states.strategy;
         realtimePhaseCoroutine = null;
     }

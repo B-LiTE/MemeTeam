@@ -41,7 +41,7 @@ public class StateManager : MonoBehaviour {
 
     void Start()
     {
-        StartCoroutine(checkCheats());
+        //StartCoroutine(checkCheats());
         StartCoroutine(checkPause());
         StartCoroutine(checkEnemyCount());
     }

@@ -19,6 +19,9 @@ public class PlayerStats : KillableInstance {
     public float attackRange;
     public float secondsBetweenAttacks;
 
+    public float movementSpeed;
+    public float rotationSpeed;
+
 	public Inventory inventory;
 	public float goldCount;
 
@@ -38,6 +41,11 @@ public class PlayerStats : KillableInstance {
 		baseAttackRange = 3;
 		baseAttackSpeed = 1;
 		attackRange = baseAttackRange;
+
+        // AS OF 4/17/2016:
+        // 8 almost exactly matches enemy/troop movement speed
+        movementSpeed = 9;
+        rotationSpeed = 2.5f;
 
 		goldCount = 0;
 	}

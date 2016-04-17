@@ -21,17 +21,14 @@ public class ShowTimer : MonoBehaviour {
 
     IEnumerator realtimeTimer()
     {
-        int time = References.stateTiming.secondsOfRealtime;
+        int time = References.stateTiming.secondsLeftOfRealtime;
 
         while (time > 0)
         {
+            time = References.stateTiming.secondsLeftOfRealtime;
             timer.text = time.ToString();
 
             yield return new WaitForSeconds(1);
-
-            time--;
         }
-
-        timer.text = "";
     }
 }
