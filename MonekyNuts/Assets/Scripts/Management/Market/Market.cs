@@ -31,15 +31,15 @@ public class Market : MonoBehaviour {
 	}
 	public void ChangeMarket() //need to call this when moving to next level
 	{
-		if (Application.loadedLevelName == "Kenny's Level") 
+		if (Application.loadedLevelName.Contains("Kenny")) 
 		{
 			activeArray = marketArrays.levelOneItems;
 		} 
-		else if (Application.loadedLevelName == "Paul - Level 2") 
+		else if (Application.loadedLevelName.Contains("Paul"))
 		{ 
 			activeArray = marketArrays.levelTwoItems;
 		}
-		else if (Application.loadedLevelName == "Alex's Level") 
+		else if (Application.loadedLevelName.Contains("Alex")) 
 		{ 
 			activeArray = marketArrays.levelThreeItems;
 		}
