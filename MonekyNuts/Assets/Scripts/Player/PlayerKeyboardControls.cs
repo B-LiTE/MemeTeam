@@ -25,15 +25,13 @@ public class PlayerKeyboardControls : MonoBehaviour {
         {
             if (Input.GetKey(KeyCode.W))
             {
-                if (Input.GetKey(KeyCode.LeftShift)) rigidbody.velocity = transform.forward * playerStats.movementSpeed * 2;
-                else rigidbody.velocity = transform.forward * playerStats.movementSpeed;
+                rigidbody.velocity = transform.forward * Mathf.Clamp(rigidbody.velocity.magnitude + playerStats.movementAcceleration, 0, playerStats.maxMoveSpeed);
             }
             else if (Input.GetKey(KeyCode.S))
             {
-                if (Input.GetKey(KeyCode.LeftShift)) rigidbody.velocity = -transform.forward * playerStats.movementSpeed * 2;
-                else rigidbody.velocity = -transform.forward * playerStats.movementSpeed;
+                rigidbody.velocity = -transform.forward * Mathf.Clamp(rigidbody.velocity.magnitude + playerStats.movementAcceleration, 0, playerStats.maxMoveSpeed);
             }
-            else rigidbody.velocity = Vector3.zero;
+            else rigidbody.velocity = rigidbody.velocity * Mathf.Clamp(rigidbody.velocity.magnitude - playerStats.movementAcceleration, 0, playerStats.maxMoveSpeed);
 
             if (Input.GetKey(KeyCode.A))
             {
