@@ -23,16 +23,34 @@ public class PlayerKeyboardControls : MonoBehaviour {
     {
         while (References.stateManager.CurrentState == StateManager.states.realtime)
         {
+            // Movement
             if (Input.GetKey(KeyCode.W))
             {
-                rigidbody.velocity = transform.forward * Mathf.Clamp(rigidbody.velocity.magnitude + playerStats.movementAcceleration, 0, playerStats.maxMoveSpeed);
+                // Set velocity in the forward direction equal to the current velocity magnitude + acceleration, clamped between 0 and maxMoveSpeed
+                rigidbody.velocity = transform.forward.normalized * Mathf.Clamp(rigidbody.velocity.magnitude + playerStats.movementAcceleration, 0, playerStats.maxMoveSpeed);
             }
+            /*else
+            {
+                rigidbody.velocity = -transform.forward.normalized * Mathf.Clamp(rigidbody.velocity.magnitude - playerStats.movementAcceleration, 0, playerStats.maxMoveSpeed);
+
+                if (Input.GetKey(KeyCode.S))
+                {
+                    // Set velocity in the backward direction equal to the current velocity magnitude + acceleration, clamped between 0 and maxMoveSpeed
+                    rigidbody.velocity = transform.forward.normalized * Mathf.Clamp(rigidbody.velocity.magnitude - playerStats.movementAcceleration, 0, playerStats.maxMoveSpeed);
+                }
+            }*/
             else if (Input.GetKey(KeyCode.S))
             {
-                rigidbody.velocity = -transform.forward * Mathf.Clamp(rigidbody.velocity.magnitude + playerStats.movementAcceleration, 0, playerStats.maxMoveSpeed);
+                // Set velocity in the backward direction equal to the current velocity magnitude + acceleration, clamped between 0 and maxMoveSpeed
+                rigidbody.velocity = -transform.forward.normalized * Mathf.Clamp(rigidbody.velocity.magnitude + playerStats.movementAcceleration, 0, playerStats.maxMoveSpeed);
             }
-            else rigidbody.velocity = rigidbody.velocity * Mathf.Clamp(rigidbody.velocity.magnitude - playerStats.movementAcceleration, 0, playerStats.maxMoveSpeed);
+                // Set velocity in the current direction equal to the current velocity magnitude - (2 * acceleration), clamped between 0 and maxMoveSpeed
+            else rigidbody.velocity = rigidbody.velocity.normalized * Mathf.Clamp(rigidbody.velocity.magnitude - playerStats.movementAcceleration, 0, playerStats.maxMoveSpeed);
 
+
+
+
+            // Rotation
             if (Input.GetKey(KeyCode.A))
             {
                 rigidbody.rotation = Quaternion.Euler(new Vector3(transform.rotation.eulerAngles.x, transform.rotation.eulerAngles.y - playerStats.rotationSpeed, transform.rotation.eulerAngles.z));
@@ -41,6 +59,9 @@ public class PlayerKeyboardControls : MonoBehaviour {
             {
                 rigidbody.rotation = Quaternion.Euler(new Vector3(transform.rotation.eulerAngles.x, transform.rotation.eulerAngles.y + playerStats.rotationSpeed, transform.rotation.eulerAngles.z));
             }
+
+
+
 
             yield return null;
         }
