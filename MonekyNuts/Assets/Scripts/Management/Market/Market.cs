@@ -31,7 +31,8 @@ public class Market : MonoBehaviour {
 	}
 	public void ChangeMarket() //need to call this when moving to next level
 	{
-		if (Application.loadedLevelName.Contains("Kenny")) 
+        activeArray = marketArrays.levelOneItems;
+		/*if (Application.loadedLevelName.Contains("Kenny")) 
 		{
 			activeArray = marketArrays.levelOneItems;
 		} 
@@ -42,7 +43,7 @@ public class Market : MonoBehaviour {
 		else if (Application.loadedLevelName.Contains("Alex")) 
 		{ 
 			activeArray = marketArrays.levelThreeItems;
-		}
+		}*/
 
 
 	}

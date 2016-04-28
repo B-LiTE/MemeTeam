@@ -33,7 +33,7 @@ public class StateManager : MonoBehaviour {
 
     void Awake()
     {
-        References.resetReferences();
+        //References.resetReferences();
 
         StartCoroutine(gameStartChangeState());
         isPaused = false;
