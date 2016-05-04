@@ -23,6 +23,7 @@ public class PlayerStats : KillableInstance {
     public float rotationSpeed;
 
 	public Inventory inventory;
+	ModelDatabase modelDatabase;
 	public float goldCount;
 
 	public RectTransform uiHealthBar;
@@ -30,6 +31,7 @@ public class PlayerStats : KillableInstance {
 	public void Start ()
 	{
 		inventory = Object.FindObjectOfType<Inventory>().GetComponent<Inventory>();
+		modelDatabase = Object.FindObjectOfType<ModelDatabase> ().GetComponent<ModelDatabase> ();
 
 		activeItem = inventory.inventory [1];
 		for (int i = 1; i < 9; i++)armorArray [i] = inventory.inventory [i];
@@ -103,6 +105,9 @@ public class PlayerStats : KillableInstance {
 				addedDamage -= trueItem.damage;
 				attackSpeed = baseAttackSpeed;
 				attackRange = baseAttackRange;
+
+				modelDatabase.models [trueItem.modelId].SetActive (false);
+				//change animation
 			}
 		}
 		else if(type == "Armor")
@@ -126,6 +131,8 @@ public class PlayerStats : KillableInstance {
 				addedDamage += trueItem.damage;
 				attackSpeed = trueItem.attackSpeed;
 				attackRange = trueItem.range;
+
+				modelDatabase.models [trueItem.modelId].SetActive (true);
 			}
 		}
 		else if(type == "Armor")
