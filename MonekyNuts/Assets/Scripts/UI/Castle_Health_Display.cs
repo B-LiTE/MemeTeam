@@ -9,11 +9,15 @@ public class Castle_Health_Display : MonoBehaviour {
 	public Sprite[] sprites = new Sprite[10];
 
     Text healthText;
+	public RectTransform healthBar;
+
+	Sprite castleSprite;
 
 	void Start()
 	{
 		castle = FindObjectOfType<Castle>().GetComponent<Castle>();
         healthText = GetComponentInChildren<Text>();
+		castleSprite = GetComponent<Image> ().sprite;
 	}
 	void Update()
 	{
@@ -22,6 +26,7 @@ public class Castle_Health_Display : MonoBehaviour {
 	public void UpdateCastleHealth(float ratio)
 	{
         healthText.text = (int)(ratio * 100) + "%";
+		healthBar.localScale = new Vector2 (ratio, 1);
 
 			if(ratio < .9f)
 			{
@@ -41,17 +46,17 @@ public class Castle_Health_Display : MonoBehaviour {
 										{
 											if(ratio < .1f)
 											{
-												GetComponent<Image>().sprite = sprites[9];	
-											}else  GetComponent<Image>().sprite = sprites[8];
-										}else  GetComponent<Image>().sprite = sprites[7];
-									}else  GetComponent<Image>().sprite = sprites[6];
-								}else  GetComponent<Image>().sprite = sprites[5];
-							}else  GetComponent<Image>().sprite = sprites[4];
-						}else  GetComponent<Image>().sprite = sprites[3];
-					}else  GetComponent<Image>().sprite = sprites[2];
-				}else  GetComponent<Image>().sprite = sprites[1];
+											castleSprite = sprites[9];	
+										}else  castleSprite = sprites[8];
+									}else  castleSprite = sprites[7];
+								}else  castleSprite = sprites[6];
+							}else  castleSprite = sprites[5];
+						}else  castleSprite = sprites[4];
+					}else  castleSprite = sprites[3];
+				}else  castleSprite = sprites[2];
+			}else  castleSprite = sprites[1];
 			}
-			else  GetComponent<Image>().sprite = sprites[0];
+		else castleSprite = sprites[0];
 
 	}
 }
