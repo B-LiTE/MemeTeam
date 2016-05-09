@@ -94,9 +94,24 @@ public class PlayerKeyboardControls : MonoBehaviour {
             if (Input.GetMouseButton(0))
             {
                 animations.playPunchingAnimation();
-                //if (playerStats.inventory.activeItem != null && playerStats.inventory.activeItem is Weapon_Item && ((Weapon_Item)playerStats.inventory.activeItem).thisWeaponType != Weapon_Item.weaponType.sword)
-                    playerAttacks.startThrowArrowCoroutine();
-                //else playerAttacks.startAttackSwordCoroutine();
+                if (playerStats.activeItem != null && playerStats.activeItem.itemType == "Weapon")
+                {
+                    Weapon_Item temp = playerStats.activeItem as Weapon_Item;
+
+                    if (temp.thisWeaponType != Weapon_Item.weaponType.sword)
+                    {
+                        playerAttacks.startThrowArrowCoroutine();
+                    }
+                    else
+                    {
+                        playerAttacks.startAttackSwordCoroutine();
+                    }
+                }
+                else
+                {
+                    playerAttacks.startAttackSwordCoroutine();
+                }
+                
             }
 
 

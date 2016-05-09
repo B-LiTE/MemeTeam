@@ -10,7 +10,7 @@ public class Weapon_Item : Item {
 	public enum weaponType {sword,bow,staff};
 	public weaponType thisWeaponType;
 
-	public Weapon_Item(int itemId, string itemName, string itemType, int itemMaxStack, int goldPrice, float damage, float range, float attackSpeed, int modelId, weaponType thisweaponType) 
+	public Weapon_Item(int itemId, string itemName, string itemType, int itemMaxStack, int goldPrice, float damage, float range, float attackSpeed, int modelId, weaponType thisWeaponType) 
 		: base (itemId, itemName, itemType, itemMaxStack, goldPrice)
 	{
 		this.itemId = itemId;
