@@ -182,7 +182,7 @@ public class StateManager : MonoBehaviour {
             yield return null;
         }
 
-        yield return new WaitForSeconds(2);
+        yield return new WaitForSeconds(4);
         //loadNextLevel();
         if (++References.currentLevel >= 4) Application.LoadLevel("Victory");
         else

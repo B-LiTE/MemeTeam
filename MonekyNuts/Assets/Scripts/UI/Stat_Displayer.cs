@@ -9,6 +9,7 @@ public class Stat_Displayer : MonoBehaviour {
 	void Start () 
 	{
 		playerStats = FindObjectOfType<PlayerStats>().GetComponent<PlayerStats>();
+        StartCoroutine(updateStats());
 	}
 	/*void Update()
 	{
