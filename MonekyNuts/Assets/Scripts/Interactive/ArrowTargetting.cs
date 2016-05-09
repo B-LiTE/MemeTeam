@@ -50,6 +50,7 @@ public class ArrowTargetting : MonoBehaviour {
         {
             transform.LookAt(other.gameObject.transform);
             setArrowVelocity();
+            rigidbody.useGravity = false;
             detectionZone.enabled = false;
         }
     }

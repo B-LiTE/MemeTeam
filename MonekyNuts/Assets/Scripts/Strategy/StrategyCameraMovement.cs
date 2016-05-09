@@ -8,11 +8,24 @@ public class StrategyCameraMovement : MonoBehaviour {
     void Awake()
     {
         strategyCamera = GetComponent<Camera>();
+        References.stateManager.nextLevel += nextLevel;
     }
 
     void Start()
     {
         References.stateManager.changeState += onStateChange;
+    }
+
+    void nextLevel()
+    {
+        if (References.currentLevel == 2)
+        {
+            strategyCamera.orthographicSize = 500;
+        }
+        else
+        {
+            strategyCamera.orthographicSize = 1030.04f;
+        }
     }
 
     void onStateChange()

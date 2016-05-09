@@ -28,8 +28,8 @@ public class StateManager : MonoBehaviour {
 
     bool isPaused;
 
-    public delegate void changeStateDelegate();
-    public event changeStateDelegate changeState;
+    public delegate void voidDelegate();
+    public event voidDelegate changeState, nextLevel;
 
     void Awake()
     {
@@ -163,7 +163,7 @@ public class StateManager : MonoBehaviour {
         {
             yield return new WaitForSeconds(1);
         }
-        
+
         StartCoroutine(showWinBeforeNext());
     }
 
@@ -183,7 +183,16 @@ public class StateManager : MonoBehaviour {
         }
 
         yield return new WaitForSeconds(2);
-        loadNextLevel();
+        //loadNextLevel();
+        if (++References.currentLevel >= 4) Application.LoadLevel("Victory");
+        else
+        {
+            CurrentState = states.strategy;
+            if (nextLevel != null) nextLevel();
+            winText.color = new Color(winText.color.r, winText.color.g, winText.color.b, 0);
+            winText.enabled = false;
+
+        }
     }
 
 

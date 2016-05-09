@@ -37,6 +37,8 @@ public class EnemyMovement : MonoBehaviour {
         RaycastHit hitInfo;
         Physics.Raycast(new Ray(transform.position, Vector3.down), out hitInfo, 10000f);
         transform.position = new Vector3(hitInfo.point.x, hitInfo.point.y + (transform.localScale.y / 2), hitInfo.point.z);
+
+        transform.LookAt(new Vector3(References.castle.transform.position.x, transform.position.y, References.castle.transform.position.z));
     }
 
     void onDeath()
@@ -140,7 +142,7 @@ public class EnemyMovement : MonoBehaviour {
 
     Vector3 ground(Vector3 point)
     {
-        if (Mathf.Approximately(point.y, 0)) return point;
+        //if (Mathf.Approximately(point.y, 0)) return point;
         RaycastHit hitInfo;
         if (Physics.Raycast(new Ray(point, Vector3.down), out hitInfo, 1000f))
             return hitInfo.point;

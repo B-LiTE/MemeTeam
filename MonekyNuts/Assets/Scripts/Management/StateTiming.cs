@@ -13,6 +13,7 @@ public class StateTiming : MonoBehaviour {
 
     void Awake()
     {
+        References.stateManager.nextLevel += nextLevel;
         References.stateManager.CurrentState = StateManager.states.strategy;
         timer.text = "";
     }
@@ -37,6 +38,14 @@ public class StateTiming : MonoBehaviour {
 
         timer.text = "";
         References.stateManager.CurrentState = StateManager.states.strategy;
+        realtimePhaseCoroutine = null;
+    }
+
+    void nextLevel()
+    {
+        timer.text = "";
+
+        StopCoroutine(realtimePhaseCoroutine);
         realtimePhaseCoroutine = null;
     }
 

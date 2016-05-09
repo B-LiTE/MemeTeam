@@ -29,6 +29,7 @@ public static class References {
     // Data
     public static int lives = 3;
     public static int lastLevelIndex;
+    public static int currentLevel = 1;
 
 
 

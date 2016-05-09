@@ -33,6 +33,10 @@ public class TroopMovement : MonoBehaviour {
         troopBehavior.changeOfIntentions += onChangeIntent;
         troopTargetSeeking.onTargetVisible += onTargetVisible;
         troopBehavior.onTroopDeath += onDeath;
+
+        RaycastHit hitInfo;
+        Physics.Raycast(new Ray(transform.position, Vector3.down), out hitInfo, 10000f);
+        transform.position = new Vector3(hitInfo.point.x, hitInfo.point.y + (transform.localScale.y / 2), hitInfo.point.z);
     }
 
     void onDeath()
@@ -128,14 +132,14 @@ public class TroopMovement : MonoBehaviour {
                 // ...and we aren't close enough to the target...
                 if (!closeEnoughToTarget())
                     // Set our destination to the target's position
-                    setDestination(troopBehavior.getTarget().transform.position);
+                    setDestination(ground(troopBehavior.getTarget().transform.GetComponent<Collider>().bounds.ClosestPoint(transform.position)));
             }
 
 
             // If we have a collectible to get...
             else if (troopBehavior.getIntent() == TroopBehavior.intentions.getCollectible)
             {
-                setDestination(troopBehavior.getTarget().transform.position);
+                setDestination(ground(troopBehavior.getTarget().transform.GetComponent<Collider>().bounds.ClosestPoint(transform.position)));
             }
 
 
@@ -152,6 +156,24 @@ public class TroopMovement : MonoBehaviour {
 
             // Stop rotating, if we were, and begin rotating
             runRotateCoroutine();
+        }
+    }
+
+
+
+
+    Vector3 ground(Vector3 point)
+    {
+        if (Mathf.Approximately(point.y, 0)) return point;
+        RaycastHit hitInfo;
+        if (Physics.Raycast(new Ray(point, Vector3.down), out hitInfo, 1000f))
+            return hitInfo.point;
+        else if (Physics.Raycast(new Ray(point, Vector3.up), out hitInfo, 1000f))
+            return hitInfo.point;
+        else
+        {
+            //Debug.LogError("Point " + point + " is very far off ground! From object " + this.name);
+            return point;
         }
     }
 
@@ -361,7 +383,7 @@ public class TroopMovement : MonoBehaviour {
 
     void setDestination(Vector3 destination)
     {
-        navigation.SetDestination(zeroedYVector(destination));
+        navigation.SetDestination(ground(destination));
     }
 
 

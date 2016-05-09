@@ -11,7 +11,7 @@ public class TreeToBillboard : MonoBehaviour {
         levelOfDetail = GetComponent<LODGroup>();
     }
 
-    void changeLOD()
+    public void changeLOD()
     {
         if (References.stateManager.CurrentState == StateManager.states.realtime)
         {

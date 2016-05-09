@@ -150,7 +150,22 @@ public class TroopTargetSeeking : MonoBehaviour {
         NavMeshHit hit;
         // If the point isn't on the NavMesh, return our current position
         if (!NavMesh.SamplePosition(chosenPoint, out hit, 20, 1)) return transform.position;
-        return hit.position;
+        return ground(hit.position);
+    }
+
+    Vector3 ground(Vector3 point)
+    {
+        if (Mathf.Approximately(point.y, 0)) return point;
+        RaycastHit hitInfo;
+        if (Physics.Raycast(new Ray(point, Vector3.down), out hitInfo, 1000f))
+            return hitInfo.point;
+        else if (Physics.Raycast(new Ray(point, Vector3.up), out hitInfo, 1000f))
+            return hitInfo.point;
+        else
+        {
+            Debug.LogError("Point " + point + " is very far off ground! From object " + this.name);
+            return point;
+        }
     }
 
 
