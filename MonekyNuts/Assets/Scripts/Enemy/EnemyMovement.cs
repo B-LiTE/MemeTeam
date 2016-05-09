@@ -33,6 +33,10 @@ public class EnemyMovement : MonoBehaviour {
         enemyBehavior.changeOfIntentions += onChangeIntent;
         enemyTargetSeeking.onTargetVisible += onTargetVisible;
         enemyBehavior.onEnemyDeath += onDeath;
+
+        RaycastHit hitInfo;
+        Physics.Raycast(new Ray(transform.position, Vector3.down), out hitInfo, 10000f);
+        transform.position = new Vector3(hitInfo.point.x, hitInfo.point.y + (transform.localScale.y / 2), hitInfo.point.z);
     }
 
     void onDeath()
@@ -109,8 +113,12 @@ public class EnemyMovement : MonoBehaviour {
             {
                 // ...and we aren't close enough to the target...
                 if (!closeEnoughToTarget())
+                {
+                    //Debug.Log("targ pos: " + enemyBehavior.getTarget().transform.GetComponent<Collider>().bounds.ClosestPoint(transform.position));
+                    //Debug.Log("grounded: " + ground(enemyBehavior.getTarget().transform.GetComponent<Collider>().bounds.ClosestPoint(transform.position)));
                     // Set our destination to the target's position
-                    setDestination(enemyBehavior.getTarget().transform.position);
+                    setDestination(ground(enemyBehavior.getTarget().transform.GetComponent<Collider>().bounds.ClosestPoint(transform.position)));
+                }
             }
             // Otherwise, if we aren't close enough to our destination...
             else if (!closeEnoughToDestination())
@@ -129,6 +137,21 @@ public class EnemyMovement : MonoBehaviour {
     }
 
 
+
+    Vector3 ground(Vector3 point)
+    {
+        if (Mathf.Approximately(point.y, 0)) return point;
+        RaycastHit hitInfo;
+        if (Physics.Raycast(new Ray(point, Vector3.down), out hitInfo, 1000f))
+            return hitInfo.point;
+        else if (Physics.Raycast(new Ray(point, Vector3.up), out hitInfo, 1000f))
+            return hitInfo.point;
+        else
+        {
+            //Debug.LogError("Point " + point + " is very far off ground! From object " + this.name);
+            return point;
+        }
+    }
 
 
 
@@ -225,7 +248,7 @@ public class EnemyMovement : MonoBehaviour {
         {
             // Pick a random point within our vision
             wanderingDestination = enemyTargetSeeking.pickRandomPointInSight();
-            Debug.DrawLine(transform.position, wanderingDestination, Color.black, 5f);
+            //Debug.DrawLine(transform.position, wanderingDestination, Color.cyan, 5f);
 
             // Start traveling to it
             enemyBehavior.changeAction(EnemyBehavior.actions.move);
@@ -335,7 +358,7 @@ public class EnemyMovement : MonoBehaviour {
 
     void setDestination(Vector3 destination)
     {
-        navigation.SetDestination(zeroedYVector(destination));
+        navigation.SetDestination(ground(destination));
     }
 
 

@@ -10,12 +10,23 @@ public class Stat_Displayer : MonoBehaviour {
 	{
 		playerStats = FindObjectOfType<PlayerStats>().GetComponent<PlayerStats>();
 	}
-	void Update()
+	/*void Update()
 	{
 		//GetComponent<Text>().text = "Attack: " + playerStats.activeDamage + "\nArmor: " + playerStats.armor;
 		GetComponent<Text>().text = string.Format("Attack: {0,-6} Range: {1,-6}\nArmor: {2,-6}  Attack Speed: {3,-6}",
 		                                          playerStats.activeDamage,playerStats.attackRange,playerStats.Armor,playerStats.attackSpeed);
-	}
+	}*/
+
+    IEnumerator updateStats()
+    {
+        while (true)
+        {
+            GetComponent<Text>().text = string.Format("Attack: {0,-6} Range: {1,-6}\nArmor: {2,-6}  Attack Speed: {3,-6}",
+                                                      playerStats.activeDamage, playerStats.attackRange, playerStats.Armor, playerStats.attackSpeed);
+
+            yield return new WaitForSeconds(0.25f);
+        }
+    }
 	
 
 }

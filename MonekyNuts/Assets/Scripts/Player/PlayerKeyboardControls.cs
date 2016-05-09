@@ -5,13 +5,25 @@ using System.Collections;
 public class PlayerKeyboardControls : MonoBehaviour {
 
     PlayerStats playerStats;
+    PlayerKeyboardAttacks playerAttacks;
     Rigidbody rigidbody;
+    Animations animations;
+
+    [SerializeField]
+    float groundedMaxYVelocity, airMaxYVelocity, minYVelocity, distanceCheck;
 
     void Awake()
     {
         References.stateManager.changeState += onChangeState;
         playerStats = GetComponent<PlayerStats>();
+        playerAttacks = GetComponent<PlayerKeyboardAttacks>();
         rigidbody = GetComponent<Rigidbody>();
+        animations = GetComponentInChildren<Animations>();
+
+        groundedMaxYVelocity = 5;
+        airMaxYVelocity = -15;
+        minYVelocity = -100;
+        distanceCheck = 2.25f;
     }
 
     void onChangeState()
@@ -22,35 +34,45 @@ public class PlayerKeyboardControls : MonoBehaviour {
     IEnumerator checkKeys()
     {
         Vector3 movementVector;
-        float movementMagnitude;
+        float movementMagnitude, yVelocity;
         while (References.stateManager.CurrentState == StateManager.states.realtime)
         {
-            movementVector = transform.forward;
+            movementVector = transform.forward.normalized;
             movementMagnitude = Mathf.Clamp(rigidbody.velocity.magnitude + playerStats.movementAcceleration, 0, playerStats.maxMoveSpeed);
+            yVelocity = Mathf.Clamp(rigidbody.velocity.y, minYVelocity, (isGrounded() ? groundedMaxYVelocity : airMaxYVelocity));
 
             // Movement
             if (Input.GetKey(KeyCode.W))
             {
-                // Set velocity in the forward direction equal to the current velocity magnitude + acceleration, clamped between 0 and maxMoveSpeed
-                rigidbody.velocity = new Vector3(movementVector.x * movementMagnitude, rigidbody.velocity.y, movementVector.z * movementMagnitude);
-            }
-            /*else
-            {
-                rigidbody.velocity = -transform.forward.normalized * Mathf.Clamp(rigidbody.velocity.magnitude - playerStats.movementAcceleration, 0, playerStats.maxMoveSpeed);
+                animations.playRunningAnimation();
 
-                if (Input.GetKey(KeyCode.S))
-                {
-                    // Set velocity in the backward direction equal to the current velocity magnitude + acceleration, clamped between 0 and maxMoveSpeed
-                    rigidbody.velocity = transform.forward.normalized * Mathf.Clamp(rigidbody.velocity.magnitude - playerStats.movementAcceleration, 0, playerStats.maxMoveSpeed);
-                }
-            }*/
+                // Set velocity in the forward direction equal to the current velocity magnitude + acceleration, clamped between 0 and maxMoveSpeed
+                rigidbody.velocity = new Vector3(movementVector.x * movementMagnitude,
+                    yVelocity,
+                    movementVector.z * movementMagnitude);
+                playerStats.rotationSpeed = 2;
+            }
             else if (Input.GetKey(KeyCode.S))
             {
+                animations.playRunningAnimation();
+
                 // Set velocity in the backward direction equal to the current velocity magnitude + acceleration, clamped between 0 and maxMoveSpeed
-                rigidbody.velocity = new Vector3(-movementVector.x * movementMagnitude, rigidbody.velocity.y, -movementVector.z * movementMagnitude);
+                rigidbody.velocity = new Vector3(-movementVector.x * movementMagnitude,
+                    yVelocity,
+                    -movementVector.z * movementMagnitude);
+                playerStats.rotationSpeed = 2;
             }
-                // Set velocity in the current direction equal to the current velocity magnitude - (2 * acceleration), clamped between 0 and maxMoveSpeed
-            else rigidbody.velocity = new Vector3(0, rigidbody.velocity.y, 0);
+            // Set velocity in the current direction equal to the current velocity magnitude - (2 * acceleration), clamped between 0 and maxMoveSpeed
+            else
+            {
+                rigidbody.velocity = new Vector3(
+                    rigidbody.velocity.normalized.x * tendTowardsZero(rigidbody.velocity.magnitude, playerStats.movementAcceleration),
+                    yVelocity,
+                    rigidbody.velocity.normalized.z * tendTowardsZero(rigidbody.velocity.magnitude, playerStats.movementAcceleration));
+                playerStats.rotationSpeed = 3.25f;
+
+                animations.turnOffAll();
+            }
 
 
 
@@ -68,9 +90,43 @@ public class PlayerKeyboardControls : MonoBehaviour {
 
 
 
+            // Attacks
+            if (Input.GetMouseButton(0))
+            {
+                animations.playPunchingAnimation();
+                //if (playerStats.inventory.activeItem != null && playerStats.inventory.activeItem is Weapon_Item && ((Weapon_Item)playerStats.inventory.activeItem).thisWeaponType != Weapon_Item.weaponType.sword)
+                    playerAttacks.startThrowArrowCoroutine();
+                //else playerAttacks.startAttackSwordCoroutine();
+            }
+
+
+
             yield return null;
         }
 
         rigidbody.velocity = Vector3.zero;
+    }
+
+    bool isGrounded()
+    {
+        return Physics.Raycast(new Ray(transform.position, Vector3.down), distanceCheck);
+    }
+
+    float tendTowardsZero(float number, float step)
+    {
+        step = Mathf.Abs(step);
+
+        if (number > 0)
+        {
+            number -= step;
+            if (number < 0) number = 0;
+        }
+        else
+        {
+            number += step;
+            if (number > 0) number = 0;
+        }
+
+        return number;
     }
 }

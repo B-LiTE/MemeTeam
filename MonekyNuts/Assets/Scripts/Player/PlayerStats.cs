@@ -44,11 +44,9 @@ public class PlayerStats : KillableInstance {
 		baseAttackSpeed = 1;
 		attackRange = baseAttackRange;
 
-        // AS OF 4/17/2016:
-        // 8 almost exactly matches enemy/troop movement speed
-        maxMoveSpeed = 8.5f;
-        movementAcceleration = 2.5f;
-        rotationSpeed = 2.5f;
+        maxMoveSpeed = 20;
+        movementAcceleration = 2;
+        rotationSpeed = 2;
 
 		goldCount = 0;
 	}

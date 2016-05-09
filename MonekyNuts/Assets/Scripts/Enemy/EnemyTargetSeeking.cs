@@ -148,9 +148,24 @@ public class EnemyTargetSeeking : MonoBehaviour {
         chosenPoint.x += ((transform.forward.x / Mathf.Abs(transform.forward.x)) * deltaX);
 
         NavMeshHit hit;
-        // If the point isn't on the NavMesh, return our current position
-        if (!NavMesh.SamplePosition(chosenPoint, out hit, 20, 1)) return transform.position;
-        return hit.position;
+        // If the point isn't on the NavMesh or reasonably close, return our current position
+        if (!NavMesh.SamplePosition(chosenPoint, out hit, 100, 1)) return transform.position;
+        return ground(hit.position);
+    }
+
+    Vector3 ground(Vector3 point)
+    {
+        if (Mathf.Approximately(point.y, 0)) return point;
+        RaycastHit hitInfo;
+        if (Physics.Raycast(new Ray(point, Vector3.down), out hitInfo, 1000f))
+            return hitInfo.point;
+        else if (Physics.Raycast(new Ray(point, Vector3.up), out hitInfo, 1000f))
+            return hitInfo.point;
+        else
+        {
+            Debug.LogError("Point " + point + " is very far off ground! From object " + this.name);
+            return point;
+        }
     }
 
 
@@ -182,7 +197,7 @@ public class EnemyTargetSeeking : MonoBehaviour {
     RaycastHit raycastTo(Vector3 target)
     {
         RaycastHit hitInfo;
-        Vector3 direction = new Vector3(target.x - transform.position.x, 0, target.z - transform.position.z);
+        Vector3 direction = new Vector3(target.x - transform.position.x, target.y - transform.position.y, target.z - transform.position.z);
         Physics.Raycast(transform.position, direction, out hitInfo, sensingRadius, visibleLayers);
         return hitInfo;
     }
@@ -211,7 +226,7 @@ public class EnemyTargetSeeking : MonoBehaviour {
     /// <returns>Returns true if the point is in sight lines, false if not</returns>
     bool inSightLines(Vector3 target)
     {
-        Vector3 directionToObject = new Vector3(target.x - transform.position.x, 0, target.z - transform.position.z);
+        Vector3 directionToObject = new Vector3(target.x - transform.position.x, target.y - transform.position.y, target.z - transform.position.z);
         float angle = Vector3.Angle(directionToObject, transform.forward);
 
         return angle < fieldOfViewAngle * 0.5f;
