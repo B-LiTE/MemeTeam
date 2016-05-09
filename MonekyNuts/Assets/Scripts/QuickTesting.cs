@@ -13,6 +13,7 @@ public class QuickTesting : MonoBehaviour {
 		inventory.AddItem (19);
 		inventory.AddItem (1);
 		inventory.AddItem (24);
+        inventory.AddItem(29);
 	}
 	
 	// Update is called once per frame

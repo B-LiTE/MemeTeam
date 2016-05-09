@@ -37,11 +37,11 @@ public class Item_Database : MonoBehaviour {
 		allItems.Add (new Armor_Item(22,"Steel Gauntlets","Armor",1,30,12));
 		allItems.Add(new Armor_Item(23,"Steel Boots","Armor",1,32,14));
 		allItems.Add (new Weapon_Item(24,"Titan Blade","Weapon",1,45,12,4f,1,0,Weapon_Item.weaponType.sword));
-		allItems.Add(new Weapon_Item(25,"Soulless Staff","Weapon",1,60,16,20,1,0,Weapon_Item.weaponType.staff));
-		allItems.Add (new Weapon_Item(26,"Wizard's Wand","Weapon",1,14,3,15,1,0,Weapon_Item.weaponType.staff));
+		allItems.Add(new Weapon_Item(25,"Soulless Staff","Weapon",1,60,16,20,1,2,Weapon_Item.weaponType.staff));
+		allItems.Add (new Weapon_Item(26,"Wizard's Wand","Weapon",1,14,3,15,1,2,Weapon_Item.weaponType.staff));
 		allItems.Add (new Weapon_Item(27,"Savage Axe","Weapon",1,30,6,3,1,0,Weapon_Item.weaponType.sword));
 		allItems.Add (new Weapon_Item(28,"Ninja Knife","Weapon",1,25,5,2,1,0,Weapon_Item.weaponType.sword));
-		allItems.Add (new Weapon_Item(29,"Wind Staff","Weapon",1,30,5,17,1,0,Weapon_Item.weaponType.staff));
+		allItems.Add (new Weapon_Item(29,"Wind Staff","Weapon",1,30,5,17,1,2,Weapon_Item.weaponType.staff));
 
 
 	}

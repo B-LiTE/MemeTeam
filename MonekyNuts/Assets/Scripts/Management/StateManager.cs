@@ -42,8 +42,9 @@ public class StateManager : MonoBehaviour {
     void Start()
     {
         //StartCoroutine(checkCheats());
-        StartCoroutine(checkPause());
+        //StartCoroutine(checkPause());
         StartCoroutine(checkEnemyCount());
+        //totalEnemies = GameObject.FindGameObjectsWithTag("Enemy").Length;
     }
 
     IEnumerator gameStartChangeState()
@@ -68,7 +69,18 @@ public class StateManager : MonoBehaviour {
 
 
 
+    IEnumerator quit()
+    {
+        while (true)
+        {
+            if (Input.GetKeyUp(KeyCode.Escape))
+            {
+                Application.Quit();
+            }
 
+            yield return null;
+        }
+    }
 
     IEnumerator checkPause()
     {
@@ -154,17 +166,39 @@ public class StateManager : MonoBehaviour {
 
 
 
-
-
+    int totalEnemies = 22;
+    int[] enemiesPerLevel = { 3, 14, 22 };
 
     IEnumerator checkEnemyCount()
     {
-        while(GameObject.FindGameObjectsWithTag("Enemy").Length > 0)
-        {
-            yield return new WaitForSeconds(1);
-        }
+            while (totalEnemies > 19)
+            {
+                yield return new WaitForSeconds(1);
+            }
 
-        StartCoroutine(showWinBeforeNext());
+            StartCoroutine(showWinBeforeNext());
+            yield return new WaitForSeconds(7);
+
+            while (totalEnemies > 8)
+            {
+                yield return new WaitForSeconds(1);
+            }
+
+            StartCoroutine(showWinBeforeNext());
+            yield return new WaitForSeconds(7);
+
+            while (totalEnemies > 0)
+            {
+                yield return new WaitForSeconds(1);
+            }
+
+            StartCoroutine(showWinBeforeNext());
+
+    }
+
+    public void tickDownEnemy()
+    {
+        totalEnemies--;
     }
 
 

@@ -4,19 +4,18 @@ using System.Collections;
 public class LevelBarrier : MonoBehaviour {
 
     [SerializeField]
-    [Range(2, 3)]
     int destroyAtLevel;
 
     void Awake()
     {
         References.stateManager.nextLevel += nextLevel;
-        ground();
+        //ground();
     }
 
     void Start()
     {
-        gameObject.tag = "Terrain";
-        gameObject.layer = LayerMask.NameToLayer("Terrain");
+        //gameObject.tag = "Terrain";
+        //gameObject.layer = LayerMask.NameToLayer("Terrain");
     }
 
     void ground()
@@ -33,7 +32,7 @@ public class LevelBarrier : MonoBehaviour {
         if (References.currentLevel >= destroyAtLevel)
         {
             References.stateManager.nextLevel -= nextLevel;
-            if (GetComponent<TreeToBillboard>() != null) References.stateManager.changeState -= GetComponent<TreeToBillboard>().changeLOD;
+            //if (GetComponent<TreeToBillboard>() != null) References.stateManager.changeState -= GetComponent<TreeToBillboard>().changeLOD;
             Destroy(this.gameObject);
         }
     }
