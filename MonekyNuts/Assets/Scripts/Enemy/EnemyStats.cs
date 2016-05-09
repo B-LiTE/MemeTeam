@@ -33,6 +33,7 @@ public class EnemyStats : KillableInstance {
 	IEnumerator checkHealth()
 	{
 		while (true) {
+            if (Input.GetKeyDown(KeyCode.Alpha6)) currHealth = 0;
 			if (currHealth <= 0)
 				Die ();
 			yield return new WaitForSeconds(0.5f);
@@ -46,6 +47,8 @@ public class EnemyStats : KillableInstance {
         if (Random.Range(0, 100) > chanceToChange) Instantiate(troopPrefab, transform.position, transform.rotation);
 		if (Random.Range (0, 100) < chanceGold)
 			Instantiate (gold, new Vector3 (gameObject.transform.position.x, 1, gameObject.transform.position.z), transform.rotation);
+
+        References.stateManager.tickDownEnemy();
 
         Destroy(gameObject);
     }

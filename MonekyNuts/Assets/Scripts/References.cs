@@ -65,6 +65,7 @@ public static class References {
 
         // Data
         lastLevelIndex = Application.loadedLevel;
+        currentLevel = 1;
     }
 
 }
