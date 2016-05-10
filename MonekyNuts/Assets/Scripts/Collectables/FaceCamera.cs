@@ -16,7 +16,8 @@ public class FaceCamera : MonoBehaviour {
     {
         while (true)
         {
-            transform.LookAt(zeroedYVector(target.position));
+            //transform.LookAt(zeroedYVector(target.position));
+            transform.LookAt(target.position);
 
             yield return null;
         }

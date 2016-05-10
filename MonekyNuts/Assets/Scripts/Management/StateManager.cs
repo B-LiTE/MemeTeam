@@ -33,7 +33,7 @@ public class StateManager : MonoBehaviour {
 
     void Awake()
     {
-        //References.resetReferences();
+        References.resetReferencesForNewLevel();
 
         StartCoroutine(gameStartChangeState());
         isPaused = false;
@@ -171,7 +171,7 @@ public class StateManager : MonoBehaviour {
 
     IEnumerator checkEnemyCount()
     {
-            while (totalEnemies > 19)
+            /*while (totalEnemies > 19)
             {
                 yield return new WaitForSeconds(1);
             }
@@ -192,7 +192,19 @@ public class StateManager : MonoBehaviour {
                 yield return new WaitForSeconds(1);
             }
 
+            StartCoroutine(showWinBeforeNext());*/
+
+        for (int i = 0; i < 3; i++)
+        {
+            yield return new WaitForSeconds(7);
+
+            while (GameObject.FindGameObjectsWithTag("Enemy").Length > 0)
+            {
+                yield return new WaitForSeconds(1);
+            }
+
             StartCoroutine(showWinBeforeNext());
+        }
 
     }
 

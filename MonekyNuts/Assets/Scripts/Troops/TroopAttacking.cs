@@ -70,24 +70,27 @@ public class TroopAttacking : MonoBehaviour {
     // Coroutine to start attacking
     IEnumerator attack()
     {
-        // Get the target object
-        attackTarget = troopBehavior.getTarget().GetComponent<EnemyStats>();
-
-        // Subscribe to the target's death alert
-        attackTarget.alertOnDeath += stopAttacking;
-
-        // As long as the target is alive, wait for a short bit, then attack
-        while (attackTarget.isAlive)
+        if (troopBehavior.targetIsEnemy())
         {
-            yield return new WaitForSeconds(troopStats.secondsBetweenAttacks / 2);
+            // Get the target object
+            attackTarget = troopBehavior.getTarget().GetComponent<EnemyStats>();
 
-            attackTarget.Damage(troopStats.attackValue, this.gameObject);
+            // Subscribe to the target's death alert
+            attackTarget.alertOnDeath += stopAttacking;
 
-            yield return new WaitForSeconds(troopStats.secondsBetweenAttacks / 2);
+            // As long as the target is alive, wait for a short bit, then attack
+            while (attackTarget.isAlive)
+            {
+                yield return new WaitForSeconds(troopStats.secondsBetweenAttacks / 2);
+
+                attackTarget.Damage(troopStats.attackValue, this.gameObject);
+
+                yield return new WaitForSeconds(troopStats.secondsBetweenAttacks / 2);
+            }
+
+            // Now that the target is dead, start wandering
+            troopBehavior.changeIntent(this.gameObject);
         }
-
-        // Now that the target is dead, start wandering
-        troopBehavior.changeIntent(this.gameObject);
     }
 
 

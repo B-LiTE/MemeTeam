@@ -1,24 +1,37 @@
 ﻿using UnityEngine;
 using System.Collections;
+using UnityEngine.UI;
 
 public class MainMenu : MonoBehaviour {
+
+    GameObject loading;
 
     [SerializeField]
     string[] buttonReferences;
 
-    [SerializeField]
-    GameObject loading;
+    void Awake()
+    {
+        assign(false);
+    }
+
+    void assign(bool value)
+    {
+        loading = GameObject.FindGameObjectWithTag("Loading");
+        loading.GetComponentInChildren<Image>().enabled = value;
+        loading.GetComponentInChildren<Text>().enabled = value;
+    }
 
     public void startGame()
     {
+        References.resetLives();
         Destroy(GameObject.FindGameObjectWithTag("ImmortalMusic"));
-        loading.SetActive(true);
+        assign(true);
         Application.LoadLevel(buttonReferences[0]);
     }
 
     public void helpManual()
     {
-        loading.SetActive(true);
+        assign(true);
         Application.LoadLevel(buttonReferences[1]);
     }
 

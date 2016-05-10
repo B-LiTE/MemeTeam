@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using UnityEngine.UI;
 
 public class GameOverAnimations : MonoBehaviour {
 
@@ -45,7 +46,7 @@ public class GameOverAnimations : MonoBehaviour {
 
         yield return new WaitForSeconds(2.5f);
 
-        if (References.lives > 0) livesText.text = "Or, you have " + References.lives + " " + ((References.lives > 1) ? "lives" : "life") + " left...";
+        if (References.lives > 0) livesText.text = "Or, you have\n" + References.lives + " " + ((References.lives > 1) ? "lives" : "life") + " left...";
         StartCoroutine(fadeInWords());
     }
 
@@ -114,6 +115,9 @@ public class GameOverAnimations : MonoBehaviour {
 
     public void loadLastLevel()
     {
+        GameObject loading = GameObject.FindGameObjectWithTag("Loading");
+        loading.GetComponentInChildren<Image>().enabled = true;
+        loading.GetComponentInChildren<Text>().enabled = true;
         Application.LoadLevel(References.lastLevelIndex);
     }
 

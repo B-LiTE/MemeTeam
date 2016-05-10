@@ -33,7 +33,6 @@ public class EnemyStats : KillableInstance {
 	IEnumerator checkHealth()
 	{
 		while (true) {
-            if (Input.GetKeyDown(KeyCode.Alpha6)) currHealth = 0;
 			if (currHealth <= 0)
 				Die ();
 			yield return new WaitForSeconds(0.5f);

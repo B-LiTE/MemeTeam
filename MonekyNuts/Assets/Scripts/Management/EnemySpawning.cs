@@ -18,6 +18,8 @@ public class EnemySpawning : MonoBehaviour {
         stateTiming = References.stateTiming;
         References.stateManager.changeState += checkSpawnEnemy;
         References.stateManager.nextLevel += nextLevel;
+
+        spawnEnemies(5);
     }
 
     void nextLevel()
@@ -25,8 +27,7 @@ public class EnemySpawning : MonoBehaviour {
         if (References.currentLevel == 2) bounds = new Vector4(-830, 830, -440, 440);
         else bounds = new Vector4(-960, 960, -980, 980);
 
-        for (int i = 0; i < References.currentLevel + 5; i++)
-            if (!spawnEnemy()) i--;
+        spawnEnemies(References.currentLevel + 5);
     }
 
     void checkSpawnEnemy()
@@ -46,6 +47,13 @@ public class EnemySpawning : MonoBehaviour {
     }
 
     int tries = 0;
+
+    void spawnEnemies(int number)
+    {
+        for (int i = 0; i < number; i++)
+            if (!spawnEnemy()) i--;
+    }
+
 
     bool spawnEnemy()
     {
@@ -67,16 +75,14 @@ public class EnemySpawning : MonoBehaviour {
             randomX = Random.Range(bounds.x, bounds.y);
         }
 
-        GameObject newEnemy = (GameObject)GameObject.Instantiate(enemyPrefab, new Vector3(randomX, 500, randomZ), new Quaternion());
+        Vector3 testingVector = new Vector3(randomX, 100, randomZ);
+
         RaycastHit hitInfo;
-        if (Physics.Raycast(new Ray(newEnemy.transform.position, Vector3.down), out hitInfo, 1500)) newEnemy.transform.position = hitInfo.point + new Vector3(0, 1.5f, 0);
-        else if (Physics.Raycast(new Ray(newEnemy.transform.position, Vector3.up), out hitInfo, 1500)) newEnemy.transform.position = hitInfo.point + new Vector3(0, 1.5f, 0);
-        else
-        {
-            Destroy(newEnemy);
-            if (tries < 1000) return false;
-        }
-        //newEnemy.transform.LookAt(References.castle.transform);
+        if (Physics.Raycast(new Ray(testingVector, Vector3.down), out hitInfo)) testingVector = hitInfo.point + new Vector3(0, enemyPrefab.transform.localScale.y, 0);
+        else if (Physics.Raycast(new Ray(testingVector, Vector3.up), out hitInfo)) testingVector = hitInfo.point + new Vector3(0, enemyPrefab.transform.localScale.y, 0);
+
+        GameObject.Instantiate(enemyPrefab, testingVector, new Quaternion());
+
         return true;
     }
 

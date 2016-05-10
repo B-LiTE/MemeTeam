@@ -37,9 +37,12 @@ public static class References {
 
 
 
+    public static void resetLives()
+    {
+        lives = 3;
+    }
 
-
-    public static void resetReferences()
+    public static void resetReferencesForNewLevel()
     {
         // Managers
         manager = GameObject.FindGameObjectWithTag("Manager");
